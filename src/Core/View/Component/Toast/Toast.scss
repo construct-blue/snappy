@@ -1,0 +1,44 @@
+.toast {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 1rem;
+
+  &__message {
+    overflow: hidden;
+    width: 15rem;
+    margin-top: 0;
+    margin-bottom: .5rem;
+    border-radius: 10px;
+    background: rgba(173, 35, 17, 0.8);
+    backdrop-filter: blur(5px);
+    color: #fff;
+    transition: opacity .5s;
+
+    &.fade {
+      opacity: 0;
+    }
+  }
+
+  &__text {
+    margin: 0;
+    padding: 1rem;
+    word-wrap: break-word;
+  }
+
+  &__head {
+    margin: 0;
+    padding: 0.5rem 1rem 0;
+  }
+
+  svg {
+    width: 12px;
+    height: 12px;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    pointer-events: none;
+  }
+}

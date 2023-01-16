@@ -1,0 +1,39 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+chdir(dirname(__DIR__));
+
+exec('composer install --no-dev --optimize-autoloader');
+exec('yarn install');
+exec('yarn build');
+exec('rm -rf dist');
+exec('mkdir dist');
+exec('mkdir dist/data');
+
+const FOLDERS = [
+        'public',
+        'src',
+        'vendor',
+];
+
+foreach (FOLDERS as $FOLDER) {
+    exec("cp -r $FOLDER dist/$FOLDER");
+}
+
+exec("cp LICENSE dist/");
+exec("cp env.php.dist dist/");
+exec("echo 'rc' >> dist/VERSION");
+
+$autoloader = require 'dist/vendor/autoload.php';
+
+(new \Blue\Core\View\EntrypointHelper(dirname(__DIR__) . '/dist/'))->build();
+
+global $env;
+$env = [];
+
+$application = require 'dist/src/bootstrap.php';
+
+// restore dev env
+exec('composer install');
+exec('yarn dev');

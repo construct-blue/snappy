@@ -1,0 +1,19 @@
+<?php
+if (isset($this->requestId)): ?>
+    <script is="analytics-data" type="application/json">
+        {
+            "rid": "<?= $this->requestId ?>",
+            "rt": "<?= $this->requestTimestamp ?? time() ?>",
+            "events": {
+                "hidden": "<?= \Blue\Core\Analytics\Event::PAGE_HIDDEN->value ?>"
+            },
+            "params": {
+                "rid": "<?= \Blue\Core\Http\QueryParameter::analytics_rid->name ?>",
+                "rt": "<?= \Blue\Core\Http\QueryParameter::analytics_rt->name ?>",
+                "event": "<?= \Blue\Core\Http\QueryParameter::analytics_event->name ?>",
+                "click": "<?= \Blue\Core\Http\QueryParameter::analytics_click->name ?>"
+            }
+        }
+    </script>
+<?php
+endif; ?>

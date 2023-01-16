@@ -1,0 +1,20 @@
+<header>
+    <h1>TeslaClient - Setup</h1>
+</header>
+<main>
+    <?php
+    if (isset($this->current)): ?>
+        <p>current: <?= $this->current ?></p>
+    <?php
+    endif; ?>
+    <form method="post">
+        <label for="proxy">Proxy</label>
+        <input id="proxy" type="text" name="proxy" value="<?= $this->proxy ?? '' ?>">
+        <button type="submit">Save</button>
+    </form>
+    <form is="tesla-setup" method="post" data-popup-url="<?= $this->url ?>">
+        <label for="url">URL</label>
+        <input id="url" type="text" name="url">
+        <button type="submit">Login</button>
+    </form>
+</main>

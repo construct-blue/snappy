@@ -1,0 +1,44 @@
+<?php
+
+declare(strict_types=1);
+/** @var Blue\Core\Authentication\Login $this */
+?>
+<header>
+    <h1>Login</h1>
+</header>
+<main>
+    <form method="post">
+        <input type="hidden" name="token" value="<?= $this->token ?>">
+        <fieldset>
+            <svg
+                width="100%"
+                height="5rem"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <use href="/icons.svg#key"></use>
+            </svg>
+            <?php foreach ($this->messages as $message): ?>
+                <mark><?= $message?></mark>
+            <?php endforeach; ?>
+            <p>
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username">
+            </p>
+            <p>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password">
+            </p>
+            <button type="submit">
+                Login
+            </button>
+        </fieldset>
+    </form>
+</main>
+
+<footer>
+    <a href="<?= $this->basePath?>">Home</a>
+</footer>

@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "ESNext",
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "moduleResolution": "Node"
+  },
+  "exclude": [
+    "dist"
+  ],
+  "ts-standard": {
+    "noDefaultIgnore": false,
+    "fix": true
+  }
+}

@@ -1,0 +1,23 @@
+<header>
+    <h1>Oops!</h1>
+</header>
+<main>
+    <svg
+        width="100%"
+        height="5rem"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    >
+        <use href="/icons.svg#alert-triangle"></use>
+    </svg>
+    <h2>Something went wrong! :(</h2>
+    <p>Unfortunately this page can't be displayed.</p>
+    <code>Error: <?= $this->status ?> <?= $this->reason ?></code>
+</main>
+<footer>
+    <a href="<?= $this->basePath ?? '/' ?>">Home</a>
+</footer>
+

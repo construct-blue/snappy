@@ -1,0 +1,10 @@
+.idea
+.phpunit.result.cache
+vendor
+node_modules
+public/static
+dist
+yarn-error.log
+data
+!data/.keep
+env.php
