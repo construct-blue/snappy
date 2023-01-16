@@ -13,7 +13,6 @@ use Mezzio\Router\RouteCollectorInterface;
 use Blue\Core\Application\Error\ErrorLoggerDelegator;
 use Blue\Core\Application\Error\ErrorResponseDelegator;
 
-
 class ConfigProvider
 {
     public function __invoke(): array
