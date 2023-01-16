@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 chdir(dirname(__DIR__));
 
-require_once "vendor/autoload.php";
+require_once "src/Developer/Build/EntrypointsFinder.php";
+require_once "src/Developer/Build/TokenScanner.php";
 
 (new \Blue\Developer\Build\EntrypointsFinder())->execute();
