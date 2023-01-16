@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Core\Application\Server;
 
+use Blue\Core\Application\SnappInterface;
 use Mezzio\Router\Middleware\ImplicitHeadMiddleware;
 use Mezzio\Router\Middleware\ImplicitOptionsMiddleware;
 use Mezzio\Router\Middleware\MethodNotAllowedMiddleware;
@@ -18,9 +19,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class SnappyServer extends AbstractSnapp
 {
+    /** @var IngressRoute[] */
     private array $apps = [];
 
-    private function initDbConnection()
+    private function initDbConnection(): void
     {
         if (!$this->getEnv('MYSQL_HOST')) {
             return;
@@ -35,11 +37,9 @@ class SnappyServer extends AbstractSnapp
         );
     }
 
-    public static function fromEnv(array $env, string $configCacheFile = null): static
+    public static function fromEnv(array $env, string $configCacheFile = null): self
     {
-        $app = parent::fromEnv($env, $configCacheFile);
-        $app->initDbConnection();
-        return $app;
+        return parent::fromEnv($env, $configCacheFile)->resolve();
     }
 
     protected function createConfig(): ApplicationContainerConfig
@@ -49,13 +49,20 @@ class SnappyServer extends AbstractSnapp
         return $config;
     }
 
-    public function app(AbstractSnapp $application, string $path, string $domain = null): self
+    public function addSnApp(SnappInterface $snapp, string $path, string $domain = null): self
     {
         if ($this->getDevDomain() && $domain) {
             $domain = $domain . '.' . $this->getDevDomain();
         }
-        $this->apps[] = IngressRoute::app($application, $path, $domain);
+        $this->apps[] = IngressRoute::app($snapp, $path, $domain);
         return $this;
+    }
+
+    public function build(): void
+    {
+        foreach ($this->apps as $app) {
+            $app->build();
+        }
     }
 
     protected function initPipeline(): void
@@ -80,6 +87,7 @@ class SnappyServer extends AbstractSnapp
 
     public function run(): void
     {
+        $this->initDbConnection();
         $this->init();
         parent::run();
     }

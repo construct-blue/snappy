@@ -32,7 +32,9 @@ $autoloader = require 'dist/vendor/autoload.php';
 global $env;
 $env = [];
 
+/** @var Blue\Core\Application\Server\SnappyServer $application */
 $application = require 'dist/src/bootstrap.php';
+$application->build();
 
 // restore dev env
 exec('composer install');

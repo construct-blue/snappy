@@ -18,7 +18,7 @@ class WindowMiddleware implements MiddlewareInterface
         /** @var null|IngressResult $ingressResult */
         $ingressResult = $request->getAttribute(IngressResult::class);
         if ($ingressResult) {
-            $application = $ingressResult->getApplication();
+            $application = $ingressResult->getSnApp();
             /** @var Session $session */
             $session = $request->getAttribute(Session::class);
             $window = $session->openWindow($application);
