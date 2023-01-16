@@ -18,7 +18,7 @@ class IngressRouteTest extends TestCase
         $app->get('/', fn() => new TextResponse('test'));
 
         $handler = new HandlerStub();
-        $route = IngressRoute::app($app, '/test');
+        $route = new IngressRoute($app, '/test');
         $request = (new ServerRequest())->withUri(new Uri('https://www.example.com/test'));
         $route->process($request, $handler);
         $response = $handler->request->getAttribute(IngressResult::class)->process($request, $handler);
@@ -33,7 +33,7 @@ class IngressRouteTest extends TestCase
         $app->get('/', fn() => new TextResponse('test'));
 
         $handler = new HandlerStub();
-        $route = IngressRoute::app($app, '/test', 'www.example.com');
+        $route = new IngressRoute($app, '/test', 'www.example.com');
         $request = (new ServerRequest())->withUri(new Uri('https://www.example.com/test'));
         $route->process($request, $handler);
         $response = $handler->request->getAttribute(IngressResult::class)->process($request, $handler);
@@ -46,7 +46,7 @@ class IngressRouteTest extends TestCase
     {
         $app = ApplicationStub::fromEnv([]);
         $handler = new HandlerStub();
-        $route = IngressRoute::app($app, '/test');
+        $route = new IngressRoute($app, '/test');
         $request = (new ServerRequest())->withUri(new Uri('https://www.example.com/foo'));
         $route->process($request, $handler);
         $this->assertEquals('/foo', $handler->request->getUri()->getPath());

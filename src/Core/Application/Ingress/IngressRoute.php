@@ -18,8 +18,10 @@ class IngressRoute implements MiddlewareInterface
     private SnappInterface $snapp;
     private string $path;
     private ?string $domain;
+    private ?string $domainSuffix = null;
+    private array $domainAliases = [];
 
-    private function __construct(SnappInterface $snapp, string $path, ?string $domain)
+    public function __construct(SnappInterface $snapp, string $path, ?string $domain = null)
     {
         $this->snapp = $snapp;
         $this->path = $path;
@@ -29,6 +31,17 @@ class IngressRoute implements MiddlewareInterface
     public function build(): void
     {
         $this->snapp->init();
+    }
+
+    public function setDomainSuffix(?string $domainSuffix): void
+    {
+        $this->domainSuffix = $domainSuffix;
+    }
+
+    public function addAlias(string $domainAlias): self
+    {
+        $this->domainAliases[] = $domainAlias;
+        return $this;
     }
 
     /**
@@ -44,7 +57,23 @@ class IngressRoute implements MiddlewareInterface
      */
     public function getDomain(): ?string
     {
+        if ($this->domainSuffix) {
+            return $this->domain . $this->domainSuffix;
+        }
         return $this->domain;
+    }
+
+
+    public function getDomainAliases(): array
+    {
+        if ($this->domainSuffix) {
+            $result = [];
+            foreach ($this->domainAliases as $domainAlias) {
+                $result[] = $domainAlias . $this->domainSuffix;
+            }
+            return $result;
+        }
+        return $this->domainAliases;
     }
 
     public static function app(SnappInterface $snapp, string $path, string $domain = null): IngressRoute
@@ -54,8 +83,10 @@ class IngressRoute implements MiddlewareInterface
 
     private function matchUri(UriInterface $uri): bool
     {
-        return null === $this->domain && str_starts_with($uri->getPath(), $this->path)
-            || $uri->getHost() === $this->domain && str_starts_with($uri->getPath(), $this->path);
+        $domains = $this->getDomainAliases();
+        $domains[] = $this->getDomain();
+        return null === $this->getDomain() && str_starts_with($uri->getPath(), $this->path)
+            || in_array($uri->getHost(), $domains, true) && str_starts_with($uri->getPath(), $this->path);
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

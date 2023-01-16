@@ -20,7 +20,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 class SnappyServer extends AbstractSnapp
 {
     /** @var IngressRoute[] */
-    private array $apps = [];
+    private array $snappRoutes = [];
 
     private function initDbConnection(): void
     {
@@ -49,18 +49,18 @@ class SnappyServer extends AbstractSnapp
         return $config;
     }
 
-    public function addSnApp(SnappInterface $snapp, string $path, string $domain = null): self
+    public function addSnApp(SnappInterface $snapp, string $path, string $domain = null): IngressRoute
     {
-        if ($this->getDevDomain() && $domain) {
-            $domain = $domain . '.' . $this->getDevDomain();
+        $route = new IngressRoute($snapp, $path, $domain);
+        if ($domain && $this->getDevDomain()) {
+            $route->setDomainSuffix('.' . $this->getDevDomain());
         }
-        $this->apps[] = IngressRoute::app($snapp, $path, $domain);
-        return $this;
+        return $this->snappRoutes[] = $route;
     }
 
     public function build(): void
     {
-        foreach ($this->apps as $app) {
+        foreach ($this->snappRoutes as $app) {
             $app->build();
         }
     }
@@ -69,10 +69,10 @@ class SnappyServer extends AbstractSnapp
     {
         $this->pipe(
             fn(ServerRequestInterface $request, RequestHandlerInterface $handler) => $handler->handle(
-                Attribute::APPS->setTo($request, $this->apps)
+                Attribute::APPS->setTo($request, $this->snappRoutes)
             )
         );
-        foreach ($this->apps as $app) {
+        foreach ($this->snappRoutes as $app) {
             $this->pipe($app);
         }
         $this->pipe(ImplicitHeadMiddleware::class);

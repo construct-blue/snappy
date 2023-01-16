@@ -30,11 +30,16 @@ class StartpageView extends ViewComponent
                                 ['a href="/system"' => 'System'],
                             ]
                         ],
-                        'h1' => 'Home',
+                        'h1' => [
+                            'svg height="7rem"' => [
+                                '<title>Blue Snappy</title>',
+                                '<use href="/logo.svg#logo"/>'
+                            ],
+                        ],
                     ],
                     'main' => [
-                        'article' => [
-                            'h2' => 'Domains',
+                        'div' => [
+                            'h3' => 'Snapps',
                             array_map(fn($link) => "<p><a href=\"\\\\$link\"><span>$link</span></a></p>", $this->apps)
                         ]
                     ],
