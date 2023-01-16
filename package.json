@@ -26,9 +26,9 @@
   },
   "scripts": {
     "dev-server": "encore dev-server",
-    "dev": "php ./bin/update-entrypoints && encore dev",
-    "watch": "php ./bin/update-entrypoints && encore dev --watch",
-    "build": "php ./bin/update-entrypoints && encore production --progress",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress",
     "lint": "standard && ts-standard"
   },
   "packageManager": "yarn@3.2.0",
