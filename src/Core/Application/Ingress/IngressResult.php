@@ -2,8 +2,10 @@
 
 namespace Blue\Core\Application\Ingress;
 
-use Blue\Core\Application\AbstractSnapp;
+use Blue\Core\Application\SnappInterface;
 use Blue\Core\Http\Uri\UriBuilder;
+use Mezzio\Helper\ServerUrlMiddleware;
+use Mezzio\Helper\UrlHelperMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -11,31 +13,35 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class IngressResult implements MiddlewareInterface
 {
-    public function __construct(private AbstractSnapp $application, private string $path)
+    public function __construct(private SnappInterface $snapp, private string $path)
     {
     }
 
     /**
-     * @return AbstractSnapp
+     * @return SnappInterface
      */
-    public function getApplication(): AbstractSnapp
+    public function getSnApp(): SnappInterface
     {
-        return $this->application;
+        return $this->snapp;
     }
 
     public function getUriBuilder(): UriBuilder
     {
-        return $this->getApplication()->getContainer()->get(UriBuilder::class);
+        return $this->getSnApp()->getContainer()->get(UriBuilder::class);
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $this->getSnApp()->pipe(UrlHelperMiddleware::class);
+        $this->getSnApp()->pipe(ServerUrlMiddleware::class);
+        $this->getSnApp()->init();
+
         $request = $this->prepareRequestWithTruncatedPrefix($request, $this->path);
 
         $this->getUriBuilder()->setBasePath($this->path);
         $this->getUriBuilder()->setCurrentUri($request->getUri());
 
-        return $this->application->process($request, $handler);
+        return $this->getSnApp()->process($request, $handler);
     }
 
 

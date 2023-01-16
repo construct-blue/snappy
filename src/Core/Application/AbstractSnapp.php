@@ -16,7 +16,7 @@ use Mezzio\Router\RouteCollectorInterface;
 use Blue\Core\Application\Debug\ConfigProvider as DebugConfigProvider;
 use Blue\Core\View\DefaultVariableMiddleware;
 
-abstract class AbstractSnapp extends Application
+abstract class AbstractSnapp extends Application implements SnappInterface
 {
     public const ENV_DEV_DOMAIN = 'DEV_DOMAIN';
     public const ENV_DEV_MODE = 'DEV_MODE';
@@ -36,15 +36,16 @@ abstract class AbstractSnapp extends Application
         );
     }
 
-    public function newInstance(): static
-    {
-        return new static($this->env);
-    }
-
-    public static function fromEnv(array $env, string $configCacheFile = null): static
+    /**
+     * @param array $env
+     * @param string|null $configCacheFile
+     * @return SnappProxy<static>
+     */
+    public static function fromEnv(array $env, string $configCacheFile = null): SnappInterface
     {
         $env[self::ENV_CONFIG_CACHE_FILE] = $configCacheFile;
-        return new static($env);
+        /** @phpstan-ignore-next-line */
+        return new SnappProxy(fn() => new static($env));
     }
 
     protected function getEnv(string $name, $default = null)

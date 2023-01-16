@@ -14,7 +14,7 @@ class IngressRouteTest extends TestCase
 {
     public function testProcessSuccessWithPath()
     {
-        $app = ApplicationStub::fromEnv([]);
+        $app = ApplicationStub::fromEnv([])->resolve();
         $app->get('/', fn() => new TextResponse('test'));
 
         $handler = new HandlerStub();
@@ -29,7 +29,7 @@ class IngressRouteTest extends TestCase
 
     public function testProcessSuccessWithDomain()
     {
-        $app = ApplicationStub::fromEnv([]);
+        $app = ApplicationStub::fromEnv([])->resolve();
         $app->get('/', fn() => new TextResponse('test'));
 
         $handler = new HandlerStub();
