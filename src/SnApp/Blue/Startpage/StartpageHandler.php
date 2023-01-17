@@ -21,7 +21,7 @@ class StartpageHandler extends TemplateHandler
         $appLinks = [];
         foreach ($apps as $app) {
             if ($app->getDomain()) {
-                $appLinks[] = rtrim($app->getDomain() . $app->getPath(), '/');
+                $appLinks[(string)$app->getUri()] = $app->getName();
             }
         }
 

@@ -40,7 +40,11 @@ class StartpageView extends ViewComponent
                     'main' => [
                         'div' => [
                             'h3' => 'Snapps',
-                            array_map(fn($link) => "<p><a href=\"\\\\$link\"><span>$link</span></a></p>", $this->apps)
+                            array_map(
+                                fn($link, $name) => "<p><a href=\"$link\"><span>$name</span></a></p>",
+                                array_keys($this->apps),
+                                array_values($this->apps)
+                            )
                         ]
                     ],
                     'footer' => [

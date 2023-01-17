@@ -19,9 +19,11 @@ $app->addSnApp(SystemSnapp::fromEnv($env, $cache('system')), '/system');
 $app->addSnApp(CmsSnapp::fromEnv($env, $cache('cms')), '/cms');
 
 $app->addSnApp(NicemobilSnapp::fromEnv($env, $cache('nicemobil')), '/', 'live.sonice.at')
+    ->setName('NICEmobil Live')
     ->addAlias('live.nicemobil.blog');
 
 $app->addSnApp(KleinschusterSnapp::fromEnv($env, $cache('kleinschuster')), '/', 'www.robs.social')
+    ->setName('Kleinschuster.de')
     ->addAlias('www.kleinschuster.de');
 
 return $app;
