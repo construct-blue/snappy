@@ -29,18 +29,8 @@ class BlockView extends ViewComponent
                 'body' => [
                     'header' => [
                         CmsNavigation::class => [],
-                        'h1' => 'Blocks',
-                    ],
-                    'main id="main"' => [
-                        array_map(fn($message) => ['mark' => $message], $this->messages),
-                        'form is="reactive-form" method="post" action="{basePath}/blocks/add/{snapp}"' => [
-                            '<input type="text" name="code" placeholder="code">',
-                            'button type="submit"' => [
-                                Icon::class => [
-                                    'icon' => 'plus',
-                                ],
-                                'span' => 'Add block'
-                            ],
+                        'h1' => [
+                            'Blocks for ',
                             'select onchange="window.location = `{basePath}/blocks/${this.value}`"' => [
                                 array_map(
                                     fn(string $code, string $name) => ($this->snapp ?? '') === $code ?
@@ -49,6 +39,18 @@ class BlockView extends ViewComponent
                                     array_keys($this->snapps),
                                     array_values($this->snapps)
                                 ),
+                            ],
+                        ],
+                    ],
+                    'main id="main"' => [
+                        array_map(fn($message) => ['mark' => $message], $this->messages),
+                        'form is="reactive-form" method="post" action="{basePath}/blocks/add/{snapp}"' => [
+                            '<input type="text" name="code" placeholder="Code to add" required>',
+                            'button type="submit"' => [
+                                Icon::class => [
+                                    'icon' => 'plus',
+                                ],
+                                'span' => 'Add block'
                             ],
                         ],
                         array_map(
@@ -70,7 +72,7 @@ class BlockView extends ViewComponent
                                             ],
                                             'content' => [
                                                 'p' => [
-                                                    '<input type="text" name="code" value="{code}">',
+                                                    '<input type="text" name="code" value="{code}" required>',
                                                     'button type="submit"' => [
                                                         Icon::class => [
                                                             'icon' => 'save',
