@@ -7,6 +7,7 @@ namespace Blue\Core\Analytics;
 use DeviceDetector\DeviceDetector;
 use Blue\Core\I18n\Region;
 use Blue\Core\Queue\Queue;
+use DeviceDetector\Parser\Client\Browser;
 
 class DayCalculation
 {
@@ -51,8 +52,9 @@ class DayCalculation
             $url = $entry->getHost() . $entry->getPath();
             $day->setUrlVisits($this->count($url, $day->getUrlVisits()));
             $day->setLanguageVisits($this->count($entry->getHeaderLanguage(), $day->getLanguageVisits()));
+            $browserFamily = Browser::getBrowserFamily($detector->getClient('short_name'));
             // safari reporting incorrect region
-            if ($detector->getClient('name') === 'Safari') {
+            if ($browserFamily === 'Safari') {
                 $day->setRegionVisits($this->count(Region::WORLD->value, $day->getRegionVisits()));
             } else {
                 $day->setRegionVisits($this->count($entry->getHeaderRegion(), $day->getRegionVisits()));
