@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 use Blue\Core\Application\Server\SnappyServer;
-use Blue\SnApp\Blue\BlueSnapp;
-use Blue\SnApp\Cms\CmsSnapp;
-use Blue\SnApp\Kleinschuster\KleinschusterSnapp;
-use Blue\SnApp\Nicemobil\NicemobilSnapp;
-use Blue\SnApp\System\SystemSnapp;
+use Blue\Snapps\Blue\BlueSnapp;
+use Blue\Snapps\Cms\CmsSnapp;
+use Blue\Snapps\Kleinschuster\KleinschusterSnapp;
+use Blue\Snapps\Nicemobil\NicemobilSnapp;
+use Blue\Snapps\System\SystemSnapp;
 
 global $env;
 
