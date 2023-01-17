@@ -69,7 +69,7 @@ class SnappyServer extends AbstractSnapp
     {
         $this->pipe(
             fn(ServerRequestInterface $request, RequestHandlerInterface $handler) => $handler->handle(
-                Attribute::APPS->setTo($request, $this->snappRoutes)
+                Attribute::SNAPP_ROUTES->setTo($request, $this->snappRoutes)
             )
         );
         foreach ($this->snappRoutes as $app) {

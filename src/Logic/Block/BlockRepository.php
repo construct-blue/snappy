@@ -8,17 +8,14 @@ use Generator;
 use Blue\Core\Database\Exception\ObjectLoadingException;
 use Blue\Core\Database\ObjectStorage;
 use Blue\Core\Http\Status;
-use Blue\Core\Util\SingletonTrait;
 
 class BlockRepository
 {
-    use SingletonTrait;
-
     private ObjectStorage $storage;
 
-    protected function onConstruct(): void
+    public function __construct(?string $snapp)
     {
-        $this->storage = new ObjectStorage(Block::class, 'block');
+        $this->storage = new ObjectStorage(Block::class, $snapp ?? '', 'block');
     }
 
     /**

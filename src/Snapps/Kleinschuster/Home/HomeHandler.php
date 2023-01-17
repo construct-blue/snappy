@@ -2,7 +2,7 @@
 
 namespace Blue\Snapps\Kleinschuster\Home;
 
-use Blue\Snapps\Kleinschuster\Home\Home;
+use Blue\Core\Application\Ingress\IngressResult;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Blue\Core\Application\Handler\TemplateHandler;
 use Blue\Logic\Block\BlockRepository;
@@ -13,7 +13,11 @@ class HomeHandler extends TemplateHandler
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $this->assign('blocks', iterator_to_array(BlockRepository::instance()->findAll()));
+        /** @var IngressResult $ingressResult */
+        $ingressResult = $request->getAttribute(IngressResult::class);
+        $route = $ingressResult->getRoute();
+        $repo = new BlockRepository($route->getCode());
+        $this->assign('blocks', iterator_to_array($repo->findAll()));
         return new HtmlResponse($this->render(Home::class));
     }
 }

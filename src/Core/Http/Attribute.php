@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 enum Attribute: string
 {
-    case APPS = 'attr_apps';
+    case SNAPP_ROUTES = 'attr_snapp_routes';
     case REQUEST_ID = 'attr_request_id';
     case REQUEST_TIMESTAMP = 'attr_request_timestamp';
 

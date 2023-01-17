@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Core\Application\Ingress;
 
+use Blue\Core\Application\SnappCode;
 use Blue\Core\Application\SnappInterface;
 use Laminas\Diactoros\Uri;
 use Mezzio\Router\Route;
@@ -80,7 +81,16 @@ class IngressRoute implements MiddlewareInterface
 
     public function getUri(): UriInterface
     {
-        return new Uri('//' . rtrim($this->getDomain() . $this->getPath(), '/'));
+        $schema = '';
+        if ($this->getDomain()) {
+            $schema = '//';
+        }
+        return new Uri($schema . $this->getDomain() . $this->getPath());
+    }
+
+    public function getCode(): string
+    {
+        return SnappCode::build($this->getDomain(), $this->getPath());
     }
 
     public function getName(): ?string
@@ -105,7 +115,7 @@ class IngressRoute implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($this->matchUri($request->getUri())) {
-            $ingressResult = new IngressResult($this->snapp, $this->path);
+            $ingressResult = new IngressResult($this->snapp, $this->path, $this);
             $route = new Route($this->path, $ingressResult);
             $routeResult = RouteResult::fromRoute($route);
             return $handler->handle(

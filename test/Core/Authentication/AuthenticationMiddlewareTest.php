@@ -2,6 +2,7 @@
 
 namespace BlueTest\Core\Authentication;
 
+use Blue\Core\Application\Ingress\IngressRoute;
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Uri;
@@ -44,7 +45,10 @@ class AuthenticationMiddlewareTest extends TestCase
         $actualResponse = $authMiddleware->process(
             $request
                 ->withAttribute(Session::class, $session)
-                ->withAttribute(IngressResult::class, new IngressResult($application, '/')),
+                ->withAttribute(
+                    IngressResult::class,
+                    new IngressResult($application, '/', new IngressRoute($application, '/'))
+                ),
             $handler
         );
         $this->assertInstanceOf(Response\RedirectResponse::class, $actualResponse);

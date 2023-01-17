@@ -13,8 +13,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class IngressResult implements MiddlewareInterface
 {
-    public function __construct(private SnappInterface $snapp, private string $path)
-    {
+    public function __construct(
+        private readonly SnappInterface $snapp,
+        private readonly string $path,
+        private readonly IngressRoute $route
+    ) {
     }
 
     /**
@@ -23,6 +26,11 @@ class IngressResult implements MiddlewareInterface
     public function getSnApp(): SnappInterface
     {
         return $this->snapp;
+    }
+
+    public function getRoute(): IngressRoute
+    {
+        return $this->route;
     }
 
     public function getUriBuilder(): UriBuilder

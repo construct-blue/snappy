@@ -36,10 +36,10 @@ class CmsSnapp extends AbstractSnapp
     protected function initRoutes(): void
     {
         $this->get('/', fn() => new RedirectResponse('/cms/blocks'));
-        $this->get('/blocks', BlockHandler::class);
-        $this->post('/blocks/delete', BlockDeleteAction::class);
-        $this->post('/blocks/add', BlockAddAction::class);
-        $this->post('/blocks/save', BlockSaveAction::class);
+        $this->get('/blocks[/[{snapp}]]', BlockHandler::class);
+        $this->post('/blocks/delete[/[{snapp}]]', BlockDeleteAction::class);
+        $this->post('/blocks/add[/[{snapp}]]', BlockAddAction::class);
+        $this->post('/blocks/save[/[{snapp}]]', BlockSaveAction::class);
     }
 
     public function route(string $path, $middleware, ?array $methods = null, ?string $name = null): Route

@@ -14,8 +14,10 @@ class BlockDeleteAction implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $snapp = $request->getAttribute('snapp');
         $data = $request->getParsedBody();
-        BlockRepository::instance()->delete($data['id'] ?? '');
+        $repo = new BlockRepository($snapp);
+        $repo->delete($data['id'] ?? '');
         return new Response();
     }
 }

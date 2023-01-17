@@ -16,18 +16,22 @@ class BlockAddAction implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $snapp = $request->getAttribute('snapp');
+
         $data = $request->getParsedBody();
         $block = new Block();
         if (trim($data['code']) != '') {
             $block->setCode($data['code']);
         }
 
-        if ($block->getCode() && BlockRepository::instance()->existsByCode($block->getCode())) {
+        $repo = new BlockRepository($snapp);
+
+        if ($block->getCode() && $repo->existsByCode($block->getCode())) {
             /** @var Session $session */
             $session = $request->getAttribute(Session::class);
             $session->addMessage('Block already exists');
         } else {
-            BlockRepository::instance()->save($block);
+            $repo->save($block);
         }
 
         return new Response();

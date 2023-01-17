@@ -16,7 +16,7 @@ class StartpageHandler extends TemplateHandler
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         /** @var IngressRoute[] $apps */
-        $apps = Attribute::APPS->getFrom($request);
+        $apps = Attribute::SNAPP_ROUTES->getFrom($request);
 
         $appLinks = [];
         foreach ($apps as $app) {

@@ -13,12 +13,15 @@ class BlockSaveAction implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $snapp = $request->getAttribute('snapp');
+
         $data = $request->getParsedBody();
         if (isset($data['content']) && isset($data['id'])) {
-            $block = BlockRepository::instance()->findById($data['id']);
+            $repo = new BlockRepository($snapp);
+            $block = $repo->findById($data['id']);
             $block->setContent((new ViewParser())->parseString($data['content']));
             $block->setCode($data['code']);
-            BlockRepository::instance()->save($block);
+            $repo->save($block);
         }
         return new Response();
     }

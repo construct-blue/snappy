@@ -66,7 +66,7 @@ class DefaultVariableMiddleware implements MiddlewareInterface
             $this->renderer->addDefaultParam(
                 TemplateRendererInterface::TEMPLATE_ALL,
                 'basePath',
-                $uriBuilder->withPath('/')
+                $uriBuilder->withPath('')
             );
         }
         return $handler->handle($request);
