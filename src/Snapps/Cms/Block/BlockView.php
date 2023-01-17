@@ -65,23 +65,27 @@ class BlockView extends ViewComponent
                                                 Icon::class => [
                                                     'icon' => 'edit'
                                                 ],
-                                                '<input type="text" name="code" value="{code}">',
-                                                'button type="submit"' => [
-                                                    Icon::class => [
-                                                        'icon' => 'save',
-                                                    ],
-                                                    'span' => 'Save'
-                                                ],
-                                                'button is="confirm-button" '
-                                                . 'message="Sure?" type="submit" '
-                                                . ' formaction="{basePath}/blocks/delete/{snapp}"' => [
-                                                    Icon::class => [
-                                                        'icon' => 'trash-2'
-                                                    ],
-                                                    'span' => 'Delete',
-                                                ],
+                                                ' ',
+                                                'span' => '{code}',
                                             ],
                                             'content' => [
+                                                'p' => [
+                                                    '<input type="text" name="code" value="{code}">',
+                                                    'button type="submit"' => [
+                                                        Icon::class => [
+                                                            'icon' => 'save',
+                                                        ],
+                                                        'span' => 'Save'
+                                                    ],
+                                                    'button is="confirm-button" '
+                                                    . 'message="Sure?" type="submit" '
+                                                    . ' formaction="{basePath}/blocks/delete/{snapp}"' => [
+                                                        Icon::class => [
+                                                            'icon' => 'trash-2'
+                                                        ],
+                                                        'span' => 'Delete',
+                                                    ],
+                                                ],
                                                 'textarea name="content"' => $block->getContent(),
                                             ]
                                         ],
