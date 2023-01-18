@@ -35,7 +35,7 @@ export default class Editor {
             promotion: false,
             branding: false,
             setup: function (editor) {
-                editor.on('change', function (event) {
+                editor.on('input', function (event) {
                     editor.targetElm.innerHTML = editor.getContent();
                 });
             }
