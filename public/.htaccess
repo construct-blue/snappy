@@ -2,6 +2,15 @@
     Require all denied
 </Files>
 
+ErrorDocument 404 /not-found.html
+ErrorDocument 401 /not-found.html
+ErrorDocument 403 /not-found.html
+ErrorDocument 500 /error.html
+ErrorDocument 501 /error.html
+ErrorDocument 502 /error.html
+ErrorDocument 503 /error.html
+ErrorDocument 504 /error.html
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

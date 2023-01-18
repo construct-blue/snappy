@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Oops!</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header>
+    <h1>Oops!</h1>
+</header>
+<main>
+    <svg
+            width="100%"
+            height="5rem"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+    >
+        <use href="/icons.svg#file"></use>
+    </svg>
+    <section>
+        <h2>Page Not Found</h2>
+        <p>The page you’re looking for can’t be found. Try going back to the previous page or verify that you navigated to a
+            valid URL.</p>
+    </section>
+    <section style="color: var(--text-light)">
+        <h3>Seite nicht gefunden</h3>
+        <p>Gehe zur vorherigen Seite zurück oder überprüfe die aufgerufene Adresse.</p>
+    </section>
+</main>
+<footer>
+    <a href="#" onclick="window.location = document.referrer">Back</a>&nbsp
+    <a href="/">Home</a>
+</footer>
+</body>
+</html>

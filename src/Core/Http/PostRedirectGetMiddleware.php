@@ -15,7 +15,7 @@ class PostRedirectGetMiddleware implements MiddlewareInterface
     {
         $response = $handler->handle($request);
         if (Method::POST->matches($request) && Status::OK->matches($response)) {
-            return new RedirectResponse(Header::REFERER->getFrom($request));
+            return new RedirectResponse(Header::REFERER->getFrom($request), 303);
         }
         return $response;
     }
