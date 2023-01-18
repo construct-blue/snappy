@@ -41,7 +41,7 @@ class CachedVersion
     public function isNewAvailable(): bool
     {
         if (function_exists('apcu_entry')) {
-            return apcu_entry(static::class, $this->version->isNewAvailable(...), $this->ttl);
+            return (bool)apcu_entry(static::class, $this->version->isNewAvailable(...), $this->ttl);
         }
         return $this->version->isNewAvailable();
     }
