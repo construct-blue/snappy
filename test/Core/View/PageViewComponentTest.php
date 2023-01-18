@@ -3,7 +3,7 @@
 namespace BlueTest\Core\View;
 
 use Blue\Core\View\EntrypointHelper;
-use Blue\Core\View\PageViewComponent;
+use Blue\Core\View\PageWrapper;
 use Blue\Core\View\ViewRenderer;
 use PHPUnit\Framework\TestCase;
 use ReflectionObject;
@@ -12,7 +12,7 @@ class PageViewComponentTest extends TestCase
 {
     public function testRender()
     {
-        $component = new PageViewComponent();
+        $component = new PageWrapper();
         $component->body = [];
         $component->title = '';
         $renderer = new ViewRenderer();

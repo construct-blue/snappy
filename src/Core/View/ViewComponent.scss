@@ -1,3 +1,17 @@
+summary:hover {
+  backdrop-filter: brightness(1.2);
+}
+
+details:not([open]) > summary {
+  border-radius: 5px;
+}
+
+details[open] > summary {
+  border-bottom: 1px solid var(--border);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
 button + button,
 button + select,
 input + button {
@@ -14,6 +28,7 @@ summary aside {
   margin: 0;
   border: none;
   text-align: right;
+  background: none;
 }
 
 info {

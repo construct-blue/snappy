@@ -93,16 +93,16 @@ class ViewRenderer
             $this->entrypointHelper->enableComponent($component);
 
             if ($parent) {
-                $id = $parent->id() . '-' . $index;
+                $id = $parent->__id() . '-' . $index;
             } else {
                 $id = 'c-' . $index;
             }
 
-            $parent?->bindChild($component);
+            $parent?->__bindChild($component);
 
-            $component->prepare($id, $params ?? []);
+            $component->__prepare($id, $params ?? []);
 
-            if ($component instanceof PageViewComponent) {
+            if ($component instanceof PageWrapper) {
                 $component->styles = $this->entrypointHelper->dumpCss(...);
                 $component->scripts = $this->entrypointHelper->dumpJs(...);
             }
@@ -238,7 +238,7 @@ class ViewRenderer
 
     private function actionComponent(ViewComponentInterface $component, ViewAction $action): void
     {
-        $content = $this->prepareContent($component->action($action)->render(), $component, false);
+        $content = $this->prepareContent($component->__action($action)->render(), $component, false);
         $this->actionContent($content, $action);
     }
 

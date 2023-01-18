@@ -12,7 +12,7 @@ namespace Blue\Core\View;
  * @property Closure $scripts
  * @property array $body
  */
-class PageViewComponent extends ViewComponent
+class PageWrapper extends ViewComponent
 {
     public static function for(string $title, string $description, array $body): static
     {
@@ -23,10 +23,10 @@ class PageViewComponent extends ViewComponent
         return $component;
     }
 
-    public function prepare(string $id, array $params): static
+    public function __prepare(string $id, array $params): static
     {
         $this->lang = $this->language ?? 'en';
-        return parent::prepare($id, $params);
+        return parent::__prepare($id, $params);
     }
 
     public function render(): array

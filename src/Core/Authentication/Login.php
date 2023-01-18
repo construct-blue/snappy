@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Blue\Core\Authentication;
 
 use Blue\Core\View\Entrypoint;
-use Blue\Core\View\PageViewComponent;
+use Blue\Core\View\PageWrapper;
 use Blue\Core\View\TemplateViewComponent;
 use Blue\Core\View\ViewComponent;
 
@@ -19,7 +19,7 @@ class Login extends ViewComponent
     public function render(): array
     {
         return [
-            PageViewComponent::class => [
+            PageWrapper::class => [
                 'title' => 'Login',
                 'body' => TemplateViewComponent::forTemplate(__DIR__ . '/Login.phtml')
             ]

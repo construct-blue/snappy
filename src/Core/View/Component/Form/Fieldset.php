@@ -1,6 +1,6 @@
 <?php
 
-namespace Blue\Core\View\Component\Fieldset;
+namespace Blue\Core\View\Component\Form;
 
 use Blue\Core\View\ViewComponent;
 

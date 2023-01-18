@@ -38,7 +38,7 @@ class ViewComponentTest extends TestCase
             'first' => 'value 1',
             'third' => 'value 3'
         ];
-        $component->prepare('', [
+        $component->__prepare('', [
             'heading' => 'prepared heading',
             'array' => [
                 'second' => '2',
@@ -61,7 +61,7 @@ class ViewComponentTest extends TestCase
         $component1->heading = 'heading';
         $component2 = new TestComponent();
         $this->assertFalse(isset($component2->heading));
-        $component1->bindChild($component2);
+        $component1->__bindChild($component2);
         $this->assertTrue(isset($component2->heading));
         $this->assertEquals($component1->heading, $component2->heading);
         $component2->heading = 'second heading';

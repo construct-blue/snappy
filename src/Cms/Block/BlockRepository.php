@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Blue\Logic\Block;
+namespace Blue\Cms\Block;
 
-use Generator;
 use Blue\Core\Database\Exception\ObjectLoadingException;
 use Blue\Core\Database\ObjectStorage;
 use Blue\Core\Http\Status;
+use Generator;
 
 class BlockRepository
 {
@@ -46,7 +46,7 @@ class BlockRepository
         Block $block
     ): bool {
         if ($block->getCode() && $this->existsByCode($block->getCode())) {
-            if ($this->findByCode($block->getCode())->getId() != $block->getId()) {
+            if ($this->findByCode($block->getCode())->getId() !== $block->getId()) {
                 throw new BlockException('Block already exists', Status::RUNTIME_ERROR);
             }
         }

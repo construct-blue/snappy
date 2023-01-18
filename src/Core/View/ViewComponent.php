@@ -8,24 +8,26 @@ use Blue\Core\View\Exception\InvalidComponentClassException;
 use Blue\Core\View\Exception\UndefinedMethodException;
 use Blue\Core\View\Exception\UndefinedPropertyException;
 use Blue\Core\View\Exception\ViewException;
+use Closure;
 
 use function array_replace_recursive;
-use function is_callable;
 
 #[Entrypoint(__DIR__ . '/ViewComponent.ts')]
 abstract class ViewComponent implements ViewComponentInterface
 {
-    private string $id;
-    private array $data = [];
-
-    private ViewAction $action;
-
-    private ?ViewComponentInterface $parent = null;
+    // phpcs:ignore
+    private string $__id;
+    // phpcs:ignore
+    private array $__data = [];
+    // phpcs:ignore
+    private ViewAction $__action;
+    // phpcs:ignore
+    private ?ViewComponentInterface $__parent = null;
 
     final public function __construct()
     {
-        $this->action = new ViewAction('');
-        $this->init();
+        $this->__action = new ViewAction('');
+        $this->__init();
     }
 
     /**
@@ -46,42 +48,42 @@ abstract class ViewComponent implements ViewComponentInterface
     public static function fromParams(array $params): static
     {
         $component = new static();
-        $component->data = array_replace_recursive($component->data, $params);
+        $component->__data = array_replace_recursive($component->__data, $params);
         return $component;
     }
 
-    public function id(): string
+    public function __id(): string
     {
-        return $this->id;
+        return $this->__id;
     }
 
-    public function getAction(): ViewAction
+    public function action(): ViewAction
     {
-        return $this->action;
+        return $this->__action;
     }
 
-    protected function init()
+    protected function __init()
     {
     }
 
-    public function prepare(string $id, array $params): static
+    public function __prepare(string $id, array $params): static
     {
-        $this->id = $id;
-        $this->data = array_replace_recursive($this->data, $params);
+        $this->__id = $id;
+        $this->__data = array_replace_recursive($this->__data, $params);
         return $this;
     }
 
-    public function bindChild(ViewComponentInterface $component): static
+    public function __bindChild(ViewComponentInterface $component): static
     {
         if ($component instanceof self) {
-            $component->parent = $this;
+            $component->__parent = $this;
         }
         return $this;
     }
 
-    public function action(ViewAction $action): static
+    public function __action(ViewAction $action): static
     {
-        $this->action = $action;
+        $this->__action = $action;
         return $this;
     }
 
@@ -95,17 +97,17 @@ abstract class ViewComponent implements ViewComponentInterface
         if (!$this->__isset($name)) {
             throw UndefinedPropertyException::forComponent("Access to undefined property '$name'", $this);
         }
-        return $this->data[$name] ?? $this->parent?->$name ?? null;
+        return $this->__data[$name] ?? $this->__parent?->$name ?? null;
     }
 
     public function __isset(string $name): bool
     {
-        return isset($this->data[$name]) || isset($this->parent?->$name);
+        return isset($this->__data[$name]) || isset($this->__parent?->$name);
     }
 
     public function __set(string $name, $value): void
     {
-        $this->data[$name] = $value;
+        $this->__data[$name] = $value;
     }
 
     /**
@@ -116,7 +118,7 @@ abstract class ViewComponent implements ViewComponentInterface
      */
     public function __call(string $name, array $arguments): mixed
     {
-        if ($this->__isset($name) && is_callable($this->$name)) {
+        if ($this->__isset($name) && $this->$name instanceof Closure) {
             return ($this->$name)(...$arguments);
         }
 

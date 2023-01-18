@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\Cms\Block;
 
+use Blue\Cms\Block\Block;
+use Blue\Cms\Block\BlockRepository;
 use Blue\Core\Application\Session\Session;
-use Blue\Logic\Block\Block;
-use Blue\Logic\Block\BlockRepository;
 use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

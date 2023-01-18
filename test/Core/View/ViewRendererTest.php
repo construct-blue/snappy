@@ -8,7 +8,7 @@ use Blue\Core\View\CallbackViewComponent;
 use Blue\Core\View\Exception\InvalidComponentClassException;
 use Blue\Core\View\Exception\InvalidComponentContentException;
 use Blue\Core\View\Exception\InvalidComponentParameterException;
-use Blue\Core\View\PageViewComponent;
+use Blue\Core\View\PageWrapper;
 use Blue\Core\View\PriorityViewComponent;
 use Blue\Core\View\ViewAction;
 use Blue\Core\View\ViewComponent;
@@ -236,7 +236,7 @@ EOF;
 
     public function testShouldOutputStylesAndScriptsToLayout()
     {
-        $layout = new PageViewComponent();
+        $layout = new PageWrapper();
         $layout->title = '';
         $layout->body = [];
 
@@ -251,7 +251,7 @@ EOF;
         );
         $component2 = CallbackViewComponent::fromClosure(
             function (CallbackViewComponent $c) use ($component1) {
-                if ($c->getAction()->is('click')) {
+                if ($c->action()->is('click')) {
                     $component1->suffix = ' hello';
                     return 'component 2 clicked';
                 }

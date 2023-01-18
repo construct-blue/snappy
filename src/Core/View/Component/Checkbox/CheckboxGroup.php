@@ -2,7 +2,7 @@
 
 namespace Blue\Core\View\Component\Checkbox;
 
-use Blue\Core\View\Component\Fieldset\Fieldset;
+use Blue\Core\View\Component\Form\Fieldset;
 use Blue\Core\View\ViewComponent;
 
 /**

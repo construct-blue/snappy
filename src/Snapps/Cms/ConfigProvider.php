@@ -6,6 +6,7 @@ namespace Blue\Snapps\Cms;
 
 use Blue\Core\Application\Handler\TemplateHandlerFactory;
 use Blue\Snapps\Cms\Block\BlockHandler;
+use Blue\Snapps\Cms\Page\PageHandler;
 
 class ConfigProvider
 {
@@ -14,7 +15,8 @@ class ConfigProvider
         return [
             'dependencies' => [
                 'factories' => [
-                    BlockHandler::class => TemplateHandlerFactory::class
+                    BlockHandler::class => TemplateHandlerFactory::class,
+                    PageHandler::class => TemplateHandlerFactory::class,
                 ]
             ]
         ];

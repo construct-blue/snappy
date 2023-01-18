@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Blue\Core\Application\Handler;
 
+use Blue\Core\Application\Ingress\IngressRoute;
+use Blue\Core\Application\Session\Session;
+use Blue\Core\Http\Attribute;
 use Mezzio\Template\TemplateRendererInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 abstract class TemplateHandler implements RequestHandlerInterface
@@ -26,5 +30,23 @@ abstract class TemplateHandler implements RequestHandlerInterface
     public function assign(string $name, $value)
     {
         $this->getRenderer()->addDefaultParam(TemplateRendererInterface::TEMPLATE_ALL, $name, $value);
+    }
+
+    public function assignMessages(ServerRequestInterface $request)
+    {
+        /** @var Session $session */
+        $session = $request->getAttribute(Session::class);
+        $this->assign('messages', $session->getMessages());
+        $session->resetMessages();
+    }
+
+    public function assignSnapps(ServerRequestInterface $request)
+    {
+        $snapps = [];
+        /** @var IngressRoute $route */
+        foreach (Attribute::SNAPP_ROUTES->getFrom($request) as $route) {
+            $snapps[$route->getCode()] = $route->getName();
+        }
+        $this->assign('snapps', $snapps);
     }
 }

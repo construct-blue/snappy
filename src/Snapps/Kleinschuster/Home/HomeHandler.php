@@ -2,10 +2,10 @@
 
 namespace Blue\Snapps\Kleinschuster\Home;
 
+use Blue\Cms\Block\BlockRepository;
+use Blue\Core\Application\Handler\TemplateHandler;
 use Blue\Core\Application\Ingress\IngressResult;
 use Laminas\Diactoros\Response\HtmlResponse;
-use Blue\Core\Application\Handler\TemplateHandler;
-use Blue\Logic\Block\BlockRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

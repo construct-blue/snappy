@@ -12,9 +12,9 @@ use Blue\Core\View\ViewComponent;
  */
 class Radio extends ViewComponent
 {
-    protected function init()
+    protected function __init()
     {
-        parent::init();
+        parent::__init();
         $this->checked = false;
     }
 

@@ -11,7 +11,7 @@ use Blue\Core\I18n\Language;
 use Blue\Core\I18n\Region;
 use Blue\Core\View\Component\Form\Form;
 use Blue\Core\View\Component\Icon\Icon;
-use Blue\Core\View\PageViewComponent;
+use Blue\Core\View\PageWrapper;
 use Blue\Core\View\ViewComponent;
 
 /**
@@ -23,7 +23,7 @@ class AnalyticsView extends ViewComponent
     public function render(): array
     {
         return [
-            PageViewComponent::class => [
+            PageWrapper::class => [
                 'title' => 'Analytics',
                 'body' => [
                     'header' => [

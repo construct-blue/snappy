@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Blue\Snapps\Nicemobil\Live;
 
 use Blue\Core\View\Entrypoint;
-use Blue\Core\View\PageViewComponent;
+use Blue\Core\View\PageWrapper;
 use Blue\Core\View\TemplateViewComponent;
 use Blue\Core\View\ViewComponent;
 use Blue\Logic\Client\Tesla\Entity\VehicleData;
@@ -20,9 +20,9 @@ use function number_format;
 #[Entrypoint(__DIR__ . '/Live.ts')]
 class Live extends ViewComponent
 {
-    protected function init()
+    protected function __init()
     {
-        parent::init();
+        parent::__init();
         $this->formatNumber = function (float|int $number, string $unit, int $decimals = 0): string {
             return number_format($number, $decimals, ',', ' ') . ' ' . $unit;
         };
@@ -31,7 +31,7 @@ class Live extends ViewComponent
     public function render(): array
     {
         return [
-            PageViewComponent::class => [
+            PageWrapper::class => [
                 'title' => 'Live - NICEmobil',
                 'body' => TemplateViewComponent::forTemplate(__DIR__ . '/Live.phtml')
             ]

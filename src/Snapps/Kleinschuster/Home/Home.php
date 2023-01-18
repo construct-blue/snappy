@@ -2,11 +2,11 @@
 
 namespace Blue\Snapps\Kleinschuster\Home;
 
+use Blue\Cms\Block\Block;
 use Blue\Core\View\Entrypoint;
-use Blue\Core\View\PageViewComponent;
+use Blue\Core\View\PageWrapper;
 use Blue\Core\View\TemplateViewComponent;
 use Blue\Core\View\ViewComponent;
-use Blue\Logic\Block\Block;
 
 /**
  * @property array $blocks
@@ -17,7 +17,7 @@ class Home extends ViewComponent
     public function render(): array
     {
         return [
-            PageViewComponent::class => [
+            PageWrapper::class => [
                 'title' => 'Robert Kleinschuster',
                 'body' => [
                     TemplateViewComponent::forTemplate(__DIR__ . '/Home.phtml'),

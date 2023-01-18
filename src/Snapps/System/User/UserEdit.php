@@ -40,7 +40,7 @@ class UserEdit extends ViewComponent
                     'name' => 'roles',
                     'legend' => 'Roles',
                     'options' => UserRole::list(),
-                    'values' => UserRole::list($this->roles),
+                    'values' => array_keys(UserRole::list($this->roles)),
                 ],
                 'button type="submit"' => [
                     Icon::class => [

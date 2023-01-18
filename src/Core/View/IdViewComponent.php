@@ -11,7 +11,7 @@ class IdViewComponent extends ViewComponent
     public function render(): array
     {
         return [
-            $this->tag . ' id="' . $this->id() . '"' => $this->content
+            $this->tag . ' id="' . $this->__id() . '"' => $this->content
         ];
     }
 }

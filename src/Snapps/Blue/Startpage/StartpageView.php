@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\Blue\Startpage;
 
-use Blue\Core\View\PageViewComponent;
+use Blue\Core\View\PageWrapper;
 use Blue\Core\View\ViewComponent;
 
 /**
@@ -16,7 +16,7 @@ class StartpageView extends ViewComponent
     public function render(): array
     {
         return [
-            PageViewComponent::class => [
+            PageWrapper::class => [
                 'title' => 'Home',
                 'body' => [
                     'header' => [

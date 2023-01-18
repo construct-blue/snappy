@@ -27,10 +27,10 @@ class Form extends ViewComponent
         if (!empty($this->id)) {
             $attributes .= " id=\"$this->id\"";
         }
-        if (isset($this->method)) {
+        if (!empty($this->method)) {
             $attributes .= " method=\"$this->method\"";
         }
-        if (isset($this->action)) {
+        if (!empty($this->action)) {
             $attributes .= " action=\"$this->action\"";
         }
         return $attributes;

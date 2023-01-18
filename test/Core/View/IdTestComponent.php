@@ -19,7 +19,7 @@ class IdTestComponent extends ViewComponent
     public function render(): array
     {
         return [
-            "div id=\"{$this->id()}\"" => $this->content
+            "div id=\"{$this->__id()}\"" => $this->content
         ];
     }
 }

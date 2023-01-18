@@ -8,7 +8,7 @@ use Blue\Snapps\System\SystemFooter;
 use Blue\Snapps\System\SystemNavigation;
 use Blue\Core\Authentication\User;
 use Blue\Core\View\Component\Details\Details;
-use Blue\Core\View\PageViewComponent;
+use Blue\Core\View\PageWrapper;
 use Blue\Core\View\ViewComponent;
 
 /**
@@ -20,7 +20,7 @@ class UserOverview extends ViewComponent
     public function render(): array
     {
         return [
-            PageViewComponent::class => [
+            PageWrapper::class => [
                 'title' => 'Users',
                 'body' => [
                     'header' => [

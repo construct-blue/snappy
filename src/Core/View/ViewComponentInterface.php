@@ -6,15 +6,15 @@ namespace Blue\Core\View;
 
 interface ViewComponentInterface
 {
-    public function id(): string;
+    public function __id(): string;
 
-    public function prepare(string $id, array $params): static;
+    public function __prepare(string $id, array $params): static;
 
-    public function bindChild(ViewComponentInterface $component): static;
+    public function __bindChild(ViewComponentInterface $component): static;
 
     public function render(): array;
 
-    public function action(ViewAction $action): static;
+    public function __action(ViewAction $action): static;
 
     public function __debugInfo(): array;
 }

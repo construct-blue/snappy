@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Blue\Logic\Block;
+namespace Blue\Cms\Block;
 
 use JsonSerializable;
 

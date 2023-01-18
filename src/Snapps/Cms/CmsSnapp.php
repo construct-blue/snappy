@@ -13,6 +13,7 @@ use Blue\Snapps\Cms\Block\BlockAddAction;
 use Blue\Snapps\Cms\Block\BlockDeleteAction;
 use Blue\Snapps\Cms\Block\BlockHandler;
 use Blue\Snapps\Cms\Block\BlockSaveAction;
+use Blue\Snapps\Cms\Page\PageHandler;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Mezzio\Router\Route;
 
@@ -40,6 +41,8 @@ class CmsSnapp extends AbstractSnapp
         $this->post('/blocks/delete[/[{snapp}]]', BlockDeleteAction::class);
         $this->post('/blocks/add[/[{snapp}]]', BlockAddAction::class);
         $this->post('/blocks/save[/[{snapp}]]', BlockSaveAction::class);
+
+        $this->get('/pages', PageHandler::class);
     }
 
     public function route(string $path, $middleware, ?array $methods = null, ?string $name = null): Route

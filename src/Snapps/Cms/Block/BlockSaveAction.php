@@ -2,8 +2,8 @@
 
 namespace Blue\Snapps\Cms\Block;
 
+use Blue\Cms\Block\BlockRepository;
 use Blue\Core\View\ViewParser;
-use Blue\Logic\Block\BlockRepository;
 use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

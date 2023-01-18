@@ -15,6 +15,7 @@ class CmsNavigation extends ViewComponent
                 ['a href="/"' => 'Home'],
                 ['a href="/system/users"' => 'System'],
                 ['a href="/cms/blocks"' => 'Blocks'],
+                ['a href="/cms/pages"' => 'Pages'],
             ]
         ];
     }
