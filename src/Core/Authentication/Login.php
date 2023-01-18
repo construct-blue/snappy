@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Core\Authentication;
 
+use Blue\Core\View\Component\Icon\Icon;
 use Blue\Core\View\Entrypoint;
 use Blue\Core\View\PageWrapper;
 use Blue\Core\View\TemplateViewComponent;
@@ -21,7 +22,17 @@ class Login extends ViewComponent
         return [
             PageWrapper::class => [
                 'title' => 'Login',
-                'body' => TemplateViewComponent::forTemplate(__DIR__ . '/Login.phtml')
+                'body' => [
+                    TemplateViewComponent::forTemplate(__DIR__ . '/Login.phtml'),
+                    'footer' => [
+                        'a href="{backPath}"' => [
+                            Icon::class => [
+                                'icon' => 'arrow-left'
+                            ],
+                            'span' => 'Back'
+                        ],
+                    ]
+                ]
             ]
         ];
     }

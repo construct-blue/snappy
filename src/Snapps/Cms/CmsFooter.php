@@ -11,10 +11,7 @@ class CmsFooter extends ViewComponent
     public function render(): array
     {
         return [
-            'footer' => [
-                'Not {userName}? ',
-                'a href="{logoutPath}"' => 'Sign out'
-            ]
+            'footer' => []
         ];
     }
 }

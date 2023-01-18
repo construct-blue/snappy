@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\System;
 
+use Blue\Snapps\System\MyAccount\MyAccountHandler;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Mezzio\Router;
 use Blue\Snapps\System\Analytics\AnalyticsHandler;
@@ -40,11 +41,12 @@ class SystemSnapp extends AbstractSnapp
     protected function initRoutes(): void
     {
         $this->get('/', fn() => new RedirectResponse('/system/users'));
-        $this->get('/users', UserHandler::class, 'users');
+        $this->get('/my-account', MyAccountHandler::class)->setOptions([]);
+        $this->get('/users', UserHandler::class);
         $this->post('/users/add', UserAddAction::class);
         $this->post('/users/save', UserSaveAction::class);
         $this->post('/users/delete', UserDeleteAction::class);
-        $this->get('/setup/tesla', TeslaSetupHandler::class, 'setup_tesla');
+        $this->get('/setup/tesla', TeslaSetupHandler::class);
         $this->post('/setup/tesla', TeslaSetupAction::class);
         $this->get('/analytics[/{code}]', AnalyticsHandler::class);
         $this->post('/analytics/refresh', AnalyticsRefreshAction::class);

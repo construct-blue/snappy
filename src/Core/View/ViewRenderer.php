@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Core\View;
 
+use Blue\Core\View\Exception\InfiniteRecursionException;
 use Closure;
 use Blue\Core\Util\Placeholder\PlaceholderHelper;
 use Blue\Core\View\Exception\InvalidComponentClassException;
@@ -94,17 +95,25 @@ class ViewRenderer
 
             if ($parent) {
                 $id = $parent->__id() . '-' . $index;
+                $component->__bindParent($parent);
             } else {
                 $id = 'c-' . $index;
             }
 
-            $parent?->__bindChild($component);
-
             $component->__prepare($id, $params ?? []);
+
+            if ($parent && strlen($component->__id()) > 1000) {
+                throw InfiniteRecursionException::forComponent('Maximum nesting reached', $parent);
+            }
 
             if ($component instanceof PageWrapper) {
                 $component->styles = $this->entrypointHelper->dumpCss(...);
                 $component->scripts = $this->entrypointHelper->dumpJs(...);
+            }
+        } catch (ViewException $exception) {
+            $this->logger?->error($exception);
+            if ($this->debug) {
+                throw $exception;
             }
         } catch (Throwable $throwable) {
             $this->logger?->error($throwable);
@@ -167,7 +176,7 @@ class ViewRenderer
                 $result[$key] = $item;
             } elseif ($item instanceof Closure) {
                 $result[$key] = $this->prepareComponent(
-                    CallbackViewComponent::fromClosure($item),
+                    ClosureView::from($item),
                     null,
                     $parent,
                     $index

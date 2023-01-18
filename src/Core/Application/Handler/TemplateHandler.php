@@ -34,10 +34,14 @@ abstract class TemplateHandler implements RequestHandlerInterface
 
     public function assignMessages(ServerRequestInterface $request)
     {
-        /** @var Session $session */
-        $session = $request->getAttribute(Session::class);
+        $session = $this->getSession($request);
         $this->assign('messages', $session->getMessages());
         $session->resetMessages();
+    }
+
+    public function getSession(ServerRequestInterface $request): Session
+    {
+        return $request->getAttribute(Session::class);
     }
 
     public function assignSnapps(ServerRequestInterface $request)

@@ -14,9 +14,12 @@ global $env;
 $cache = fn(string $key) => dirname(__DIR__) . "/data/$key.config.cache.php";
 
 $app = SnappyServer::fromEnv($env, $cache('server'));
-$app->addSnApp(BlueSnapp::fromEnv($env, $cache('blue')), '/');
-$app->addSnApp(SystemSnapp::fromEnv($env, $cache('system')), '/system');
-$app->addSnApp(CmsSnapp::fromEnv($env, $cache('cms')), '/cms');
+$app->addSnApp(BlueSnapp::fromEnv($env, $cache('blue')), '/')
+    ->setName('Home');
+$app->addSnApp(SystemSnapp::fromEnv($env, $cache('system')), '/system')
+    ->setName('System');
+$app->addSnApp(CmsSnapp::fromEnv($env, $cache('cms')), '/cms')
+    ->setName('CMS');
 
 $app->addSnApp(NicemobilSnapp::fromEnv($env, $cache('nicemobil')), '/', 'live.sonice.at')
     ->setName('NICEmobil Live')

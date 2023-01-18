@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Blue\Snapps\System\User;
+namespace Blue\Snapps\System\User\View;
 
-use Blue\Core\Authentication\User;
 use Blue\Core\Authentication\UserRole;
 use Blue\Core\Authentication\UserState;
 use Blue\Core\View\Component\Checkbox\CheckboxGroup;
 use Blue\Core\View\Component\Icon\Icon;
-use Blue\Core\View\Component\Radio\Radio;
 use Blue\Core\View\Component\Radio\RadioGroup;
 use Blue\Core\View\ViewComponent;
 

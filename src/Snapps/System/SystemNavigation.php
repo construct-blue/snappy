@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\System;
 
+use Blue\Core\View\Component\Icon\Icon;
 use Blue\Core\View\ViewComponent;
 
+/**
+ * @property bool $userIsGuest
+ */
 class SystemNavigation extends ViewComponent
 {
     public function render(): array
@@ -13,9 +17,23 @@ class SystemNavigation extends ViewComponent
         return [
             'nav' => [
                 ['a href="/"' => 'Home'],
-                ['a href="/cms/blocks"' => 'CMS'],
-                ['a href="/system/users"' => 'Users'],
-                ['a href="/system/analytics"' => 'Analytics'],
+                ['a href="{basePath}/users"' => 'Users'],
+                ['a href="{basePath}/analytics"' => 'Analytics'],
+                fn() => $this->userIsGuest ? [
+                    'a href="{loginPath}"' => [
+                        Icon::class => [
+                            'icon' => 'log-in',
+                        ],
+                        ' Login'
+                    ]
+                ] : [
+                    'a href="{basePath}/my-account"' => [
+                        Icon::class => [
+                            'icon' => 'user',
+                        ],
+                        ' {userName}'
+                    ]
+                ],
             ]
         ];
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Blue\Snapps\System\User;
+namespace Blue\Snapps\System\User\View;
 
 use Blue\Core\View\Component\Icon\Icon;
 use Blue\Core\View\ViewComponent;

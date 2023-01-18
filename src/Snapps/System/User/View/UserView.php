@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Blue\Snapps\System\User;
+namespace Blue\Snapps\System\User\View;
 
-use Blue\Snapps\System\SystemFooter;
-use Blue\Snapps\System\SystemNavigation;
 use Blue\Core\Authentication\User;
 use Blue\Core\View\Component\Details\Details;
 use Blue\Core\View\PageWrapper;
 use Blue\Core\View\ViewComponent;
+use Blue\Snapps\System\SystemFooter;
+use Blue\Snapps\System\SystemNavigation;
 
 /**
  * @property string[] $messages
  * @property User[] $users
  */
-class UserOverview extends ViewComponent
+class UserView extends ViewComponent
 {
     public function render(): array
     {

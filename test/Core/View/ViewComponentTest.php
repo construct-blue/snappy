@@ -61,7 +61,7 @@ class ViewComponentTest extends TestCase
         $component1->heading = 'heading';
         $component2 = new TestComponent();
         $this->assertFalse(isset($component2->heading));
-        $component1->__bindChild($component2);
+        $component2->__bindParent($component1);
         $this->assertTrue(isset($component2->heading));
         $this->assertEquals($component1->heading, $component2->heading);
         $component2->heading = 'second heading';

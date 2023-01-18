@@ -10,11 +10,11 @@ use Blue\Core\View\Exception\MissingPropertyException;
 
 use function is_array;
 
-class CallbackViewComponent extends ViewComponent
+class ClosureView extends ViewComponent
 {
     private Closure $closure;
 
-    public static function fromClosure(Closure $closure): static
+    public static function from(Closure $closure): static
     {
         $component = new static();
         $component->closure = $closure;

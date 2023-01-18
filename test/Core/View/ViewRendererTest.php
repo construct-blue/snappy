@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace BlueTest\Core\View;
 
-use Blue\Core\View\CallbackViewComponent;
+use Blue\Core\View\ClosureView;
+use Blue\Core\View\Exception\InfiniteRecursionException;
 use Blue\Core\View\Exception\InvalidComponentClassException;
 use Blue\Core\View\Exception\InvalidComponentContentException;
 use Blue\Core\View\Exception\InvalidComponentParameterException;
@@ -21,7 +22,7 @@ class ViewRendererTest extends TestCase
     public function testShouldThrowExceptionOnInvalidComponentObject()
     {
         $this->expectException(InvalidComponentContentException::class);
-        $component = CallbackViewComponent::fromClosure(fn() => new stdClass());
+        $component = ClosureView::from(fn() => new stdClass());
         $renderer = new ViewRenderer(null, true);
         $renderer->render($component);
     }
@@ -29,7 +30,7 @@ class ViewRendererTest extends TestCase
     public function testShouldThrowExceptionOnInvalidComponentClass()
     {
         $this->expectException(InvalidComponentClassException::class);
-        $component = CallbackViewComponent::fromClosure(fn() => [stdClass::class => []]);
+        $component = ClosureView::from(fn() => [stdClass::class => []]);
         $renderer = new ViewRenderer(null, true);
         $renderer->render($component);
     }
@@ -37,7 +38,7 @@ class ViewRendererTest extends TestCase
     public function testShouldThrowExceptionWhenCallbackReturnsInvalidType()
     {
         $this->expectException(InvalidComponentContentException::class);
-        $component = CallbackViewComponent::fromClosure(fn() => stdClass::class);
+        $component = ClosureView::from(fn() => stdClass::class);
         $renderer = new ViewRenderer(null, true);
         $renderer->render($component);
     }
@@ -45,7 +46,7 @@ class ViewRendererTest extends TestCase
     public function testShouldThrowExceptionWhenComponentParamsIsInvalidType()
     {
         $this->expectException(InvalidComponentParameterException::class);
-        $component = CallbackViewComponent::fromClosure(fn() => [
+        $component = ClosureView::from(fn() => [
             TestComponent::class => ''
         ]);
         $renderer = new ViewRenderer(null, true);
@@ -205,7 +206,7 @@ EOF;
 
     public function testShouldInstantiateComponentClassesInKeysAndSetParams()
     {
-        $component = CallbackViewComponent::fromClosure(fn() => [
+        $component = ClosureView::from(fn() => [
             TestComponent::class => [
                 TestComponent::PARAM_HEADING => 'test heading'
             ]
@@ -220,7 +221,7 @@ EOF;
         $check = '';
         $renderer = new ViewRenderer();
 
-        $component = CallbackViewComponent::fromClosure(fn() => [
+        $component = ClosureView::from(fn() => [
             'head' => function () use (&$check) {
                 return $check;
             },
@@ -246,11 +247,11 @@ EOF;
 
     public function testShouldExecuteAction()
     {
-        $component1 = CallbackViewComponent::fromClosure(
-            fn(CallbackViewComponent $c) => "component 1" . ($c->suffix ?? '')
+        $component1 = ClosureView::from(
+            fn(ClosureView $c) => "component 1" . ($c->suffix ?? '')
         );
-        $component2 = CallbackViewComponent::fromClosure(
-            function (CallbackViewComponent $c) use ($component1) {
+        $component2 = ClosureView::from(
+            function (ClosureView $c) use ($component1) {
                 if ($c->action()->is('click')) {
                     $component1->suffix = ' hello';
                     return 'component 2 clicked';
@@ -259,7 +260,7 @@ EOF;
             }
         );
 
-        $component = CallbackViewComponent::fromClosure(fn() => [
+        $component = ClosureView::from(fn() => [
             $component1,
             ' ',
             $component2,
@@ -269,5 +270,13 @@ EOF;
         $this->assertEquals('component 1 component 2', $renderer->render($component));
         $renderer->action($component, new ViewAction('click'));
         $this->assertEquals('component 1 hello component 2 clicked', $renderer->render($component));
+    }
+
+    public function testShouldThrowExceptionWhenRecursiveNesting()
+    {
+        $this->expectException(InfiniteRecursionException::class);
+        $component = new RecursiveTestComponent();
+        $renderer = new ViewRenderer(null, true);
+        $renderer->render($component);
     }
 }

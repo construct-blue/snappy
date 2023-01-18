@@ -73,11 +73,9 @@ abstract class ViewComponent implements ViewComponentInterface
         return $this;
     }
 
-    public function __bindChild(ViewComponentInterface $component): static
+    public function __bindParent(ViewComponentInterface $parent): static
     {
-        if ($component instanceof self) {
-            $component->__parent = $this;
-        }
+        $this->__parent = $parent;
         return $this;
     }
 

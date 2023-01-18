@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Core\View;
 
+use Blue\Core\Http\Header;
 use Mezzio\Template\TemplateRendererInterface;
 use Blue\Core\Analytics\AnalyticsMiddleware;
 use Blue\Core\Application\Ingress\IngressResult;
@@ -27,6 +28,12 @@ class DefaultVariableMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (isset($this->renderer)) {
+            $this->renderer->addDefaultParam(
+                TemplateRendererInterface::TEMPLATE_ALL,
+                'backPath',
+                Header::REFERER->getFrom($request, '/')
+            );
+
             $this->renderer->addDefaultParam(
                 TemplateRendererInterface::TEMPLATE_ALL,
                 'requestId',

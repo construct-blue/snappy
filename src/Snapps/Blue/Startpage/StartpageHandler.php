@@ -18,14 +18,18 @@ class StartpageHandler extends TemplateHandler
         /** @var IngressRoute[] $apps */
         $apps = Attribute::SNAPP_ROUTES->getFrom($request);
 
-        $appLinks = [];
+        $snapps = [];
+        $managers = [];
         foreach ($apps as $app) {
             if ($app->getDomain()) {
-                $appLinks[(string)$app->getUri()] = $app->getName();
+                $snapps[(string)$app->getUri()] = $app->getName();
+            } elseif ($app->getPath() !== '/') {
+                $managers[(string)$app->getUri()] = $app->getName();
             }
         }
 
-        $this->assign('apps', $appLinks);
+        $this->assign('snapps', $snapps);
+        $this->assign('managers', $managers);
 
         return new HtmlResponse($this->render(StartpageView::class));
     }

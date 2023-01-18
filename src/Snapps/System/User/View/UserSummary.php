@@ -1,8 +1,7 @@
 <?php
 
-namespace Blue\Snapps\System\User;
+namespace Blue\Snapps\System\User\View;
 
-use Blue\Core\Authentication\User;
 use Blue\Core\Authentication\UserRole;
 use Blue\Core\Authentication\UserState;
 use Blue\Core\View\Component\Icon\Icon;

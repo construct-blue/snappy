@@ -10,7 +10,7 @@ interface ViewComponentInterface
 
     public function __prepare(string $id, array $params): static;
 
-    public function __bindChild(ViewComponentInterface $component): static;
+    public function __bindParent(ViewComponentInterface $parent): static;
 
     public function render(): array;
 

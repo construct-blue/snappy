@@ -114,6 +114,14 @@ class Session implements JsonSerializable
         return $this->user;
     }
 
+    public function isLoggedIn(): bool
+    {
+        if (null === $this->getUser()) {
+            return false;
+        }
+        return !$this->getUser()->isGuest();
+    }
+
     public function setUser(?User $user): Session
     {
         $this->user = $user;

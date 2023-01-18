@@ -20,7 +20,7 @@ class PageView extends ViewComponent
     {
         return [
             PageWrapper::class => [
-                'title' => 'Pages',
+                'title' => 'Pages - CMS',
                 'body' => [
                     'header' => [
                         CmsNavigation::fromParams([]),

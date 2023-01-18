@@ -24,7 +24,7 @@ class BlockView extends ViewComponent
     {
         return [
             PageWrapper::class => [
-                'title' => 'Blocks - Pars CMS',
+                'title' => 'Blocks - CMS',
                 'body' => [
                     'header' => [
                         CmsNavigation::class => [],

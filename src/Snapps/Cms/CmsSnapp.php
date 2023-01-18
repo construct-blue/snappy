@@ -14,6 +14,7 @@ use Blue\Snapps\Cms\Block\BlockDeleteAction;
 use Blue\Snapps\Cms\Block\BlockHandler;
 use Blue\Snapps\Cms\Block\BlockSaveAction;
 use Blue\Snapps\Cms\Page\PageHandler;
+use Blue\Snapps\Cms\MyAccount\MyAccountHandler;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Mezzio\Router\Route;
 
@@ -37,6 +38,7 @@ class CmsSnapp extends AbstractSnapp
     protected function initRoutes(): void
     {
         $this->get('/', fn() => new RedirectResponse('/cms/blocks'));
+        $this->get('/my-account', MyAccountHandler::class)->setOptions([]);
         $this->get('/blocks[/[{snapp}]]', BlockHandler::class);
         $this->post('/blocks/delete[/[{snapp}]]', BlockDeleteAction::class);
         $this->post('/blocks/add[/[{snapp}]]', BlockAddAction::class);

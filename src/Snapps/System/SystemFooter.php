@@ -15,8 +15,6 @@ class SystemFooter extends ViewComponent
         $version = new CachedVersion();
         return [
             'footer' => [
-                'Not {userName}? ',
-                'a href="{logoutPath}"' => 'Sign out',
                 'p' => [
                     $version->getCurrent(),
                     fn() => $version->isNewAvailable() ? [
