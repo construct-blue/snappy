@@ -2,11 +2,11 @@
 
 namespace Blue\Snapps\Kleinschuster;
 
-use Blue\Snapps\Kleinschuster\ConfigProvider;
-use Blue\Snapps\Kleinschuster\Home\HomeHandler;
+use Blue\Cms\Page\Handler\PageHandler;
 use Blue\Core\Analytics\AnalyticsMiddleware;
 use Blue\Core\Application\AbstractSnapp;
 use Blue\Core\Util\FaviconHandler;
+use Blue\Snapps\Kleinschuster\Home\HomeHandler;
 
 class KleinschusterSnapp extends AbstractSnapp
 {
@@ -27,5 +27,6 @@ class KleinschusterSnapp extends AbstractSnapp
     {
         FaviconHandler::addRoutes($this, __DIR__ . '/logo.png');
         $this->get('/', HomeHandler::class);
+        $this->get('{code:.+}', PageHandler::class);
     }
 }

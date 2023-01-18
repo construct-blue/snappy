@@ -11,6 +11,7 @@ namespace Blue\Core\View;
  * @property Closure $styles
  * @property Closure $scripts
  * @property array $body
+ * @property array $content
  */
 class PageWrapper extends ViewComponent
 {
@@ -46,7 +47,8 @@ class PageWrapper extends ViewComponent
                 ],
                 'body' => PriorityViewComponent::from([
                     new DevInfoComponent(),
-                    $this->body,
+                    $this->body ?? [],
+                    $this->content ?? [],
                     $this->scripts,
                     TemplateViewComponent::forTemplate(__DIR__ . '/Analytics.phtml')
                 ])

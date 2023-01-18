@@ -13,8 +13,11 @@ use Blue\Snapps\Cms\Block\BlockAddAction;
 use Blue\Snapps\Cms\Block\BlockDeleteAction;
 use Blue\Snapps\Cms\Block\BlockHandler;
 use Blue\Snapps\Cms\Block\BlockSaveAction;
+use Blue\Snapps\Cms\Page\PageAddAction;
+use Blue\Snapps\Cms\Page\PageDeleteAction;
 use Blue\Snapps\Cms\Page\PageHandler;
 use Blue\Snapps\Cms\MyAccount\MyAccountHandler;
+use Blue\Snapps\Cms\Page\PageSaveAction;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Mezzio\Router\Route;
 
@@ -37,14 +40,29 @@ class CmsSnapp extends AbstractSnapp
 
     protected function initRoutes(): void
     {
-        $this->get('/', fn() => new RedirectResponse('/cms/blocks'));
+        $this->get('/', fn() => new RedirectResponse('/cms/pages'));
         $this->get('/my-account', MyAccountHandler::class)->setOptions([]);
+
+        $this->initBlockRoutes();
+        $this->initPageRoutes();
+
+        $this->get('{code:.+}', \Blue\Cms\Page\Handler\PageHandler::class);
+    }
+
+    protected function initBlockRoutes()
+    {
         $this->get('/blocks[/[{snapp}]]', BlockHandler::class);
         $this->post('/blocks/delete[/[{snapp}]]', BlockDeleteAction::class);
         $this->post('/blocks/add[/[{snapp}]]', BlockAddAction::class);
         $this->post('/blocks/save[/[{snapp}]]', BlockSaveAction::class);
+    }
 
-        $this->get('/pages', PageHandler::class);
+    protected function initPageRoutes()
+    {
+        $this->get('/pages[/[{snapp}]]', PageHandler::class);
+        $this->post('/pages/delete[/[{snapp}]]', PageDeleteAction::class);
+        $this->post('/pages/add[/[{snapp}]]', PageAddAction::class);
+        $this->post('/pages/save[/[{snapp}]]', PageSaveAction::class);
     }
 
     public function route(string $path, $middleware, ?array $methods = null, ?string $name = null): Route

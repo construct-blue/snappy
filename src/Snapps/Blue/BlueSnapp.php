@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\Blue;
 
+use Blue\Cms\Page\Handler\PageHandler;
 use Blue\Core\Analytics\AnalyticsMiddleware;
 use Blue\Core\Application\AbstractSnapp;
 use Blue\Core\Authentication\AuthenticationMiddleware;
@@ -31,5 +32,6 @@ class BlueSnapp extends AbstractSnapp
     {
         FaviconHandler::addRoutes($this, __DIR__ . '/logo.png');
         $this->get('/', StartpageHandler::class);
+        $this->get('{code:.+}', PageHandler::class);
     }
 }

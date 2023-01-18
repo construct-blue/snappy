@@ -6,9 +6,11 @@ namespace Blue\Core\Application\Ingress;
 
 use Blue\Core\Application\SnappCode;
 use Blue\Core\Application\SnappInterface;
+use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Uri;
 use Mezzio\Router\Route;
 use Mezzio\Router\RouteResult;
+use Mezzio\Router\RouterInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
@@ -20,6 +22,7 @@ class IngressRoute implements MiddlewareInterface
     private SnappInterface $snapp;
     private string $path;
     private ?string $domain;
+    private ?string $code = null;
     private ?string $name = null;
     private ?string $domainSuffix = null;
     private array $domainAliases = [];
@@ -34,6 +37,9 @@ class IngressRoute implements MiddlewareInterface
     public function build(): void
     {
         $this->snapp->init();
+        /** @var RouterInterface $router */
+        $router = $this->snapp->getContainer()->get(RouterInterface::class);
+        $router->match(new ServerRequest());
     }
 
     public function setDomainSuffix(?string $domainSuffix): void
@@ -44,6 +50,12 @@ class IngressRoute implements MiddlewareInterface
     public function addAlias(string $domainAlias): self
     {
         $this->domainAliases[] = $domainAlias;
+        return $this;
+    }
+
+    public function setCode(?string $code): IngressRoute
+    {
+        $this->code = $code;
         return $this;
     }
 
@@ -90,7 +102,7 @@ class IngressRoute implements MiddlewareInterface
 
     public function getCode(): string
     {
-        return SnappCode::build($this->getDomain(), $this->getPath());
+        return $this->code ?? SnappCode::build($this->domain, $this->path);
     }
 
     public function getName(): ?string

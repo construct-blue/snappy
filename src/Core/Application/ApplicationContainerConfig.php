@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Core\Application;
 
+use Closure;
 use Laminas\ConfigAggregator\ArrayProvider;
 use Laminas\ConfigAggregator\ConfigAggregator;
 use Laminas\ConfigAggregator\PhpFileProvider;
@@ -27,9 +28,15 @@ class ApplicationContainerConfig
         \Blue\Core\Authentication\ConfigProvider::class,
     ];
 
+    protected array $postProcessors = [];
+
     public function toArray(): array
     {
-        $config = (new ConfigAggregator($this->getProviders(), $this->cacheFile))->getMergedConfig();
+        $config = (new ConfigAggregator(
+            $this->getProviders(),
+            $this->cacheFile,
+            $this->postProcessors
+        ))->getMergedConfig();
         $dependencies = $config['dependencies'];
         $dependencies['services'] = compact('config');
         return $dependencies;
@@ -43,6 +50,12 @@ class ApplicationContainerConfig
     public function addProviderClass(string $providerClass): self
     {
         $this->providers[] = $providerClass;
+        return $this;
+    }
+
+    public function addPostProcessor(Closure $closure): self
+    {
+        $this->postProcessors[] = $closure;
         return $this;
     }
 

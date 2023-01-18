@@ -7992,7 +7992,6 @@ __metadata:
     sass-loader: 13.1.0
     simpledotcss: 2.1.1
     standard: 17.0.0
-    tinymce: 6.3.1
     ts-loader: 9.4.1
     ts-standard: 12.0.1
     typescript: 4.8.4
@@ -8689,13 +8688,6 @@ __metadata:
   version: 1.1.0
   resolution: "thunky@npm:1.1.0"
   checksum: 993096c472b6b8f30e29dc777a8d17720e4cab448375041f20c0cb802a09a7fb2217f2a3e8cdc11851faa71c957e2db309357367fc9d7af3cb7a4d00f4b66034
-  languageName: node
-  linkType: hard
-
-"tinymce@npm:6.3.1":
-  version: 6.3.1
-  resolution: "tinymce@npm:6.3.1"
-  checksum: 43c5dd3de9bfbdc3092b4eeeca56cff5df39a097764b60bc12940161f69e396f9fed590528d9d29457f8887c97e4213f603ed8cee9796d851dcce5dfb998d934
   languageName: node
   linkType: hard
 

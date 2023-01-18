@@ -25,16 +25,20 @@ exec("cp LICENSE dist/");
 exec("cp env.php.dist dist/");
 exec("echo 'rc' >> dist/VERSION");
 
-$autoloader = require 'dist/vendor/autoload.php';
+// CWD /dist/
+chdir('dist');
+$autoloader = require 'vendor/autoload.php';
 
-(new \Blue\Core\View\EntrypointHelper(dirname(__DIR__) . '/dist/'))->build();
+(new \Blue\Core\View\EntrypointHelper(getcwd() . '/'))->build();
 
 global $env;
 $env = [];
 
 /** @var Blue\Core\Application\Server\SnappyServer $application */
-$application = require 'dist/src/bootstrap.php';
+$application = require 'src/bootstrap.php';
 $application->build();
+chdir(dirname(__DIR__));
+// CWD /
 
 // restore dev env
 exec('composer install');

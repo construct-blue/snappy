@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Blue\Core\Application\Server;
 
 use Blue\Core\Application\SnappInterface;
+use Laminas\Diactoros\ServerRequest;
 use Mezzio\Router\Middleware\ImplicitHeadMiddleware;
 use Mezzio\Router\Middleware\ImplicitOptionsMiddleware;
 use Mezzio\Router\Middleware\MethodNotAllowedMiddleware;
@@ -14,6 +15,7 @@ use Blue\Core\Application\Ingress\IngressRoute;
 use Blue\Core\Application\Session\SessionMiddleware;
 use Blue\Core\Database\Connection;
 use Blue\Core\Http\Attribute;
+use Mezzio\Router\RouterInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -49,7 +51,7 @@ class SnappyServer extends AbstractSnapp
         return $config;
     }
 
-    public function addSnApp(SnappInterface $snapp, string $path, string $domain = null): IngressRoute
+    public function addSnapp(SnappInterface $snapp, string $path, string $domain = null): IngressRoute
     {
         $route = new IngressRoute($snapp, $path, $domain);
         if ($domain && $this->getDevDomain()) {
@@ -60,6 +62,9 @@ class SnappyServer extends AbstractSnapp
 
     public function build(): void
     {
+        /** @var RouterInterface $router */
+        $router = $this->getContainer()->get(RouterInterface::class);
+        $router->match(new ServerRequest());
         foreach ($this->snappRoutes as $app) {
             $app->build();
         }

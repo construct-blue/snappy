@@ -2,6 +2,7 @@
 
 namespace Blue\Snapps\Nicemobil;
 
+use Blue\Cms\Page\Handler\PageHandler;
 use Blue\Core\Analytics\AnalyticsMiddleware;
 use Blue\Core\Application\AbstractSnapp;
 use Blue\Core\Util\FaviconHandler;
@@ -26,5 +27,6 @@ class NicemobilSnapp extends AbstractSnapp
     {
         FaviconHandler::addRoutes($this, __DIR__ . '/logo.jpg');
         $this->get('/', LiveHandler::class);
+        $this->get('{code:.+}', PageHandler::class);
     }
 }

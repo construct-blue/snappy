@@ -36,7 +36,6 @@
     "@ungap/custom-elements": "1.1.1",
     "leaflet": "1.9.2",
     "simpledotcss": "2.1.1",
-    "tinymce": "6.3.1",
     "winbox": "0.2.6"
   }
 }

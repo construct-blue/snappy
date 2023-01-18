@@ -41,7 +41,7 @@ class AuthenticationMiddlewareTest extends TestCase
         );
         $handler = new RequestHandlerStub(new Response());
 
-        $application = ApplicationStub::fromEnv([]);
+        $application = ApplicationStub::fromEnv(['DEV_MODE' => true]);
         $actualResponse = $authMiddleware->process(
             $request
                 ->withAttribute(Session::class, $session)

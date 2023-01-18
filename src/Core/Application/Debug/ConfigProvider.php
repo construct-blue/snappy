@@ -15,6 +15,11 @@ class ConfigProvider
         return [
             ConfigAggregator::ENABLE_CACHE => false,
             'debug' => true,
+            'router' => [
+                'fastroute' => [
+                    'cache_enabled' => false,
+                ],
+            ],
             'dependencies' => [
                 'factories' => [
                     ErrorResponseGenerator::class => Container\WhoopsErrorResponseGeneratorFactory::class,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\System;
 
+use Blue\Cms\Page\Handler\PageHandler;
 use Blue\Snapps\System\Analytics\AnalyticsHandler;
 use Blue\Snapps\System\Client\Tesla\TeslaSetupHandler;
 use Blue\Snapps\System\MyAccount\MyAccountHandler;
@@ -25,7 +26,8 @@ class ConfigProvider
                     UserHandler::class => TemplateHandlerFactory::class,
                     TeslaSetupHandler::class => TemplateHandlerFactory::class,
                     AnalyticsHandler::class => TemplateHandlerFactory::class,
-                    MyAccountHandler::class => TemplateHandlerFactory::class
+                    MyAccountHandler::class => TemplateHandlerFactory::class,
+                    PageHandler::class => TemplateHandlerFactory::class,
                 ]
             ]
         ];

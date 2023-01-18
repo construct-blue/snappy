@@ -13,7 +13,7 @@ class BlockRepository
 {
     private ObjectStorage $storage;
 
-    public function __construct(?string $snapp)
+    public function __construct(private ?string $snapp)
     {
         $this->storage = new ObjectStorage(Block::class, $snapp ?? '', 'block');
     }
@@ -39,18 +39,20 @@ class BlockRepository
 
     public function findByCode(string $code): Block
     {
-        return $this->storage->loadByCode($code);
+        return $this->storage->loadByCode($this->snapp . $code);
     }
 
     public function save(
         Block $block
     ): bool {
-        if ($block->getCode() && $this->existsByCode($block->getCode())) {
-            if ($this->findByCode($block->getCode())->getId() !== $block->getId()) {
-                throw new BlockException('Block already exists', Status::RUNTIME_ERROR);
-            }
+        if (
+            $block->getCode() !== null
+            && $this->existsByCode($block->getCode())
+            && $this->findByCode($block->getCode())->getId() !== $block->getId()
+        ) {
+            throw new BlockException('Block already exists', Status::RUNTIME_ERROR);
         }
-        return $this->storage->save($block, $block->getId(), $block->getCode());
+        return $this->storage->save($block, $block->getId(), $this->snapp . $block->getCode());
     }
 
     public function delete(string $id): bool
@@ -60,6 +62,6 @@ class BlockRepository
 
     public function existsByCode(string $code): bool
     {
-        return $this->storage->existsByCode($code);
+        return $this->storage->existsByCode($this->snapp . $code);
     }
 }

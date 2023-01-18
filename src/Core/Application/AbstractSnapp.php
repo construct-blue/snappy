@@ -20,7 +20,7 @@ abstract class AbstractSnapp extends Application implements SnappInterface
 {
     public const ENV_DEV_DOMAIN = 'DEV_DOMAIN';
     public const ENV_DEV_MODE = 'DEV_MODE';
-    public const ENV_CONFIG_CACHE_FILE = 'CONFIG_CACHE_FILE';
+    public const ENV_CACHE_PATH = 'CACHE_PATH';
 
     private ApplicationContainer $container;
     private array $env;
@@ -43,7 +43,7 @@ abstract class AbstractSnapp extends Application implements SnappInterface
      */
     public static function fromEnv(array $env, string $configCacheFile = null): SnappInterface
     {
-        $env[self::ENV_CONFIG_CACHE_FILE] = $configCacheFile;
+        $env[self::ENV_CACHE_PATH] = $configCacheFile;
         /** @phpstan-ignore-next-line */
         return new SnappProxy(fn() => new static($env));
     }
@@ -63,9 +63,9 @@ abstract class AbstractSnapp extends Application implements SnappInterface
         return (bool)$this->getEnv(self::ENV_DEV_MODE);
     }
 
-    protected function getConfigCacheFile(): ?string
+    protected function getCachePath(): ?string
     {
-        return $this->getEnv(self::ENV_CONFIG_CACHE_FILE);
+        return $this->getEnv(self::ENV_CACHE_PATH);
     }
 
     final public function init(): static
@@ -92,10 +92,18 @@ abstract class AbstractSnapp extends Application implements SnappInterface
 
     protected function createConfig(): ApplicationContainerConfig
     {
-        $config = new ApplicationContainerConfig($this->getConfigCacheFile());
+        $config = new ApplicationContainerConfig($this->getCachePath() . '.config.php');
         foreach ($this->getConfigProviderList() as $configProvider) {
             $config->addProviderClass($configProvider);
         }
+        $config->addArray([
+            'router' => [
+                'fastroute' => [
+                    'cache_enabled' => true,
+                    'cache_file' => $this->getCachePath() . '.router.php'
+                ],
+            ],
+        ]);
         if ($this->isDevMode()) {
             $config->addProviderClass(DebugConfigProvider::class);
         }

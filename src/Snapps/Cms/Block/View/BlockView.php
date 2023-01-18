@@ -40,26 +40,23 @@ class BlockView extends ViewComponent
                     'main id="main"' => [
                         array_map(fn($message) => ['mark' => $message], $this->messages),
                         new BlockAddView(),
-                        array_map(
-                            fn(Block $block) => [
-                                Details::class => [
-                                    'id' => $block->getId(),
-                                    'summary' => [
-                                        BlockSummaryView::class => [
-                                            'code' => $block->getCode()
-                                        ],
+                        array_map(fn(Block $block) => [
+                            Details::class => [
+                                'id' => $block->getId(),
+                                'summary' => [
+                                    BlockSummaryView::class => [
+                                        'code' => $block->getCode()
                                     ],
-                                    'content' => [
-                                        BlockEditView::class => [
-                                            'id' => $block->getId(),
-                                            'code' => $block->getCode(),
-                                            'content' => $block->getContent()
-                                        ]
-                                    ]
                                 ],
+                                'content' => [
+                                    BlockEditView::class => [
+                                        'id' => $block->getId(),
+                                        'code' => $block->getCode(),
+                                        'content' => $block->getContent()
+                                    ]
+                                ]
                             ],
-                            $this->blocks
-                        )
+                        ], $this->blocks)
                     ],
                     CmsFooter::class => []
                 ]

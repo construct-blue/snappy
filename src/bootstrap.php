@@ -11,21 +11,21 @@ use Blue\Snapps\System\SystemSnapp;
 
 global $env;
 
-$cache = fn(string $key) => dirname(__DIR__) . "/data/$key.config.cache.php";
+$cache = fn(string $key) => "data/$key";
 
 $app = SnappyServer::fromEnv($env, $cache('server'));
-$app->addSnApp(BlueSnapp::fromEnv($env, $cache('blue')), '/')
+$app->addSnapp(BlueSnapp::fromEnv($env, $cache('blue')), '/')
     ->setName('Home');
-$app->addSnApp(SystemSnapp::fromEnv($env, $cache('system')), '/system')
+$app->addSnapp(SystemSnapp::fromEnv($env, $cache('system')), '/system')
     ->setName('System');
-$app->addSnApp(CmsSnapp::fromEnv($env, $cache('cms')), '/cms')
+$app->addSnapp(CmsSnapp::fromEnv($env, $cache('cms')), '/cms')
     ->setName('CMS');
 
-$app->addSnApp(NicemobilSnapp::fromEnv($env, $cache('nicemobil')), '/', 'live.sonice.at')
+$app->addSnapp(NicemobilSnapp::fromEnv($env, $cache('nicemobil')), '/', 'live.sonice.at')
     ->setName('NICEmobil Live')
     ->addAlias('live.nicemobil.blog');
 
-$app->addSnApp(KleinschusterSnapp::fromEnv($env, $cache('kleinschuster')), '/', 'www.robs.social')
+$app->addSnapp(KleinschusterSnapp::fromEnv($env, $cache('kleinschuster')), '/', 'www.robs.social')
     ->setName('Kleinschuster.de')
     ->addAlias('www.kleinschuster.de');
 

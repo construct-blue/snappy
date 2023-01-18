@@ -17,15 +17,12 @@ class BlockAddAction implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $snapp = $request->getAttribute('snapp');
-
-        $data = $request->getParsedBody();
         $block = new Block();
+        $data = $request->getParsedBody();
         if (trim($data['code']) != '') {
             $block->setCode($data['code']);
         }
-
         $repo = new BlockRepository($snapp);
-
         if ($block->getCode() && $repo->existsByCode($block->getCode())) {
             /** @var Session $session */
             $session = $request->getAttribute(Session::class);

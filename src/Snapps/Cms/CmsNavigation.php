@@ -17,8 +17,8 @@ class CmsNavigation extends ViewComponent
         return [
             'nav' => [
                 ['a href="/"' => 'Home'],
-                ['a href="{basePath}/blocks"' => 'Blocks'],
                 ['a href="{basePath}/pages"' => 'Pages'],
+                ['a href="{basePath}/blocks"' => 'Blocks'],
                 fn() => $this->userIsGuest ? [
                     'a href="{loginPath}"' => [
                         Icon::class => [

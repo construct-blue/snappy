@@ -48,7 +48,7 @@ class BlockEditView extends ViewComponent
                             'formaction' => '{basePath}/blocks/delete/{snapp}',
                         ],
                     ],
-                    'textarea name="content"' => $this->content,
+                    'div role="input" contenteditable name="content"' => $this->content,
                 ]
             ],
         ];

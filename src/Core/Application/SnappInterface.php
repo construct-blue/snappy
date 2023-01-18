@@ -6,8 +6,9 @@ namespace Blue\Core\Application;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-interface SnappInterface extends MiddlewareInterface
+interface SnappInterface extends MiddlewareInterface, RequestHandlerInterface
 {
     public function run(): void;
 

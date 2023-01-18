@@ -12,7 +12,7 @@ class PageRepository
 {
     private ObjectStorage $storage;
 
-    public function __construct(?string $snapp)
+    public function __construct(private ?string $snapp)
     {
         $this->storage = new ObjectStorage(Page::class, $snapp ?? '', 'page');
     }
@@ -32,15 +32,19 @@ class PageRepository
 
     public function findByCode(string $code): Page
     {
-        return $this->storage->loadByCode($code);
+        return $this->storage->loadByCode($this->snapp . $code);
     }
 
     public function save(Page $page): bool
     {
-        if ($page->getCode() && $this->findByCode($page->getCode())->getId() !== $page->getId()) {
+        if (
+            $page->getCode() !== null
+            && $this->existsByCode($page->getCode())
+            && $this->findByCode($page->getCode())->getId() !== $page->getId()
+        ) {
             throw new PageException('Page already exists', Status::RUNTIME_ERROR);
         }
-        return $this->storage->save($page, $page->getId(), $page->getCode());
+        return $this->storage->save($page, $page->getId(), $this->snapp . $page->getCode());
     }
 
     public function delete(string $id): bool
@@ -50,6 +54,6 @@ class PageRepository
 
     public function existsByCode(string $code): bool
     {
-        return $this->storage->existsByCode($code);
+        return $this->storage->existsByCode($this->snapp . $code);
     }
 }

@@ -12,7 +12,9 @@ class Page implements JsonSerializable
     private ?string $code = null;
     private string $title = '';
     private string $description = '';
-    private array $content = [];
+    private array $main = [];
+    private array $header = [];
+    private array $footer = [];
 
     public function __construct()
     {
@@ -57,14 +59,36 @@ class Page implements JsonSerializable
         return $this;
     }
 
-    public function getContent(): array
+    public function getHeader(): array
     {
-        return $this->content;
+        return $this->header;
     }
 
-    public function setContent(array $content): Page
+    public function setHeader(array $header): Page
     {
-        $this->content = $content;
+        $this->header = $header;
+        return $this;
+    }
+
+    public function getFooter(): array
+    {
+        return $this->footer;
+    }
+
+    public function setFooter(array $footer): Page
+    {
+        $this->footer = $footer;
+        return $this;
+    }
+
+    public function getMain(): array
+    {
+        return $this->main;
+    }
+
+    public function setMain(array $main): Page
+    {
+        $this->main = $main;
         return $this;
     }
 
@@ -72,7 +96,12 @@ class Page implements JsonSerializable
     {
         $page = new Page();
         $page->id = $data['id'];
-        $page->content = $data['content'];
+        $page->code = $data['code'] ?? null;
+        $page->title = $data['title'] ?? '';
+        $page->description = $data['description'] ?? '';
+        $page->main = $data['main'] ?? [];
+        $page->footer = $data['footer'] ?? [];
+        $page->header = $data['header'] ?? [];
         return $page;
     }
 
@@ -80,7 +109,12 @@ class Page implements JsonSerializable
     {
         return [
             'id' => $this->id,
-            'conent' => $this->content
+            'code' => $this->code,
+            'title' => $this->title,
+            'description' => $this->description,
+            'main' => $this->main,
+            'header' => $this->header,
+            'footer' => $this->footer,
         ];
     }
 }

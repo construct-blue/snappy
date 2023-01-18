@@ -52,6 +52,11 @@ class SnappProxy implements SnappInterface
         return $this->resolve()->process($request, $handler);
     }
 
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->resolve()->handle($request);
+    }
+
     public function run(): void
     {
         $this->resolve()->run();

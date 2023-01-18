@@ -2,11 +2,6 @@ class ReactiveForm extends HTMLFormElement {
     constructor() {
         super();
         this.onsubmit = this.handleSubmit
-        this.querySelectorAll('textarea').forEach(target => {
-            import('../Editor/Editor').then(e => {
-                e.default.render(target)
-            })
-        })
     }
 
     private async handleSubmit(event: SubmitEvent) {

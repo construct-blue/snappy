@@ -2,8 +2,9 @@
 
 namespace Blue\Snapps\Kleinschuster;
 
+use Blue\Cms\Page\Handler\PageHandler;
+use Blue\Core\Application\Handler\TemplateHandlerFactory;
 use Blue\Snapps\Kleinschuster\Home\HomeHandler;
-use Blue\Snapps\Kleinschuster\Home\HomeHandlerFactory;
 
 class ConfigProvider
 {
@@ -12,7 +13,8 @@ class ConfigProvider
         return [
             'dependencies' => [
                 'factories' => [
-                    HomeHandler::class => HomeHandlerFactory::class
+                    HomeHandler::class => TemplateHandlerFactory::class,
+                    PageHandler::class => TemplateHandlerFactory::class
                 ]
             ]
         ];

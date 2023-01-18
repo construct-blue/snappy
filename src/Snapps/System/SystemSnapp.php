@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\System;
 
+use Blue\Cms\Page\Handler\PageHandler;
 use Blue\Snapps\System\MyAccount\MyAccountHandler;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Mezzio\Router;
@@ -50,6 +51,8 @@ class SystemSnapp extends AbstractSnapp
         $this->post('/setup/tesla', TeslaSetupAction::class);
         $this->get('/analytics[/{code}]', AnalyticsHandler::class);
         $this->post('/analytics/refresh', AnalyticsRefreshAction::class);
+
+        $this->get('{code:.+}', PageHandler::class);
     }
 
     public function route(string $path, $middleware, ?array $methods = null, ?string $name = null): Router\Route
