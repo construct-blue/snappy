@@ -17,6 +17,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Disable XDebug
+      run: sudo phpdismod xdebug
+
     - uses: reviewdog/action-setup@v1
       with:
         reviewdog_version: latest
