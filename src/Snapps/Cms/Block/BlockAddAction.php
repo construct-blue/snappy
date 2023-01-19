@@ -6,13 +6,14 @@ namespace Blue\Snapps\Cms\Block;
 
 use Blue\Cms\Block\Block;
 use Blue\Cms\Block\BlockRepository;
+use Blue\Core\Application\Handler\ActionHandler;
 use Blue\Core\Application\Session\Session;
 use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class BlockAddAction implements RequestHandlerInterface
+class BlockAddAction extends ActionHandler
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -23,13 +24,7 @@ class BlockAddAction implements RequestHandlerInterface
             $block->setCode($data['code']);
         }
         $repo = new BlockRepository($snapp);
-        if ($block->getCode() && $repo->existsByCode($block->getCode())) {
-            /** @var Session $session */
-            $session = $request->getAttribute(Session::class);
-            $session->addMessage('Block already exists');
-        } else {
-            $repo->save($block);
-        }
+        $repo->save($block);
 
         return new Response();
     }

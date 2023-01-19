@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Blue\Core\Authentication;
 
 use JsonSerializable;
-use Blue\Core\Http\Status;
 
 use function password_hash;
 use function password_verify;
@@ -72,7 +71,7 @@ final class User implements JsonSerializable
     public function setName(?string $name): User
     {
         if ($this->isAdmin()) {
-            throw new UserException('Admin users name can\'t be changed.', Status::RUNTIME_ERROR);
+            throw UserException::forValidation('name', 'Admin users name can\'t be changed.');
         }
         $this->name = $name;
         return $this;
@@ -92,9 +91,9 @@ final class User implements JsonSerializable
     public function setPasswordPlain(string $password): User
     {
         if (strlen($password) < self::MIN_PASSWORD_LENGTH) {
-            throw new UserException(
+            throw UserException::forValidation(
+                'password',
                 'Password must be at least ' . self::MIN_PASSWORD_LENGTH . ' characters long.',
-                Status::RUNTIME_ERROR
             );
         }
         return $this->setPasswordHash(password_hash($password, PASSWORD_DEFAULT));
@@ -111,10 +110,10 @@ final class User implements JsonSerializable
     public function setState(UserState $state): User
     {
         if (UserState::ACTIVE === $state && (empty($this->getName()) || empty($this->getPasswordHash()))) {
-            throw new UserException('User without name and hash can\'t be unlocked.', Status::RUNTIME_ERROR);
+            throw UserException::forValidation('state', 'User without name and hash can\'t be unlocked.');
         }
         if (UserState::ACTIVE !== $state && $this->isAdmin()) {
-            throw new UserException('Admin user can\'t be locked or deleted.', Status::RUNTIME_ERROR);
+            throw UserException::forValidation('state', 'Admin user can\'t be locked or deleted.');
         }
         $this->state = $state;
         return $this;
@@ -161,7 +160,7 @@ final class User implements JsonSerializable
     public function setRoles(array $roles): User
     {
         if ($this->isAdmin() && $roles != [UserRole::ADMIN]) {
-            throw new UserException('Admin users roles can\'t be changed.', Status::RUNTIME_ERROR);
+            throw UserException::forValidation('roles', 'Admin users roles can\'t be changed.');
         }
         $this->roles = $roles;
         return $this;

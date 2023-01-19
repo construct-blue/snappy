@@ -12,7 +12,6 @@ use Blue\Snapps\System\SystemFooter;
 use Blue\Snapps\System\SystemNavigation;
 
 /**
- * @property string[] $messages
  * @property User[] $users
  */
 class UserView extends ViewComponent
@@ -28,7 +27,6 @@ class UserView extends ViewComponent
                         'h1' => 'Users',
                     ],
                     'main id="main"' => [
-                        array_map(fn($message) => ['mark' => $message], $this->messages),
                         new UserAdd(),
                         array_map(
                             fn(User $user) => [

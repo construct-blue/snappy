@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Blue\Core\View;
 
+use Blue\Core\Application\Session\Session;
+
 /**
  * @property string $lang
  * @property string $title
@@ -12,6 +14,7 @@ namespace Blue\Core\View;
  * @property Closure $scripts
  * @property array $body
  * @property array $content
+ * @property null|Session $session
  */
 class PageWrapper extends ViewComponent
 {
@@ -50,7 +53,14 @@ class PageWrapper extends ViewComponent
                     $this->body ?? [],
                     $this->content ?? [],
                     $this->scripts,
-                    TemplateViewComponent::forTemplate(__DIR__ . '/Analytics.phtml')
+                    TemplateViewComponent::forTemplate(
+                        __DIR__ . '/Messages.phtml',
+                        [
+                            'messages' => $this->session?->popMessages(),
+                            'validations' => $this->session?->popValidations(),
+                        ]
+                    ),
+                    TemplateViewComponent::forTemplate(__DIR__ . '/Analytics.phtml'),
                 ])
             ]
         ];

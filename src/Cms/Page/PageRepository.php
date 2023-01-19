@@ -42,7 +42,7 @@ class PageRepository
             && $this->existsByCode($page->getCode())
             && $this->findByCode($page->getCode())->getId() !== $page->getId()
         ) {
-            throw new PageException('Page already exists', Status::RUNTIME_ERROR);
+            throw PageException::forValidation('code', 'Page already exists');
         }
         return $this->storage->save($page, $page->getId(), $this->snapp . $page->getCode());
     }

@@ -5,40 +5,56 @@
   margin: 1rem;
 
   &__message {
+    display: flex;
+    padding: .5rem;
+    gap: .25rem;
     overflow: hidden;
     width: 15rem;
     margin-top: 0;
     margin-bottom: .5rem;
     border-radius: 10px;
-    background: rgba(173, 35, 17, 0.8);
     backdrop-filter: blur(5px);
     color: #fff;
     transition: opacity .5s;
+    transition-delay: 5s;
 
-    &.fade {
-      opacity: 0;
+    p {
+      margin: 0;
+      padding: 0;
+      word-wrap: break-word;
     }
-  }
 
-  &__text {
-    margin: 0;
-    padding: 1rem;
-    word-wrap: break-word;
-  }
+    svg {
+      width: 24px;
+      height: 24px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      pointer-events: none;
+    }
 
-  &__head {
-    margin: 0;
-    padding: 0.5rem 1rem 0;
-  }
+    &.error {
+      background: rgba(173, 35, 17, 0.8);
+    }
 
-  svg {
-    width: 12px;
-    height: 12px;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    fill: none;
-    pointer-events: none;
+    &.info {
+      background: rgba(17, 66, 173, 0.8);
+    }
+
+    &.success {
+      background: rgba(27, 173, 17, 0.8);
+    }
+
+    &.fade:not(:hover) {
+      animation: fade 5s forwards;
+    }
+
+    @keyframes fade {
+      0%   {opacity: 1;}
+      90%  {opacity: 1;}
+      100% {opacity: 0;}
+    }
   }
 }

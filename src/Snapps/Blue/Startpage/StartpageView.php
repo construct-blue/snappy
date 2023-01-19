@@ -46,7 +46,7 @@ class StartpageView extends ViewComponent
                                 fn($link, $name) => [
                                     LinkButton::fromParams([
                                         'text' => $name,
-                                        'href' => $this->userIsGuest ? "$link/login?redirect=$link" : $link
+                                        'href' => $this->userIsGuest ? "$link/login?redirect=$link" : $link,
                                     ]),
                                     ' '
                                 ],

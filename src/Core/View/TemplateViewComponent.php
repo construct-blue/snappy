@@ -12,10 +12,11 @@ use function ob_start;
 class TemplateViewComponent extends ViewComponent
 {
     private string $template;
-
-    public static function forTemplate(string $templateFile): static
+    private array $params = [];
+    public static function forTemplate(string $templateFile, array $params = []): static
     {
-        $component = new static();
+        $component = static::fromParams($params);
+        $component->params = $params;
         $component->template = $templateFile;
         return $component;
     }
@@ -30,6 +31,7 @@ class TemplateViewComponent extends ViewComponent
             throw MissingPropertyException::forComponent('Missing template', $this);
         }
         try {
+            extract($this->params);
             ob_start();
             include $this->template;
         } finally {

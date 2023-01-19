@@ -2,16 +2,14 @@
 
 namespace Blue\Snapps\System\User;
 
+use Blue\Core\Application\Handler\ActionHandler;
 use Laminas\Diactoros\Response;
-use Blue\Core\Application\Session\Session;
 use Blue\Core\Authentication\User;
 use Blue\Core\Authentication\UserRepository;
-use Blue\Core\Database\ObjectStorage;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 
-class UserAddAction implements RequestHandlerInterface
+class UserAddAction extends ActionHandler
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -20,13 +18,8 @@ class UserAddAction implements RequestHandlerInterface
         $name = strip_tags($data['name'] ?? '');
         $user->setName($name);
 
-        if (UserRepository::instance()->existsByName($user->getName())) {
-            /** @var Session $session */
-            $session = $request->getAttribute(Session::class);
-            $session->addMessage('user already exists');
-        } else {
-            UserRepository::instance()->save($user);
-        }
+        UserRepository::instance()->save($user);
+
 
         return new Response();
     }

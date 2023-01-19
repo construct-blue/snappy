@@ -3,13 +3,13 @@
 namespace Blue\Snapps\Cms\Block;
 
 use Blue\Cms\Block\BlockRepository;
+use Blue\Core\Application\Handler\ActionHandler;
 use Blue\Core\View\ViewParser;
 use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 
-class BlockSaveAction implements RequestHandlerInterface
+class BlockSaveAction extends ActionHandler
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

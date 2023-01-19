@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Blue\Snapps\System\User;
 
 use Blue\Core\Application\Handler\TemplateHandler;
-use Blue\Core\Application\Session\Session;
 use Blue\Core\Authentication\UserRepository;
 use Blue\Snapps\System\User\View\UserView;
 use Laminas\Diactoros\Response\HtmlResponse;
@@ -16,11 +15,7 @@ class UserHandler extends TemplateHandler
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var Session $session */
-        $session = $request->getAttribute(Session::class);
         $this->assign('users', iterator_to_array(UserRepository::instance()->findAll()));
-        $this->assign('messages', $session->getMessages());
-        $session->resetMessages();
         return new HtmlResponse($this->render(UserView::class));
     }
 }

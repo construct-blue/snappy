@@ -13,12 +13,29 @@ use function in_array;
 
 class CoreException extends Exception implements Castable
 {
-    final public function __construct(string $message = "", int|Status $code = 0, ?Throwable $previous = null)
-    {
+    final public function __construct(
+        string $message = "",
+        int|Status $code = 0,
+        ?Throwable $previous = null,
+        private ?string $reference = null
+    ) {
         if ($code instanceof Status) {
             $code = $code->value;
         }
         parent::__construct($message, $code, $previous);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public static function forValidation(string $field, string $message): static
+    {
+        return new static($message, Status::VALIDATION_ERROR, null, $field);
     }
 
     public static function from(Throwable $throwable): static

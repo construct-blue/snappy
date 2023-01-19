@@ -32,13 +32,6 @@ abstract class TemplateHandler implements RequestHandlerInterface
         $this->getRenderer()->addDefaultParam(TemplateRendererInterface::TEMPLATE_ALL, $name, $value);
     }
 
-    public function assignMessages(ServerRequestInterface $request)
-    {
-        $session = $this->getSession($request);
-        $this->assign('messages', $session->getMessages());
-        $session->resetMessages();
-    }
-
     public function getSession(ServerRequestInterface $request): Session
     {
         return $request->getAttribute(Session::class);

@@ -50,7 +50,7 @@ class BlockRepository
             && $this->existsByCode($block->getCode())
             && $this->findByCode($block->getCode())->getId() !== $block->getId()
         ) {
-            throw new BlockException('Block already exists', Status::RUNTIME_ERROR);
+            throw BlockException::forValidation('code', 'Block already exists');
         }
         return $this->storage->save($block, $block->getId(), $this->snapp . $block->getCode());
     }

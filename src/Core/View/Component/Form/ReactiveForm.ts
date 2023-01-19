@@ -1,3 +1,4 @@
+
 class ReactiveForm extends HTMLFormElement {
     constructor() {
         super();
@@ -30,9 +31,20 @@ class ReactiveForm extends HTMLFormElement {
         }
         const id = closestElementWithId.getAttribute('id') as string;
 
-        if (response.ok) {
-            const parser = new DOMParser();
-            const document = parser.parseFromString(await response.text(), 'text/html');
+        const parser = new DOMParser();
+        const document = parser.parseFromString(await response.text(), 'text/html');
+        const messages = document.querySelector('[is=toast-messages]');
+        const validations = document.querySelector('[is=toast-validations]');
+
+        if (messages) {
+            window.document.body.append(messages)
+        }
+
+        if (validations) {
+            window.document.body.append(validations)
+        }
+
+        if (response.ok && !validations) {
             const replacement = document.getElementById(id);
             if (replacement) {
                 closestElementWithId.replaceWith(replacement)
@@ -40,9 +52,6 @@ class ReactiveForm extends HTMLFormElement {
                 closestElementWithId.remove()
             }
         } else {
-            import('../Toast/Toast').then(t => {
-                t.default.instance.display(response.headers.get('status') ?? response.statusText)
-            })
             submitter.disabled = false;
         }
     }

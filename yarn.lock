@@ -2037,7 +2037,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/winbox@npm:0.2.1":
+"@types/winbox@npm:^0.2.1":
   version: 0.2.1
   resolution: "@types/winbox@npm:0.2.1"
   checksum: 230cd4cef90a2795270ed14bb84771d5bed5cfd4d5853a66c0ff16890caf5317fb1f723a5d2a1ae015f0c05919cc9508a4b21a85e643557caa72475b4cd7e240
@@ -7976,7 +7976,7 @@ __metadata:
     "@hotwired/turbo": ^7.1.0
     "@symfony/webpack-encore": 4.1.1
     "@types/leaflet": 1.9.0
-    "@types/winbox": 0.2.1
+    "@types/winbox": ^0.2.1
     "@typescript-eslint/eslint-plugin": 5.19.0
     "@typescript-eslint/parser": 5.19.0
     "@ungap/custom-elements": 1.1.1

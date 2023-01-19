@@ -79,8 +79,7 @@ class AuthenticationMiddleware implements MiddlewareInterface
         $this->prepareTemplateVariables($uriBuilder, $session, $loginPath);
 
         if (null === $session->getUser() || $request->getUri()->getPath() === $this->config['login_path']) {
-            $params = ['token' => $session->getToken(), 'messages' => $session->getMessages()];
-            $session->resetMessages();
+            $params = ['token' => $session->getToken()];
             return new HtmlResponse(
                 $this->renderer->render($this->config['template'], $params)
             );

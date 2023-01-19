@@ -12,6 +12,7 @@ use Blue\Core\View\ViewComponent;
  * @property string $name
  * @property string $value
  * @property string $placeholder
+ * @property string $error
  */
 class Textfield extends ViewComponent
 {
@@ -32,7 +33,7 @@ class Textfield extends ViewComponent
                 "label for=\"{$this->__id()}\"" => $this->label,
                 "<input id=\"{$this->__id()}\" type=\"text\" name=\"{$this->name}\"$attributes>",
             ] : [
-                "<input type=\"text\" name=\"{$this->name}\"$attributes>",
+                "<input id=\"{$this->__id()}\" type=\"text\" name=\"{$this->name}\"$attributes>",
             ],
         ];
     }

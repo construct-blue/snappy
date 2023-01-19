@@ -1,5 +1,8 @@
 summary:hover {
-  backdrop-filter: brightness(1.2);
+  backdrop-filter: brightness(0.97);
+  @media (prefers-color-scheme: dark) {
+    backdrop-filter: brightness(1.2);
+  }
 }
 
 details:not([open]) > summary {
@@ -22,6 +25,10 @@ button,
 input[type=text] {
   font-size: inherit;
   padding: 0.5em;
+}
+
+input:not(:placeholder-shown):invalid {
+  border: 1px solid var(--marked);
 }
 
 summary aside {

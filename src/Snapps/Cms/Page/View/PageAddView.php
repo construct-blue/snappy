@@ -21,7 +21,7 @@ class PageAddView extends ViewComponent
                     Textfield::class => [
                         'name' => 'code',
                         'placeholder' => 'Path to add',
-                        'required' => true
+                        'required' => true,
                     ],
                     SubmitButton::class => [
                         'icon' => 'plus',

@@ -62,7 +62,7 @@ class UserRepository
     {
         if ($this->existsByName($user->getName())) {
             if ($this->findByName($user->getName())->getId() != $user->getId()) {
-                throw new UserException("User already exists", Status::RUNTIME_ERROR);
+                throw new UserException("User already exists", Status::VALIDATION_ERROR, null, 'name');
             }
         }
         $this->storage->save($user, $user->getId(), $user->getName());

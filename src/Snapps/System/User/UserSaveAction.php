@@ -2,18 +2,16 @@
 
 namespace Blue\Snapps\System\User;
 
+use Blue\Core\Application\Handler\ActionHandler;
 use Laminas\Diactoros\Response;
-use Blue\Core\Authentication\User;
 use Blue\Core\Authentication\UserRepository;
 use Blue\Core\Authentication\UserRole;
 use Blue\Core\Authentication\UserState;
-use Blue\Core\Database\ObjectStorage;
 use Blue\Core\Exception\CoreException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 
-class UserSaveAction implements RequestHandlerInterface
+class UserSaveAction extends ActionHandler
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

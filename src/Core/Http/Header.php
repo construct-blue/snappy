@@ -14,6 +14,7 @@ enum Header: string implements RequestExtractorInterface
     case USER_AGENT = 'User-Agent';
     case ACCEPT_LANGUAGE = 'Accept-Language';
     case CACHE_CONTROL = 'Cache-Control';
+    case ACCESS_CONTROL_ALLOW_ORIGIN = 'Access-Control-Allow-Origin';
 
     public function setTo(ResponseInterface $response, string $value): ResponseInterface
     {

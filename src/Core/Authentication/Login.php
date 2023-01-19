@@ -12,7 +12,6 @@ use Blue\Core\View\ViewComponent;
 
 /**
  * @property string $token
- * @property array $messages
  */
 #[Entrypoint(__DIR__ . '/Login.ts')]
 class Login extends ViewComponent

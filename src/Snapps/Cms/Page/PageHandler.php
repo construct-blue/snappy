@@ -17,7 +17,6 @@ class PageHandler extends TemplateHandler
     {
         $snapp = $request->getAttribute('snapp');
         $repo = new PageRepository($snapp);
-        $this->assignMessages($request);
         $this->assignSnapps($request);
         $pages = iterator_to_array($repo->findAll());
         return new HtmlResponse($this->render(PageView::class, ['pages' => $pages, 'snapp' => $snapp]));

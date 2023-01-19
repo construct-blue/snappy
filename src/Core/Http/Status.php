@@ -16,7 +16,8 @@ enum Status: int implements ResponseMatcher
     case BAD_REQUEST = 400;
     case NOT_FOUND = 404;
     case INTERNAL_SERVER_ERROR = 500;
-    case RUNTIME_ERROR = 512;
+    case GENERAL_ERROR = 512;
+    case VALIDATION_ERROR = 513;
 
     public function matches(ResponseInterface $response): bool
     {

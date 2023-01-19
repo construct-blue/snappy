@@ -15,7 +15,6 @@ use Blue\Snapps\Cms\CmsNavigation;
 /**
  * @property null|string $snapp
  * @property array $snapps
- * @property array $messages
  * @property array $blocks
  */
 class BlockView extends ViewComponent
@@ -38,7 +37,6 @@ class BlockView extends ViewComponent
                         ],
                     ],
                     'main id="main"' => [
-                        array_map(fn($message) => ['mark' => $message], $this->messages),
                         new BlockAddView(),
                         array_map(fn(Block $block) => [
                             Details::class => [

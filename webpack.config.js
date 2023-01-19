@@ -28,6 +28,7 @@ Encore
   .enableTypeScriptLoader(
     (config) => {
       config.onlyCompileBundledFiles = true
+      config.configFile = 'tsconfig.json'
     }
   )
   .enableIntegrityHashes(Encore.isProduction())

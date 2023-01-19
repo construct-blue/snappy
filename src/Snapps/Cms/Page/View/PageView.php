@@ -16,7 +16,6 @@ use Blue\Snapps\Cms\CmsNavigation;
  * @property string $snapp
  * @property array $snapps
  * @property Page[] $pages
- * @property array $messages
  */
 class PageView extends ViewComponent
 {
@@ -38,8 +37,7 @@ class PageView extends ViewComponent
                         ],
                     ],
                     'main id="main"' => [
-                        array_map(fn($message) => ['mark' => $message], $this->messages),
-                        new PageAddView(),
+                        PageAddView::class => [],
                         array_map(fn(Page $page) => [
                             Details::class => [
                                 'id' => $page->getId(),

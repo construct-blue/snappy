@@ -18,7 +18,6 @@ class BlockHandler extends TemplateHandler
         $snapp = $request->getAttribute('snapp');
 
         $this->assignSnapps($request);
-        $this->assignMessages($request);
 
         $repo = new BlockRepository($snapp);
         $blocks = iterator_to_array($repo->findAll());

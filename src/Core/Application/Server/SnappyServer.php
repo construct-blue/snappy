@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Blue\Core\Application\Server;
 
 use Blue\Core\Application\SnappInterface;
+use Blue\Core\Http\Header;
 use Laminas\Diactoros\ServerRequest;
 use Mezzio\Router\Middleware\ImplicitHeadMiddleware;
 use Mezzio\Router\Middleware\ImplicitOptionsMiddleware;

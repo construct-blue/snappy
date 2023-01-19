@@ -1,0 +1,50 @@
+<?php
+
+declare(strict_types=1);
+
+$messages = $messages ?? [];
+$validations = $validations ?? [];
+?>
+<?php if (!empty($validations)): ?>
+    <noscript>
+        <div class="toast">
+            <?php foreach ($validations as $field => $items): ?>
+            <?php foreach ($items as $item): ?>
+                <div class="toast__message error fade">
+                    <svg>
+                        <use href="/icons.svg#info"/>
+                    </svg>
+                <p>
+                    <?= $item ?>
+                </p>
+                </div>
+            <?php endforeach; ?>
+            <?php endforeach; ?>
+        </div>
+    </noscript>
+    <script is="toast-validations" type="application/json">
+    <?= json_encode($validations) ?>
+    </script>
+<?php endif; ?>
+
+<?php if (!empty($messages)): ?>
+    <noscript>
+        <div class="toast">
+            <?php foreach ($messages as $type => $items): ?>
+                <?php foreach ($items as $item): ?>
+                    <div class="toast__message <?= $type ?> fade">
+                        <svg>
+                            <use href="/icons.svg#info"/>
+                        </svg>
+                        <p>
+                            <?= $item ?>
+                        </p>
+                    </div>
+                <?php endforeach; ?>
+            <?php endforeach; ?>
+        </div>
+    </noscript>
+    <script is="toast-messages" type="application/json">
+    <?= json_encode($messages) ?>
+    </script>
+<?php endif; ?>

@@ -2,13 +2,13 @@
 
 namespace Blue\Snapps\System\User;
 
+use Blue\Core\Application\Handler\ActionHandler;
 use Laminas\Diactoros\Response;
 use Blue\Core\Authentication\UserRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 
-class UserDeleteAction implements RequestHandlerInterface
+class UserDeleteAction extends ActionHandler
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

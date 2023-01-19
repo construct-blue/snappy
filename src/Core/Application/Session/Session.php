@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Core\Application\Session;
 
+use Blue\Core\View\Component\Toast\ToastType;
 use JsonSerializable;
 use Blue\Core\Application\Session\Window\Window;
 use Blue\Core\Authentication\User;
@@ -23,6 +24,7 @@ class Session implements JsonSerializable
     private const ATTR_LANGUAGE = 'lng';
     private const ATTR_USER_ID = 'uid';
     private const ATTR_MESSAGES = 'msg';
+    private const ATTR_VALIDATIONS = 'vld';
 
     private string $id;
     private string $token;
@@ -30,6 +32,7 @@ class Session implements JsonSerializable
     private array $windows = [];
     private ?User $user = null;
     private array $messages = [];
+    private array $validations = [];
 
     private ObjectStorage $sessionRepo;
     private ObjectStorage $userRepo;
@@ -53,7 +56,8 @@ class Session implements JsonSerializable
             self::ATTR_TOKEN => $this->getToken(),
             self::ATTR_LANGUAGE => $this->getLanguage()->value,
             self::ATTR_USER_ID => $this->getUser()?->getId(),
-            self::ATTR_MESSAGES => $this->getMessages()
+            self::ATTR_MESSAGES => $this->getMessages(),
+            self::ATTR_VALIDATIONS => $this->getValidations(),
         ];
     }
 
@@ -128,9 +132,9 @@ class Session implements JsonSerializable
         return $this;
     }
 
-    public function addMessage(string $message)
+    public function addMessage(string $message, ToastType $type = ToastType::INFO)
     {
-        $this->messages[] = $message;
+        $this->messages[$type->value][] = $message;
     }
 
     public function getMessages(): array
@@ -138,9 +142,41 @@ class Session implements JsonSerializable
         return $this->messages;
     }
 
-    public function resetMessages(): void
+    public function popMessages(): array
+    {
+        $messages = $this->getMessages();
+        $this->resetMessages();
+        return $messages;
+    }
+
+    public function resetMessages(): self
     {
         $this->messages = [];
+        return $this;
+    }
+
+    public function addValidation(string $field, string $message): self
+    {
+        $this->validations[$field][] = $message;
+        return $this;
+    }
+
+    public function getValidations(): array
+    {
+        return $this->validations;
+    }
+
+    public function popValidations(): array
+    {
+        $validations = $this->getValidations();
+        $this->resetValidations();
+        return $validations;
+    }
+
+    public function resetValidations(): self
+    {
+        $this->validations = [];
+        return $this;
     }
 
     private function getRepo(): ObjectStorage
@@ -171,7 +207,10 @@ class Session implements JsonSerializable
                     $this->token = $data[self::ATTR_TOKEN];
                 }
                 if (!empty($data[self::ATTR_MESSAGES])) {
-                    $this->messages = $data[self::ATTR_MESSAGES];
+                    $this->messages = (array)$data[self::ATTR_MESSAGES];
+                }
+                if (!empty($data[self::ATTR_VALIDATIONS])) {
+                    $this->validations = (array)$data[self::ATTR_VALIDATIONS];
                 }
                 if (!empty($data[self::ATTR_USER_ID])) {
                     try {
@@ -199,6 +238,7 @@ class Session implements JsonSerializable
         return isset($this->token)
             || isset($this->language)
             || ($this->getUser() && $this->getUser()->isModified())
-            || !empty($this->messages);
+            || !empty($this->messages)
+            || !empty($this->validations);
     }
 }
