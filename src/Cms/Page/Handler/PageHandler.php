@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Blue\Cms\Page\Handler;
 
+use Blue\Cms\Block\BlockPlaceholder;
+use Blue\Cms\Block\BlockRepository;
 use Blue\Cms\Page\Page;
 use Blue\Cms\Page\PageRepository;
 use Blue\Core\Application\Handler\TemplateHandler;
@@ -30,7 +32,10 @@ class PageHandler extends TemplateHandler implements MiddlewareInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        /** @var IngressResult $ingressResult */
+        $ingressResult = $request->getAttribute(IngressResult::class);
         $page = $request->getAttribute(Page::class);
-        return new HtmlResponse($this->render(PageView::class, ['page' => $page]));
+        $placeholder = new BlockPlaceholder(new BlockRepository($ingressResult->getRoute()->getCode()));
+        return new HtmlResponse($placeholder->replace($this->render(PageView::class, ['page' => $page])));
     }
 }

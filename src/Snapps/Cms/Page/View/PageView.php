@@ -6,6 +6,7 @@ namespace Blue\Snapps\Cms\Page\View;
 
 use Blue\Cms\Page\Page;
 use Blue\Core\View\Component\Details\Details;
+use Blue\Core\View\Component\Icon\Icon;
 use Blue\Core\View\Component\Select\LinkSelect;
 use Blue\Core\View\PageWrapper;
 use Blue\Core\View\ViewComponent;
@@ -31,13 +32,19 @@ class PageView extends ViewComponent
 
                         ],
                         'h1' => [
-                            'Pages',
+                            'Content',
                         ],
                         SnappNavigation::class => [
                             'basePath' => '{basePath}/pages'
                         ],
                     ],
                     'main id="main"' => [
+                        'a href="{basePath}/blocks/{snapp}"' => [
+                            Icon::class => [
+                                'icon' => 'tool'
+                            ],
+                            ' Configure reusable blocks',
+                        ],
                         PageAddView::class => [],
                         array_map(fn(Page $page) => [
                             Details::class => [

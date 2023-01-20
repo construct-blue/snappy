@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Blue\Snapps\Cms\Block\View;
 
 use Blue\Cms\Block\Block;
-use Blue\Core\View\Component\Button\LinkButton;
 use Blue\Core\View\Component\Details\Details;
-use Blue\Core\View\Component\Select\LinkSelect;
+use Blue\Core\View\Component\Icon\Icon;
 use Blue\Core\View\PageWrapper;
 use Blue\Core\View\ViewComponent;
 use Blue\Snapps\Cms\CmsFooter;
@@ -30,13 +29,19 @@ class BlockView extends ViewComponent
                     'header' => [
                         CmsNavigation::class => [],
                         'h1' => [
-                            'Blocks',
+                            'Content',
                         ],
                         SnappNavigation::class => [
                             'basePath' => '{basePath}/blocks'
                         ],
                     ],
                     'main id="main"' => [
+                        'a href="{basePath}/pages/{snapp}"' => [
+                            Icon::class => [
+                                'icon' => 'layout'
+                            ],
+                            ' Manage pages',
+                        ],
                         new BlockAddView(),
                         array_map(fn(Block $block) => [
                             Details::class => [
@@ -54,7 +59,7 @@ class BlockView extends ViewComponent
                                     ]
                                 ]
                             ],
-                        ], $this->blocks)
+                        ], $this->blocks),
                     ],
                     CmsFooter::class => []
                 ]

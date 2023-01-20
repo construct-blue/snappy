@@ -10,11 +10,11 @@ class Page implements JsonSerializable
 {
     private string $id;
     private ?string $code = null;
-    private string $title = '';
+    private string $title = 'New Page';
     private string $description = '';
     private string $main = '';
-    private string $header = '';
-    private string $footer = '';
+    private string $header = '{block:header}';
+    private string $footer = '{block:footer}';
 
     public function __construct()
     {
@@ -33,7 +33,7 @@ class Page implements JsonSerializable
 
     public function setCode(?string $code): Page
     {
-        $this->code = $code;
+        $this->code = '/' . ltrim($code, '/');
         return $this;
     }
 
