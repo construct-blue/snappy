@@ -16,13 +16,14 @@ class Home extends ViewComponent
 {
     public function render(): array
     {
+        $parsedown = new \ParsedownExtra();
         return [
             PageWrapper::class => [
                 'title' => 'Robert Kleinschuster',
                 'body' => [
                     TemplateViewComponent::forTemplate(__DIR__ . '/Home.phtml'),
                     fn() => isset($this->page) ? [
-                        'main' => $this->page->getMain()
+                        'main' => $parsedown->text($this->page->getMain())
                     ] : []
                 ]
             ],

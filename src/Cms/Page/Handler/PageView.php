@@ -15,14 +15,16 @@ class PageView extends ViewComponent
 {
     public function render(): array
     {
+        $parsedown = new \ParsedownExtra();
+
         return [
             PageWrapper::class => [
                 'title' => $this->page->getTitle(),
                 'description' => $this->page->getDescription(),
                 'body' => [
-                    'header' => $this->page->getHeader(),
-                    'main' => $this->page->getMain(),
-                    'footer' => $this->page->getFooter(),
+                    'header' => $parsedown->text($this->page->getHeader()),
+                    'main' => $parsedown->text($this->page->getMain()),
+                    'footer' => $parsedown->text($this->page->getFooter()),
                 ],
             ],
         ];

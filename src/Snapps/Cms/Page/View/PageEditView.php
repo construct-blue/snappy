@@ -8,6 +8,7 @@ use Blue\Core\View\Component\Button\ConfirmButton;
 use Blue\Core\View\Component\Button\SubmitButton;
 use Blue\Core\View\Component\Form\Form;
 use Blue\Core\View\Component\Form\Hidden;
+use Blue\Core\View\Component\Form\Markdown;
 use Blue\Core\View\Component\Form\Textfield;
 use Blue\Core\View\ViewComponent;
 
@@ -72,9 +73,30 @@ class PageEditView extends ViewComponent
                             ],
                         ],
                     ],
-                    'header contenteditable name="header"' => $this->header,
-                    'main contenteditable name="main"' => $this->main,
-                    'footer contenteditable name="footer"' => $this->footer,
+                    [
+                        Markdown::class => [
+                            'label' => 'Header',
+                            'name' => 'header',
+                            'value' => $this->header,
+                            'rows' => 2,
+                        ],
+                    ],
+                    [
+                        Markdown::class => [
+                            'label' => 'Main',
+                            'name' => 'main',
+                            'value' => $this->main,
+                            'rows' => 7,
+                        ],
+                    ],
+                    [
+                        Markdown::class => [
+                            'label' => 'Footer',
+                            'name' => 'footer',
+                            'value' => $this->footer,
+                            'rows' => 2,
+                        ],
+                    ],
                 ],
             ]
         ];

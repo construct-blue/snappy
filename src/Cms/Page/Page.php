@@ -12,9 +12,9 @@ class Page implements JsonSerializable
     private ?string $code = null;
     private string $title = '';
     private string $description = '';
-    private array $main = [];
-    private array $header = [];
-    private array $footer = [];
+    private string $main = '';
+    private string $header = '';
+    private string $footer = '';
 
     public function __construct()
     {
@@ -59,36 +59,57 @@ class Page implements JsonSerializable
         return $this;
     }
 
-    public function getHeader(): array
+    /**
+     * @return string
+     */
+    public function getMain(): string
+    {
+        return $this->main;
+    }
+
+    /**
+     * @param string $main
+     * @return Page
+     */
+    public function setMain(string $main): Page
+    {
+        $this->main = $main;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHeader(): string
     {
         return $this->header;
     }
 
-    public function setHeader(array $header): Page
+    /**
+     * @param string $header
+     * @return Page
+     */
+    public function setHeader(string $header): Page
     {
         $this->header = $header;
         return $this;
     }
 
-    public function getFooter(): array
+    /**
+     * @return string
+     */
+    public function getFooter(): string
     {
         return $this->footer;
     }
 
-    public function setFooter(array $footer): Page
+    /**
+     * @param string $footer
+     * @return Page
+     */
+    public function setFooter(string $footer): Page
     {
         $this->footer = $footer;
-        return $this;
-    }
-
-    public function getMain(): array
-    {
-        return $this->main;
-    }
-
-    public function setMain(array $main): Page
-    {
-        $this->main = $main;
         return $this;
     }
 
@@ -99,9 +120,9 @@ class Page implements JsonSerializable
         $page->code = $data['code'] ?? null;
         $page->title = $data['title'] ?? '';
         $page->description = $data['description'] ?? '';
-        $page->main = $data['main'] ?? [];
-        $page->footer = $data['footer'] ?? [];
-        $page->header = $data['header'] ?? [];
+        $page->main = $data['main'] ?? '';
+        $page->footer = $data['footer'] ?? '';
+        $page->header = $data['header'] ?? '';
         return $page;
     }
 

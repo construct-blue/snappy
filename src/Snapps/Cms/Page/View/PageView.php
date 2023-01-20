@@ -11,6 +11,7 @@ use Blue\Core\View\PageWrapper;
 use Blue\Core\View\ViewComponent;
 use Blue\Snapps\Cms\CmsFooter;
 use Blue\Snapps\Cms\CmsNavigation;
+use Blue\Snapps\Cms\SnappNavigation;
 
 /**
  * @property string $snapp
@@ -26,14 +27,14 @@ class PageView extends ViewComponent
                 'title' => 'Pages - CMS',
                 'body' => [
                     'header' => [
-                        CmsNavigation::fromParams([]),
+                        CmsNavigation::class => [
+
+                        ],
                         'h1' => [
-                            'Pages for ',
-                            LinkSelect::class => [
-                                'selected' => $this->snapp ?? '',
-                                'options' => $this->snapps,
-                                'hrefCallback' => fn($value) => "{basePath}/pages/$value",
-                            ],
+                            'Pages',
+                        ],
+                        SnappNavigation::class => [
+                            'basePath' => '{basePath}/pages'
                         ],
                     ],
                     'main id="main"' => [

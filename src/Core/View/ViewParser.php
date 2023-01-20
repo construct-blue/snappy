@@ -6,10 +6,18 @@ namespace Blue\Core\View;
 
 use IvoPetkov\HTML5DOMDocument;
 use IvoPetkov\HTML5DOMElement;
+use Parsedown;
 
 class ViewParser
 {
-    public function parseString(string $content): array
+
+    public function parseMarkdown(string $content): array
+    {
+        $parsedown = new \ParsedownExtra();
+        return $this->parseHtml($parsedown->text($content));
+    }
+
+    public function parseHtml(string $content): array
     {
         if ($content == '') {
             return [];

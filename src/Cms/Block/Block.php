@@ -10,7 +10,7 @@ final class Block implements JsonSerializable
 {
     private string $id;
     private ?string $code = null;
-    private array $content = [];
+    private string $content = '';
 
     public function __construct()
     {
@@ -43,20 +43,19 @@ final class Block implements JsonSerializable
         return $this;
     }
 
-
     /**
-     * @return array
+     * @return string
      */
-    public function getContent(): array
+    public function getContent(): string
     {
         return $this->content;
     }
 
     /**
-     * @param array $content
+     * @param string $content
      * @return Block
      */
-    public function setContent(array $content): Block
+    public function setContent(string $content): Block
     {
         $this->content = $content;
         return $this;
@@ -65,9 +64,9 @@ final class Block implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'id' => $this->getId(),
-            'code' => $this->getCode(),
-            'content' => $this->getContent()
+            'id' => $this->id,
+            'code' => $this->code,
+            'content' => $this->content
         ];
     }
 
@@ -76,7 +75,7 @@ final class Block implements JsonSerializable
         $block = new Block();
         $block->id = $data['id'];
         $block->code = $data['code'] ?? null;
-        $block->content = $data['content'];
+        $block->content = $data['content'] ?? '';
         return $block;
     }
 }

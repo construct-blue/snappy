@@ -18,7 +18,7 @@ class BlockSaveAction extends ActionHandler
         if (isset($data['id']) && isset($data['content'])) {
             $repo = new BlockRepository($snapp);
             $block = $repo->findById($data['id']);
-            $block->setContent((new ViewParser())->parseString($data['content']));
+            $block->setContent($data['content']);
             if (isset($data['code'])) {
                 $block->setCode($data['code']);
             }

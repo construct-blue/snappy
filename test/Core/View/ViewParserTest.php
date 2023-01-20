@@ -21,7 +21,7 @@ class ViewParserTest extends TestCase
                     ]
                 ]
             ],
-            $parser->parseString('<article id="elem" class="cl">content<p>paragraph</p></article>')
+            $parser->parseHtml('<article id="elem" class="cl">content<p>paragraph</p></article>')
         );
     }
 
@@ -36,7 +36,7 @@ class ViewParserTest extends TestCase
                     ]
                 ]
             ],
-            $parser->parseString('<p><strong>asdfasdf</strong></p>')
+            $parser->parseHtml('<p><strong>asdfasdf</strong></p>')
         );
     }
 
@@ -56,7 +56,7 @@ class ViewParserTest extends TestCase
                 ['<br/>'],
                 ['div' => ['test']]
             ],
-            $parser->parseString('<article id="elem" class="cl">content<p>paragraph</p></article><br><div>test</div>')
+            $parser->parseHtml('<article id="elem" class="cl">content<p>paragraph</p></article><br><div>test</div>')
         );
     }
 }

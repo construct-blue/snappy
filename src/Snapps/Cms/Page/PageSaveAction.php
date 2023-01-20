@@ -22,13 +22,13 @@ class PageSaveAction extends ActionHandler
             $repo = new PageRepository($snapp);
             $page = $repo->findById($data['id']);
             if (isset($data['header'])) {
-                $page->setHeader((new ViewParser())->parseString($data['header']));
+                $page->setHeader($data['header']);
             }
             if (isset($data['main'])) {
-                $page->setMain((new ViewParser())->parseString($data['main']));
+                $page->setMain($data['main']);
             }
             if (isset($data['footer'])) {
-                $page->setFooter((new ViewParser())->parseString($data['footer']));
+                $page->setFooter($data['footer']);
             }
             if (isset($data['code'])) {
                 $page->setCode($data['code']);

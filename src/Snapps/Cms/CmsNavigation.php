@@ -9,6 +9,9 @@ use Blue\Core\View\ViewComponent;
 
 /**
  * @property bool $userIsGuest
+ * @property string $userName
+ * @property string $basePath
+ * @property string $loginPath
  */
 class CmsNavigation extends ViewComponent
 {
@@ -17,8 +20,8 @@ class CmsNavigation extends ViewComponent
         return [
             'nav' => [
                 ['a href="/"' => 'Home'],
-                ['a href="{basePath}/pages"' => 'Pages'],
-                ['a href="{basePath}/blocks"' => 'Blocks'],
+                ['a href="{basePath}/pages/{snapp}"' => 'Pages'],
+                ['a href="{basePath}/blocks/{snapp}"' => 'Blocks'],
                 fn() => $this->userIsGuest ? [
                     'a href="{loginPath}"' => [
                         Icon::class => [

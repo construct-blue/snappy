@@ -8,6 +8,7 @@ use Blue\Core\View\Component\Button\ConfirmButton;
 use Blue\Core\View\Component\Button\SubmitButton;
 use Blue\Core\View\Component\Form\Form;
 use Blue\Core\View\Component\Form\Hidden;
+use Blue\Core\View\Component\Form\Markdown;
 use Blue\Core\View\Component\Form\Textfield;
 use Blue\Core\View\ViewComponent;
 
@@ -48,7 +49,11 @@ class BlockEditView extends ViewComponent
                             'formaction' => '{basePath}/blocks/delete/{snapp}',
                         ],
                     ],
-                    'div role="input" contenteditable name="content"' => $this->content,
+                    Markdown::class => [
+                        'label' => 'Content',
+                        'name' => 'content',
+                        'value' =>  $this->content,
+                    ],
                 ]
             ],
         ];
