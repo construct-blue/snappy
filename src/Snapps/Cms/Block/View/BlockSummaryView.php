@@ -16,7 +16,7 @@ class BlockSummaryView extends ViewComponent
     {
         return [
             Icon::class => [
-                'icon' => 'edit'
+                'icon' => 'file-text'
             ],
             ' ',
             'span' => $this->code,

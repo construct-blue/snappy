@@ -41,7 +41,7 @@ class PageView extends ViewComponent
                     'main id="main"' => [
                         'a href="{basePath}/blocks/{snapp}"' => [
                             Icon::class => [
-                                'icon' => 'tool'
+                                'icon' => 'file-text'
                             ],
                             ' Configure reusable blocks',
                         ],
@@ -49,7 +49,13 @@ class PageView extends ViewComponent
                         array_map(fn(Page $page) => [
                             Details::class => [
                                 'id' => $page->getId(),
-                                'summary' => $page->getCode() ?? '',
+                                'summary' => [
+                                    Icon::class => [
+                                        'icon' => 'layout'
+                                    ],
+                                    ' ',
+                                    $page->getCode() ?? ''
+                                ],
                                 'content' => [
                                     PageEditView::class => [
                                         'id' => $page->getId(),

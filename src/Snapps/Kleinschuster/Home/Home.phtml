@@ -1,9 +1,13 @@
 <header>
-    <h1>Robert Kleinschuster</h1>
-    <nav>
-        <a href="https://instagram.com/robertkleinschuster">Instagram</a>
-        <a href="https://facebook.com/robert.kleinschuster">Facebook</a>
-        <a href="https://t.me/robkleee">Telegram</a>
-        <a href="https://github.com/robertkleinschuster">GitHub</a>
-    </nav>
+    <?php if (isset($this->header)): ?>
+        <?= $this->header ?>
+    <?php else: ?>
+        <h1>Robert Kleinschuster</h1>
+        <nav>
+            <a href="https://instagram.com/robertkleinschuster">Instagram</a>
+            <a href="https://facebook.com/robert.kleinschuster">Facebook</a>
+            <a href="https://t.me/robkleee">Telegram</a>
+            <a href="https://github.com/robertkleinschuster">GitHub</a>
+        </nav>
+    <?php endif; ?>
 </header>

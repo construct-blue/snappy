@@ -9,9 +9,10 @@ use Blue\Core\View\TemplateViewComponent;
 use Blue\Core\View\ViewComponent;
 
 /**
- * @property Page $page
+ * @property string $header
+ * @property string $main
+ * @property string $footer
  */
-#[Entrypoint(__DIR__ . '/Home.ts')]
 class Home extends ViewComponent
 {
     public function render(): array
@@ -22,9 +23,8 @@ class Home extends ViewComponent
                 'title' => 'Robert Kleinschuster',
                 'body' => [
                     TemplateViewComponent::forTemplate(__DIR__ . '/Home.phtml'),
-                    fn() => isset($this->page) ? [
-                        'main' => $parsedown->text($this->page->getMain())
-                    ] : []
+                    'main' => $this->main ?? '',
+                    'footer' => $this->footer ?? '',
                 ]
             ],
         ];

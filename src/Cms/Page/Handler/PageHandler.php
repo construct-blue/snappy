@@ -11,6 +11,7 @@ use Blue\Cms\Page\PageRepository;
 use Blue\Core\Application\Handler\TemplateHandler;
 use Blue\Core\Application\Ingress\IngressResult;
 use Laminas\Diactoros\Response\HtmlResponse;
+use ParsedownExtra;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -34,8 +35,17 @@ class PageHandler extends TemplateHandler implements MiddlewareInterface
     {
         /** @var IngressResult $ingressResult */
         $ingressResult = $request->getAttribute(IngressResult::class);
+        /** @var Page $page */
         $page = $request->getAttribute(Page::class);
+
+        $parsedown = new ParsedownExtra();
+        $this->assign('title', $page->getTitle());
+        $this->assign('description', $page->getDescription());
+        $this->assign('header', $parsedown->text($page->getHeader()));
+        $this->assign('main', $parsedown->text($page->getMain()));
+        $this->assign('footer', $parsedown->text($page->getFooter()));
+
         $placeholder = new BlockPlaceholder(new BlockRepository($ingressResult->getRoute()->getCode()));
-        return new HtmlResponse($placeholder->replace($this->render(PageView::class, ['page' => $page])));
+        return new HtmlResponse($placeholder->replace($this->render(PageView::class)));
     }
 }
