@@ -10,7 +10,6 @@ use Parsedown;
 
 class ViewParser
 {
-
     public function parseMarkdown(string $content): array
     {
         $parsedown = new \ParsedownExtra();

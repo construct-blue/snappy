@@ -2,8 +2,6 @@
 
 namespace Blue\Snapps\Kleinschuster\Home;
 
-use Blue\Cms\Page\Page;
-use Blue\Core\View\Entrypoint;
 use Blue\Core\View\PageWrapper;
 use Blue\Core\View\TemplateViewComponent;
 use Blue\Core\View\ViewComponent;
@@ -17,7 +15,6 @@ class Home extends ViewComponent
 {
     public function render(): array
     {
-        $parsedown = new \ParsedownExtra();
         return [
             PageWrapper::class => [
                 'title' => 'Robert Kleinschuster',

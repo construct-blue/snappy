@@ -26,6 +26,7 @@ class IngressRoute implements MiddlewareInterface
     private ?string $name = null;
     private ?string $domainSuffix = null;
     private array $domainAliases = [];
+    private bool $cms = true;
 
     public function __construct(SnappInterface $snapp, string $path, ?string $domain = null)
     {
@@ -113,6 +114,17 @@ class IngressRoute implements MiddlewareInterface
     public function setName(?string $name): IngressRoute
     {
         $this->name = $name;
+        return $this;
+    }
+
+    public function isCms(): bool
+    {
+        return $this->cms;
+    }
+
+    public function setCms(bool $cms): IngressRoute
+    {
+        $this->cms = $cms;
         return $this;
     }
 

@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Blue\Snapps\System\Analytics;
+namespace Blue\Snapps\Analytics\Day;
 
-use Blue\Snapps\System\SystemFooter;
-use Blue\Snapps\System\SystemNavigation;
 use Blue\Core\Analytics\Day;
 use Blue\Core\I18n\Language;
 use Blue\Core\I18n\Region;
@@ -13,29 +11,30 @@ use Blue\Core\View\Component\Form\Form;
 use Blue\Core\View\Component\Icon\Icon;
 use Blue\Core\View\PageWrapper;
 use Blue\Core\View\ViewComponent;
+use Blue\Snapps\Analytics\AnalyticsNavigation;
 
 /**
  * @property Day $summary
  * @property string[] $codes
  */
-class AnalyticsView extends ViewComponent
+class DayView extends ViewComponent
 {
     public function render(): array
     {
         return [
             PageWrapper::class => [
-                'title' => 'Analytics',
+                'title' => 'Day',
                 'body' => [
                     'header' => [
-                        SystemNavigation::class => [],
-                        'h1' => 'Analytics',
+                        AnalyticsNavigation::class => [],
+                        'h1' => 'Day',
                     ],
                     'main' => [
                         [
                             'section id="summary"' => [
                                 Form::class => [
                                     'method' => 'post',
-                                    'action' => '{basePath}/analytics/refresh',
+                                    'action' => '{basePath}/day/refresh',
                                     'id' => '',
                                     'content' => [
                                         'button type="submit"' => [
@@ -44,7 +43,7 @@ class AnalyticsView extends ViewComponent
                                             ],
                                             'span' => 'Refresh'
                                         ],
-                                        'select onchange="window.location = `{basePath}/analytics/${this.value}`"' => [
+                                        'select onchange="window.location = `{basePath}/day/${this.value}`"' => [
                                             array_map(
                                                 fn(string $code) => $this->summary->getCode() === $code ?
                                                     ['option selected' => $code] :
@@ -143,7 +142,6 @@ EOF
                             ],
                         ],
                     ],
-                    SystemFooter::class => [],
                 ],
             ],
         ];

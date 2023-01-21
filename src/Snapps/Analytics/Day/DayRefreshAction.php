@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Blue\Snapps\System\Analytics;
+namespace Blue\Snapps\Analytics\Day;
 
-use Laminas\Diactoros\Response;
 use Blue\Core\Analytics\DayCalculation;
+use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class AnalyticsRefreshAction implements RequestHandlerInterface
+class DayRefreshAction implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

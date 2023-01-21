@@ -241,7 +241,7 @@ EOF;
         $layout->title = '';
         $layout->body = [];
 
-        $renderer = new ViewRenderer();
+        $renderer = new ViewRenderer(null, true);
         $this->assertNotEmpty($renderer->render($layout));
     }
 

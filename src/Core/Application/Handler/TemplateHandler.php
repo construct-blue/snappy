@@ -42,10 +42,9 @@ abstract class TemplateHandler implements RequestHandlerInterface
         $snapps = [];
         /** @var IngressRoute $route */
         foreach (Attribute::SNAPP_ROUTES->getFrom($request) as $route) {
-            if (in_array($route->getCode(), ['cms', 'system'])) {
-                continue;
+            if ($route->isCms()) {
+                $snapps[$route->getCode()] = $route->getName();
             }
-            $snapps[$route->getCode()] = $route->getName();
         }
         $this->assign('snapps', $snapps);
     }

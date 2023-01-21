@@ -53,13 +53,14 @@ class PageWrapper extends ViewComponent
                     $this->body ?? [],
                     $this->content ?? [],
                     $this->scripts,
-                    TemplateViewComponent::forTemplate(
-                        __DIR__ . '/Messages.phtml',
-                        [
-                            'messages' => $this->session?->popMessages(),
-                            'validations' => $this->session?->popValidations(),
-                        ]
-                    ),
+                    fn() => isset($this->session) ?
+                        TemplateViewComponent::forTemplate(
+                            __DIR__ . '/Messages.phtml',
+                            [
+                                'messages' => $this->session->popMessages(),
+                                'validations' => $this->session->popValidations(),
+                            ]
+                        ) : '',
                     TemplateViewComponent::forTemplate(__DIR__ . '/Analytics.phtml'),
                 ])
             ]

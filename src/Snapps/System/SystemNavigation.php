@@ -18,7 +18,7 @@ class SystemNavigation extends ViewComponent
             'nav' => [
                 ['a href="/"' => 'Home'],
                 ['a href="{basePath}/users"' => 'Users'],
-                ['a href="{basePath}/analytics"' => 'Analytics'],
+                ['a href="{basePath}/setup/tesla"' => 'NICEmobil Setup'],
                 fn() => $this->userIsGuest ? [
                     'a href="{loginPath}"' => [
                         Icon::class => [

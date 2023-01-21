@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Blue\Snapps\System\Analytics;
+namespace Blue\Snapps\Analytics\Day;
 
-use Laminas\Diactoros\Response\HtmlResponse;
 use Blue\Core\Analytics\AnalyticsDayRepository;
-use Blue\Core\Analytics\AnalyticsEntryRepository;
 use Blue\Core\Application\Handler\TemplateHandler;
+use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class AnalyticsHandler extends TemplateHandler
+class DayHandler extends TemplateHandler
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -25,6 +24,6 @@ class AnalyticsHandler extends TemplateHandler
 
         $this->assign('codes', iterator_to_array(AnalyticsDayRepository::instance()->findAllCodes()));
 
-        return new HtmlResponse($this->render(AnalyticsView::class));
+        return new HtmlResponse($this->render(DayView::class));
     }
 }
