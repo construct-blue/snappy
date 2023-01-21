@@ -15,22 +15,6 @@ class StartpageHandler extends TemplateHandler
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var IngressRoute[] $apps */
-        $apps = Attribute::SNAPP_ROUTES->getFrom($request);
-
-        $snapps = [];
-        $managers = [];
-        foreach ($apps as $app) {
-            if ($app->getDomain()) {
-                $snapps[(string)$app->getUri()] = $app->getName();
-            } elseif ($app->getPath() !== '/') {
-                $managers[(string)$app->getUri()] = $app->getName();
-            }
-        }
-
-        $this->assign('snapps', $snapps);
-        $this->assign('managers', $managers);
-
         return new HtmlResponse($this->render(StartpageView::class));
     }
 }

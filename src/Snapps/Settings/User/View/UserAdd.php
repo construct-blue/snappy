@@ -1,6 +1,6 @@
 <?php
 
-namespace Blue\Snapps\System\User\View;
+namespace Blue\Snapps\Settings\User\View;
 
 use Blue\Core\View\Component\Form\Textfield;
 use Blue\Core\View\Component\Icon\Icon;

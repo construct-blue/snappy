@@ -1,10 +1,10 @@
 <?php
 
-namespace Blue\Snapps\System\Client\Tesla;
+namespace Blue\Snapps\Settings\Tesla;
 
-use Laminas\Diactoros\Response\HtmlResponse;
 use Blue\Core\Application\Handler\TemplateHandler;
 use Blue\Logic\Client\Tesla\TeslaClientRepository;
+use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

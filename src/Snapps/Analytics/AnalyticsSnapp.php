@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Blue\Snapps\Analytics;
 
 use Blue\Core\Application\AbstractSnapp;
+use Blue\Core\Application\SystemNavigation;
 use Blue\Core\Authentication\AuthenticationMiddleware;
 use Blue\Core\Authentication\AuthorizationMiddleware;
 use Blue\Core\Authentication\UserRole;

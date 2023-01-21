@@ -34,7 +34,7 @@ class Button extends ViewComponent
                     Icon::class => [
                         'icon' => $this->icon
                     ],
-                    'span' => $this->text
+                    fn() => empty($this->text) ?: ['span' => $this->text],
                 ] : [
                     $this->text
                 ]

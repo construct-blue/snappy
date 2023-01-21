@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Blue\Core\Application\Handler;
 
+use Blue\Core\Application\Ingress\IngressResult;
 use Blue\Core\Application\Ingress\IngressRoute;
 use Blue\Core\Application\Session\Session;
 use Blue\Core\Http\Attribute;
+use Blue\Core\Http\Uri\UriBuilder;
 use Mezzio\Template\TemplateRendererInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -32,20 +34,27 @@ abstract class TemplateHandler implements RequestHandlerInterface
         $this->getRenderer()->addDefaultParam(TemplateRendererInterface::TEMPLATE_ALL, $name, $value);
     }
 
+    public function getUriBuilder(ServerRequestInterface $request): UriBuilder
+    {
+        return $this->getIngressResult($request)->getUriBuilder();
+    }
+
+    public function getIngressResult(ServerRequestInterface $request): IngressResult
+    {
+        return $request->getAttribute(IngressResult::class);
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return IngressRoute[]
+     */
+    public function getSnapps(ServerRequestInterface $request): array
+    {
+        return Attribute::SNAPP_ROUTES->getFrom($request);
+    }
+
     public function getSession(ServerRequestInterface $request): Session
     {
         return $request->getAttribute(Session::class);
-    }
-
-    public function assignSnapps(ServerRequestInterface $request)
-    {
-        $snapps = [];
-        /** @var IngressRoute $route */
-        foreach (Attribute::SNAPP_ROUTES->getFrom($request) as $route) {
-            if ($route->isCms()) {
-                $snapps[$route->getCode()] = $route->getName();
-            }
-        }
-        $this->assign('snapps', $snapps);
     }
 }

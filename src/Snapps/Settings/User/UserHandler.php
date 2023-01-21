@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Blue\Snapps\System\User;
+namespace Blue\Snapps\Settings\User;
 
 use Blue\Core\Application\Handler\TemplateHandler;
 use Blue\Core\Authentication\UserRepository;
-use Blue\Snapps\System\User\View\UserView;
+use Blue\Snapps\Settings\User\View\UserView;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

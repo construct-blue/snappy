@@ -18,7 +18,7 @@ class ConfigProvider
                 'factories' => [
                     StartpageHandler::class => TemplateHandlerFactory::class,
                     MyAccountHandler::class => TemplateHandlerFactory::class,
-                    PageHandler::class => TemplateHandlerFactory::class
+                    PageHandler::class => TemplateHandlerFactory::class,
                 ]
             ]
         ];

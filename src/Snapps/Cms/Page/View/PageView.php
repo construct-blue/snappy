@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace Blue\Snapps\Cms\Page\View;
 
 use Blue\Cms\Page\Page;
-use Blue\Core\View\Component\Button\ConfirmButton;
+use Blue\Core\Application\Ingress\IngressRoute;
+use Blue\Core\View\Component\Button\LinkButton;
 use Blue\Core\View\Component\Details\Details;
 use Blue\Core\View\Component\Icon\Icon;
-use Blue\Core\View\Component\Select\LinkSelect;
+use Blue\Core\View\Component\Link;
 use Blue\Core\View\PageWrapper;
 use Blue\Core\View\ViewComponent;
 use Blue\Snapps\Cms\CmsFooter;
 use Blue\Snapps\Cms\CmsHeader;
 
 /**
- * @property string $snapp
- * @property array $snapps
+ * @property IngressRoute $snapp
+ * @property IngressRoute $activeSnapp
  * @property Page[] $pages
  */
 class PageView extends ViewComponent
@@ -25,28 +26,27 @@ class PageView extends ViewComponent
     {
         return [
             PageWrapper::class => [
-                'title' => 'Content Manager',
+                'title' => $this->snapp->getName() . ' - ' . $this->activeSnapp->getName(),
                 'body' => [
                     CmsHeader::class => [
                         'basePath' => '{basePath}/pages'
                     ],
                     'main id="main"' => [
-                        'a href="{basePath}/blocks/{snapp}"' => [
-                            Icon::class => [
-                                'icon' => 'file-text'
-                            ],
-                            ' Configure reusable blocks',
+                        Link::class => [
+                            'href' => '{basePath}/blocks/' . $this->snapp->getCode(),
+                            'text' => [
+                                Icon::class => [
+                                    'icon' => 'file-text'
+                                ],
+                                ' Configure reusable blocks',
+                            ]
                         ],
                         PageAddView::class => [],
                         array_map(fn(Page $page) => [
                             Details::class => [
                                 'id' => $page->getId(),
                                 'summary' => [
-                                    Icon::class => [
-                                        'icon' => 'layout'
-                                    ],
-                                    ' ',
-                                    $page->getCode() ?? '',
+                                    'span' => $page->getCode(),
                                 ],
                                 'content' => [
                                     PageEditView::class => [

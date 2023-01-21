@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Blue\Snapps\System\User\View;
+namespace Blue\Snapps\Settings\User\View;
 
 use Blue\Core\Authentication\UserRole;
 use Blue\Core\Authentication\UserState;

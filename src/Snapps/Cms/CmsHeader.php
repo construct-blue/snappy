@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\Cms;
 
-use Blue\Core\View\Component\Icon\Icon;
+use Blue\Core\Application\SystemNavigation;
+use Blue\Core\Application\SystemMenuItems;
 use Blue\Core\View\ViewComponent;
 
 /**
@@ -19,17 +20,11 @@ class CmsHeader extends ViewComponent
     {
         return [
             'header' => [
-                'nav' => [
-                    ['a href="/"' => 'Home'],
-                    ['a href="{basePath}/{snapp}"' => 'Content'],
-                ],
-                'h1' => [
-                    'Content Manager',
-                ],
+                SystemNavigation::class => [],
                 SnappNavigation::class => [
                     'basePath' => '{basePath}'
                 ],
-            ],
+            ]
         ];
     }
 }

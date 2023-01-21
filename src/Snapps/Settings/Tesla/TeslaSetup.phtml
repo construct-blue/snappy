@@ -1,10 +1,11 @@
-<header>
-    <h1>TeslaClient - Setup</h1>
-</header>
 <main>
     <?php
     if (isset($this->current)): ?>
-        <p>current: <?= $this->current ?></p>
+
+        <fieldset>
+            <legend>Registered</legend>
+            <?= $this->current ?>
+        </fieldset>
     <?php
     endif; ?>
     <form method="post">

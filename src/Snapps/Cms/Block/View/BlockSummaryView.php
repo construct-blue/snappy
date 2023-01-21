@@ -15,11 +15,7 @@ class BlockSummaryView extends ViewComponent
     public function render(): array
     {
         return [
-            Icon::class => [
-                'icon' => 'file-text'
-            ],
-            ' ',
-            'span' => $this->code,
+            'span style="font-family: Markdown; background: var(--bg)"' => "{block:$this->code}",
         ];
     }
 }

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Blue\Snapps\Cms\Block\View;
 
 use Blue\Cms\Block\Block;
+use Blue\Core\Application\Ingress\IngressRoute;
 use Blue\Core\View\Component\Details\Details;
 use Blue\Core\View\Component\Icon\Icon;
+use Blue\Core\View\Component\Link;
 use Blue\Core\View\PageWrapper;
 use Blue\Core\View\ViewComponent;
 use Blue\Snapps\Cms\CmsFooter;
@@ -14,7 +16,8 @@ use Blue\Snapps\Cms\CmsHeader;
 use Blue\Snapps\Cms\SnappNavigation;
 
 /**
- * @property null|string $snapp
+ * @property IngressRoute $snapp
+ * @property IngressRoute $activeSnapp
  * @property array $snapps
  * @property array $blocks
  */
@@ -24,17 +27,20 @@ class BlockView extends ViewComponent
     {
         return [
             PageWrapper::class => [
-                'title' => 'Blocks - CMS',
+                'title' => $this->snapp->getName() . ' - ' . $this->activeSnapp->getName(),
                 'body' => [
                     CmsHeader::class => [
                         'basePath' => '{basePath}/blocks'
                     ],
                     'main id="main"' => [
-                        'a href="{basePath}/pages/{snapp}"' => [
-                            Icon::class => [
-                                'icon' => 'layout'
-                            ],
-                            ' Manage pages',
+                        Link::class => [
+                            'href' => '{basePath}/pages/' . $this->snapp->getCode(),
+                            'text' => [
+                                Icon::class => [
+                                    'icon' => 'layout'
+                                ],
+                                ' Manage pages',
+                            ]
                         ],
                         new BlockAddView(),
                         array_map(fn(Block $block) => [

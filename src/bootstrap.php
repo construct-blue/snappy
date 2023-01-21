@@ -8,7 +8,7 @@ use Blue\Snapps\Blue\BlueSnapp;
 use Blue\Snapps\Cms\CmsSnapp;
 use Blue\Snapps\Kleinschuster\KleinschusterSnapp;
 use Blue\Snapps\Nicemobil\NicemobilSnapp;
-use Blue\Snapps\System\SystemSnapp;
+use Blue\Snapps\Settings\SettingsSnapp;
 
 global $env;
 
@@ -16,15 +16,16 @@ $cache = fn(string $key) => "data/$key";
 
 $server = SnappyServer::fromEnv($env, $cache('server'));
 $server->addSnapp(BlueSnapp::fromEnv($env, $cache('blue')), '/')
+    ->setSite(false)
     ->setName('Snappy');
 $server->addSnapp(CmsSnapp::fromEnv($env, $cache('cms')), '/cms')
-    ->setCms(false)
+    ->setSite(false)
     ->setName('Content Manager');
 $server->addSnapp(AnalyticsSnapp::fromEnv($env, $cache('analytics')), '/analytics')
-    ->setCms(false)
+    ->setSite(false)
     ->setName('Analytics');
-$server->addSnapp(SystemSnapp::fromEnv($env, $cache('system')), '/system')
-    ->setCms(false)
+$server->addSnapp(SettingsSnapp::fromEnv($env, $cache('settings')), '/settings')
+    ->setSite(false)
     ->setName('Settings');
 
 

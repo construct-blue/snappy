@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\Analytics;
 
+use Blue\Core\View\Component\Link;
 use Blue\Core\View\ViewComponent;
 
 class AnalyticsNavigation extends ViewComponent
@@ -12,8 +13,11 @@ class AnalyticsNavigation extends ViewComponent
     {
         return [
             'nav' => [
-                'a href="/"' => 'Home',
-                'a href="{basePath}/day"' => 'Day',
+                Link::class => [
+                    'href' => '{basePath}/day',
+                    'text' => 'Day',
+                    'active' => true,
+                ],
             ],
         ];
     }

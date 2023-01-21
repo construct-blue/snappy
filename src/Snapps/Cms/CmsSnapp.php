@@ -16,7 +16,6 @@ use Blue\Snapps\Cms\Block\BlockSaveAction;
 use Blue\Snapps\Cms\Page\PageAddAction;
 use Blue\Snapps\Cms\Page\PageDeleteAction;
 use Blue\Snapps\Cms\Page\PageHandler;
-use Blue\Snapps\Cms\MyAccount\MyAccountHandler;
 use Blue\Snapps\Cms\Page\PageSaveAction;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Mezzio\Router\Route;

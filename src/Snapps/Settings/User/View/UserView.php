@@ -2,16 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Blue\Snapps\System\User\View;
+namespace Blue\Snapps\Settings\User\View;
 
+use Blue\Core\Application\Ingress\IngressRoute;
+use Blue\Core\Application\SystemNavigation;
 use Blue\Core\Authentication\User;
 use Blue\Core\View\Component\Details\Details;
 use Blue\Core\View\PageWrapper;
 use Blue\Core\View\ViewComponent;
-use Blue\Snapps\System\SystemFooter;
-use Blue\Snapps\System\SystemNavigation;
+use Blue\Snapps\Settings\SettingsNavigation;
 
 /**
+ * @property IngressRoute $activeSnapp
  * @property User[] $users
  */
 class UserView extends ViewComponent
@@ -20,11 +22,11 @@ class UserView extends ViewComponent
     {
         return [
             PageWrapper::class => [
-                'title' => 'Users',
+                'title' => $this->activeSnapp->getName(),
                 'body' => [
                     'header' => [
                         SystemNavigation::class => [],
-                        'h1' => 'Users',
+                        SettingsNavigation::class => [],
                     ],
                     'main id="main"' => [
                         new UserAdd(),
@@ -56,7 +58,6 @@ class UserView extends ViewComponent
                             $this->users
                         )
                     ],
-                    SystemFooter::class => []
                 ],
             ]
         ];

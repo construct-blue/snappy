@@ -11,7 +11,6 @@ class CmsFooter extends ViewComponent
     public function render(): array
     {
         return [
-            'footer' => []
         ];
     }
 }

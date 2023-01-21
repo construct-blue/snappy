@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Blue\Snapps\System;
+namespace Blue\Snapps\Settings;
 
 use Blue\Cms\Page\Handler\PageHandler;
 use Blue\Core\Application\Handler\TemplateHandlerFactory;
 use Blue\Snapps\Analytics\Day\DayHandler;
-use Blue\Snapps\System\Client\Tesla\TeslaSetupHandler;
-use Blue\Snapps\System\User\UserHandler;
+use Blue\Snapps\Settings\Tesla\TeslaSetupHandler;
+use Blue\Snapps\Settings\User\UserHandler;
 
 class ConfigProvider
 {

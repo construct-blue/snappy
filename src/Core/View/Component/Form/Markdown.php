@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Core\View\Component\Form;
 
+use Blue\Core\View\Component\Icon\Icon;
 use Blue\Core\View\ViewComponent;
 
 /**
@@ -34,10 +35,14 @@ class Markdown extends ViewComponent
         }
         return [
             fn() => isset($this->label) ? [
-                "label for=\"{$this->__id()}\"" => $this->label,
-                "textarea id=\"{$this->__id()}\" type=\"text\" name=\"{$this->name}\"$attributes" => $this->value ?? '',
+                "label for=\"{$this->__id()}\"" => [
+                    $this->label,
+                ],
+                "textarea id=\"{$this->__id()}\" type=\"markdown\" name=\"{$this->name}\"$attributes" =>
+                    $this->value ?? '',
             ] : [
-                "textarea id=\"{$this->__id()}\" type=\"text\" name=\"{$this->name}\"$attributes" => $this->value ?? '',
+                "textarea id=\"{$this->__id()}\" type=\"markdown\" name=\"{$this->name}\"$attributes" =>
+                    $this->value ?? '',
             ],
         ];
     }

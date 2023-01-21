@@ -1,6 +1,6 @@
 <?php
 
-namespace Blue\Snapps\System\User;
+namespace Blue\Snapps\Settings\User;
 
 use Blue\Core\Application\Handler\ActionHandler;
 use Laminas\Diactoros\Response;

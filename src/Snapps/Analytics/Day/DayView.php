@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Blue\Snapps\Analytics\Day;
 
 use Blue\Core\Analytics\Day;
+use Blue\Core\Application\Ingress\IngressRoute;
+use Blue\Core\Application\SystemNavigation;
 use Blue\Core\I18n\Language;
 use Blue\Core\I18n\Region;
 use Blue\Core\View\Component\Form\Form;
@@ -15,6 +17,7 @@ use Blue\Snapps\Analytics\AnalyticsNavigation;
 
 /**
  * @property Day $summary
+ * @property IngressRoute $activeSnapp
  * @property string[] $codes
  */
 class DayView extends ViewComponent
@@ -23,11 +26,11 @@ class DayView extends ViewComponent
     {
         return [
             PageWrapper::class => [
-                'title' => 'Day',
+                'title' => $this->activeSnapp->getName(),
                 'body' => [
                     'header' => [
+                        SystemNavigation::class => [],
                         AnalyticsNavigation::class => [],
-                        'h1' => 'Day',
                     ],
                     'main' => [
                         [

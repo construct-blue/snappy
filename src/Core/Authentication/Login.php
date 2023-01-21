@@ -23,7 +23,7 @@ class Login extends ViewComponent
                 'title' => 'Login',
                 'body' => [
                     'header' => [
-                        'h1' => [
+                        'p' => [
                             'svg style="height: 7rem;"' => [
                                 '<title>Blue Snappy</title>',
                                 '<use href="/logo.svg#logo"/>'

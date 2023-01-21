@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Blue\Snapps\System\Client\Tesla;
+namespace Blue\Snapps\Settings\Tesla;
 
-use Laminas\Diactoros\Response;
-use Blue\Logic\Client\Tesla\TeslaClient;
 use Blue\Logic\Client\Tesla\TeslaClientRepository;
+use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;

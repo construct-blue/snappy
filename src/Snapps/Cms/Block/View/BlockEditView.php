@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\Cms\Block\View;
 
+use Blue\Core\Application\Ingress\IngressRoute;
 use Blue\Core\View\Component\Button\ConfirmButton;
 use Blue\Core\View\Component\Button\SubmitButton;
 use Blue\Core\View\Component\Form\Form;
@@ -16,6 +17,7 @@ use Blue\Core\View\ViewComponent;
  * @property string $id
  * @property string $code
  * @property array $content
+ * @property IngressRoute $snapp
  */
 class BlockEditView extends ViewComponent
 {
@@ -24,7 +26,7 @@ class BlockEditView extends ViewComponent
         return [
             Form::class => [
                 'method' => 'post',
-                'action' => '{basePath}/blocks/save/{snapp}',
+                'action' => '{basePath}/blocks/save/' . $this->snapp->getCode(),
                 'id' => '',
                 'content' => [
                     Hidden::class => [
@@ -33,6 +35,7 @@ class BlockEditView extends ViewComponent
                     ],
                     'p' => [
                         Textfield::fromParams([
+                            'label' => 'Code',
                             'name' => 'code',
                             'value' => '{code}',
                             'required' => true,
@@ -52,7 +55,7 @@ class BlockEditView extends ViewComponent
                         'icon' => 'trash-2',
                         'message' => 'Sure?',
                         'type' => 'submit',
-                        'formaction' => '{basePath}/blocks/delete/{snapp}',
+                        'formaction' => '{basePath}/blocks/delete/' . $this->snapp->getCode(),
                     ],
                 ]
             ],

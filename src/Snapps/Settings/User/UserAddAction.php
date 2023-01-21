@@ -1,19 +1,26 @@
 <?php
 
-namespace Blue\Snapps\System\User;
+namespace Blue\Snapps\Settings\User;
 
 use Blue\Core\Application\Handler\ActionHandler;
 use Laminas\Diactoros\Response;
+use Blue\Core\Authentication\User;
 use Blue\Core\Authentication\UserRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class UserDeleteAction extends ActionHandler
+class UserAddAction extends ActionHandler
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $data = $request->getParsedBody();
-        UserRepository::instance()->delete($data['id'] ?? '');
+        $user = new User();
+        $name = strip_tags($data['name'] ?? '');
+        $user->setName($name);
+
+        UserRepository::instance()->save($user);
+
+
         return new Response();
     }
 }

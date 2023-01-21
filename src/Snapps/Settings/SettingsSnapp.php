@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Blue\Snapps\System;
+namespace Blue\Snapps\Settings;
 
 use Blue\Cms\Page\Handler\PageHandler;
 use Blue\Core\Application\AbstractSnapp;
@@ -10,16 +10,16 @@ use Blue\Core\Authentication\AuthenticationMiddleware;
 use Blue\Core\Authentication\AuthorizationMiddleware;
 use Blue\Core\Authentication\UserRole;
 use Blue\Core\Http\PostRedirectGetMiddleware;
-use Blue\Snapps\System\Client\Tesla\TeslaSetupAction;
-use Blue\Snapps\System\Client\Tesla\TeslaSetupHandler;
-use Blue\Snapps\System\User\UserAddAction;
-use Blue\Snapps\System\User\UserDeleteAction;
-use Blue\Snapps\System\User\UserHandler;
-use Blue\Snapps\System\User\UserSaveAction;
+use Blue\Snapps\Settings\Tesla\TeslaSetupAction;
+use Blue\Snapps\Settings\Tesla\TeslaSetupHandler;
+use Blue\Snapps\Settings\User\UserAddAction;
+use Blue\Snapps\Settings\User\UserDeleteAction;
+use Blue\Snapps\Settings\User\UserHandler;
+use Blue\Snapps\Settings\User\UserSaveAction;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Mezzio\Router;
 
-class SystemSnapp extends AbstractSnapp
+class SettingsSnapp extends AbstractSnapp
 {
     protected function getConfigProviderList(): array
     {
@@ -38,7 +38,7 @@ class SystemSnapp extends AbstractSnapp
 
     protected function initRoutes(): void
     {
-        $this->get('/', fn() => new RedirectResponse('/system/users'));
+        $this->get('/', fn() => new RedirectResponse('/settings/users'));
 
         $this->get('/users', UserHandler::class);
         $this->post('/users/add', UserAddAction::class);

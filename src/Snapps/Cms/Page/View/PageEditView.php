@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\Cms\Page\View;
 
+use Blue\Core\Application\Ingress\IngressRoute;
 use Blue\Core\View\Component\Button\ConfirmButton;
 use Blue\Core\View\Component\Button\SubmitButton;
 use Blue\Core\View\Component\Form\Form;
 use Blue\Core\View\Component\Form\Hidden;
 use Blue\Core\View\Component\Form\Markdown;
 use Blue\Core\View\Component\Form\Textfield;
+use Blue\Core\View\Component\Link;
 use Blue\Core\View\ViewComponent;
 
 /**
- * @property string $snapp
+ * @property IngressRoute $snapp
  * @property string $id
  * @property string $code
  * @property string $title
@@ -29,7 +31,7 @@ class PageEditView extends ViewComponent
         return [
             Form::class => [
                 'method' => 'post',
-                'action' => '{basePath}/pages/save/{snapp}',
+                'action' => '{basePath}/pages/save/' . $this->snapp->getCode(),
                 'id' => '',
                 'content' => [
                     Hidden::class => [
@@ -95,7 +97,7 @@ class PageEditView extends ViewComponent
                         'icon' => 'trash-2',
                         'text' => 'Delete',
                         'message' => 'Sure?',
-                        'formaction' => '{basePath}/pages/delete/{snapp}'
+                        'formaction' => '{basePath}/pages/delete/' . $this->snapp->getCode()
                     ],
                 ],
             ]

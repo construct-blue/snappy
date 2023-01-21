@@ -111,7 +111,7 @@ class UriBuilder
 
     public function withAppendedPath(string $path): UriBuilder
     {
-        return $this->withPath($this->uri->getPath() . $path);
+        return $this->withPath(rtrim($this->uri->getPath(), '/') . $path);
     }
 
     public function __clone()
