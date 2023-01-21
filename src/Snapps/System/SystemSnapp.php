@@ -12,7 +12,6 @@ use Blue\Core\Authentication\UserRole;
 use Blue\Core\Http\PostRedirectGetMiddleware;
 use Blue\Snapps\System\Client\Tesla\TeslaSetupAction;
 use Blue\Snapps\System\Client\Tesla\TeslaSetupHandler;
-use Blue\Snapps\System\MyAccount\MyAccountHandler;
 use Blue\Snapps\System\User\UserAddAction;
 use Blue\Snapps\System\User\UserDeleteAction;
 use Blue\Snapps\System\User\UserHandler;
@@ -40,7 +39,6 @@ class SystemSnapp extends AbstractSnapp
     protected function initRoutes(): void
     {
         $this->get('/', fn() => new RedirectResponse('/system/users'));
-        $this->get('/my-account', MyAccountHandler::class)->setOptions([]);
 
         $this->get('/users', UserHandler::class);
         $this->post('/users/add', UserAddAction::class);

@@ -8,7 +8,12 @@ use Blue\Cms\Page\Handler\PageHandler;
 use Blue\Core\Analytics\AnalyticsMiddleware;
 use Blue\Core\Application\AbstractSnapp;
 use Blue\Core\Authentication\AuthenticationMiddleware;
+use Blue\Core\Authentication\AuthorizationMiddleware;
+use Blue\Core\Authentication\UserRole;
+use Blue\Core\Http\PostRedirectGetMiddleware;
 use Blue\Core\Util\FaviconHandler;
+use Blue\Snapps\Blue\MyAccount\MyAccountAction;
+use Blue\Snapps\Blue\MyAccount\MyAccountHandler;
 use Blue\Snapps\Blue\Startpage\StartpageHandler;
 
 class BlueSnapp extends AbstractSnapp
@@ -25,13 +30,24 @@ class BlueSnapp extends AbstractSnapp
     protected function initPipeline(): void
     {
         $this->pipe(AuthenticationMiddleware::class);
+        $this->pipe(AuthorizationMiddleware::class);
         $this->pipe(AnalyticsMiddleware::class);
+        $this->pipe(PostRedirectGetMiddleware::class);
     }
 
     protected function initRoutes(): void
     {
         FaviconHandler::addRoutes($this, __DIR__ . '/logo.png');
         $this->get('/', StartpageHandler::class);
+        $this->get('/my-account', MyAccountHandler::class)
+            ->setOptions([
+                AuthorizationMiddleware::ROUTE_OPTION_ROLES => [UserRole::ADMIN]
+            ]);
+
+        $this->post('/my-account', MyAccountAction::class)
+            ->setOptions([
+                AuthorizationMiddleware::ROUTE_OPTION_ROLES => [UserRole::ADMIN]
+            ]);
         $this->get('{code:.+}', PageHandler::class);
     }
 }

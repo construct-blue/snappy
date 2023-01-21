@@ -10,7 +10,7 @@ use Blue\Core\View\Component\Icon\Icon;
 use Blue\Core\View\PageWrapper;
 use Blue\Core\View\ViewComponent;
 use Blue\Snapps\Cms\CmsFooter;
-use Blue\Snapps\Cms\CmsNavigation;
+use Blue\Snapps\Cms\CmsHeader;
 use Blue\Snapps\Cms\SnappNavigation;
 
 /**
@@ -26,14 +26,8 @@ class BlockView extends ViewComponent
             PageWrapper::class => [
                 'title' => 'Blocks - CMS',
                 'body' => [
-                    'header' => [
-                        CmsNavigation::class => [],
-                        'h1' => [
-                            'Content',
-                        ],
-                        SnappNavigation::class => [
-                            'basePath' => '{basePath}/blocks'
-                        ],
+                    CmsHeader::class => [
+                        'basePath' => '{basePath}/blocks'
                     ],
                     'main id="main"' => [
                         'a href="{basePath}/pages/{snapp}"' => [

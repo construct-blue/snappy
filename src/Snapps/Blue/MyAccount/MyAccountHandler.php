@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Blue\Snapps\Cms\MyAccount;
+namespace Blue\Snapps\Blue\MyAccount;
 
 use Blue\Core\Application\Handler\TemplateHandler;
 use Laminas\Diactoros\Response\HtmlResponse;
@@ -14,9 +14,7 @@ class MyAccountHandler extends TemplateHandler
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        if (!$this->getSession($request)->isLoggedIn()) {
-            return new RedirectResponse('/');
-        }
+        $this->assign('user', $this->getSession($request)->getUser());
         return new HtmlResponse($this->render(MyAccountView::class));
     }
 }

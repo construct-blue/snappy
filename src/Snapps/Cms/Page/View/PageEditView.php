@@ -43,17 +43,6 @@ class PageEditView extends ViewComponent
                             'required' => true,
                             'value' => $this->code,
                         ],
-                        SubmitButton::class => [
-                            'icon' => 'save',
-                            'text' => 'Save',
-                        ],
-                        ConfirmButton::class => [
-                            'type' => 'submit',
-                            'icon' => 'trash-2',
-                            'text' => 'Delete',
-                            'message' => 'Sure?',
-                            'formaction' => '{basePath}/pages/delete/{snapp}'
-                        ],
                     ],
                     [
                         'span' => [
@@ -96,6 +85,17 @@ class PageEditView extends ViewComponent
                             'value' => $this->footer,
                             'rows' => 2,
                         ],
+                    ],
+                    SubmitButton::class => [
+                        'icon' => 'save',
+                        'text' => 'Save',
+                    ],
+                    ConfirmButton::class => [
+                        'type' => 'submit',
+                        'icon' => 'trash-2',
+                        'text' => 'Delete',
+                        'message' => 'Sure?',
+                        'formaction' => '{basePath}/pages/delete/{snapp}'
                     ],
                 ],
             ]

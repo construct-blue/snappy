@@ -33,7 +33,7 @@ class NotFound extends ViewComponent
                             'span' => 'Back'
                         ],
                         ' ',
-                        'a href="{basePath}"' => 'Home'
+                        'a href="{basePath}/"' => 'Home'
                     ]
                 ]
             ],

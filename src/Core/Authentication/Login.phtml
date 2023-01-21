@@ -3,24 +3,10 @@
 declare(strict_types=1);
 /** @var Blue\Core\Authentication\Login $this */
 ?>
-<header>
-    <h1>Login</h1>
-</header>
 <main>
     <form method="post">
         <input type="hidden" name="token" value="<?= $this->token ?>">
         <fieldset>
-            <svg
-                width="100%"
-                height="5rem"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            >
-                <use href="/icons.svg#key"></use>
-            </svg>
             <p>
                 <label for="username">Username</label>
                 <input type="text" name="username" id="username">

@@ -13,6 +13,7 @@ use Blue\Core\View\ViewComponent;
  * @property string $value
  * @property string $placeholder
  * @property string $error
+ * @property string $type
  */
 class Textfield extends ViewComponent
 {
@@ -28,12 +29,17 @@ class Textfield extends ViewComponent
         if (!empty($this->required)) {
             $attributes .= ' required';
         }
+        if (empty($this->type)) {
+            $attributes .= ' type="text"';
+        } else {
+            $attributes .= " type=\"$this->type\"";
+        }
         return [
             fn() => isset($this->label) ? [
                 "label for=\"{$this->__id()}\"" => $this->label,
-                "<input id=\"{$this->__id()}\" type=\"text\" name=\"{$this->name}\"$attributes>",
+                "<input id=\"{$this->__id()}\" name=\"{$this->name}\"$attributes>",
             ] : [
-                "<input id=\"{$this->__id()}\" type=\"text\" name=\"{$this->name}\"$attributes>",
+                "<input id=\"{$this->__id()}\" name=\"{$this->name}\"$attributes>",
             ],
         ];
     }

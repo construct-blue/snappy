@@ -22,6 +22,14 @@ class Login extends ViewComponent
             PageWrapper::class => [
                 'title' => 'Login',
                 'body' => [
+                    'header' => [
+                        'h1' => [
+                            'svg style="height: 7rem;"' => [
+                                '<title>Blue Snappy</title>',
+                                '<use href="/logo.svg#logo"/>'
+                            ],
+                        ],
+                    ],
                     TemplateViewComponent::forTemplate(__DIR__ . '/Login.phtml'),
                     'footer' => [
                         'a href="{backPath}"' => [

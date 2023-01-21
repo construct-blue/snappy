@@ -41,7 +41,6 @@ class CmsSnapp extends AbstractSnapp
     protected function initRoutes(): void
     {
         $this->get('/', fn() => new RedirectResponse('/cms/pages'));
-        $this->get('/my-account', MyAccountHandler::class)->setOptions([]);
 
         $this->initBlockRoutes();
         $this->initPageRoutes();

@@ -6,6 +6,7 @@ namespace Blue\Snapps\Blue;
 
 use Blue\Cms\Page\Handler\PageHandler;
 use Blue\Core\Application\Handler\TemplateHandlerFactory;
+use Blue\Snapps\Blue\MyAccount\MyAccountHandler;
 use Blue\Snapps\Blue\Startpage\StartpageHandler;
 
 class ConfigProvider
@@ -16,6 +17,7 @@ class ConfigProvider
             'dependencies' => [
                 'factories' => [
                     StartpageHandler::class => TemplateHandlerFactory::class,
+                    MyAccountHandler::class => TemplateHandlerFactory::class,
                     PageHandler::class => TemplateHandlerFactory::class
                 ]
             ]

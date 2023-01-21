@@ -34,6 +34,9 @@ class ClosureView extends ViewComponent
         if (null === $result) {
             throw InvalidComponentContentException::forComponent('Closure must not return null', $this);
         }
+        if (is_bool($result)) {
+            return [];
+        }
         if (!is_array($result)) {
             $result = [$result];
         }

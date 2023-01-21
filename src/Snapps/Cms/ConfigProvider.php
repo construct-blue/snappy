@@ -18,7 +18,6 @@ class ConfigProvider
                 'factories' => [
                     BlockHandler::class => TemplateHandlerFactory::class,
                     PageHandler::class => TemplateHandlerFactory::class,
-                    MyAccountHandler::class => TemplateHandlerFactory::class,
                     \Blue\Cms\Page\Handler\PageHandler::class => TemplateHandlerFactory::class,
                 ]
             ]

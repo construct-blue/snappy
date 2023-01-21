@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Blue\Snapps\Cms\Page\View;
 
 use Blue\Cms\Page\Page;
+use Blue\Core\View\Component\Button\ConfirmButton;
 use Blue\Core\View\Component\Details\Details;
 use Blue\Core\View\Component\Icon\Icon;
 use Blue\Core\View\Component\Select\LinkSelect;
 use Blue\Core\View\PageWrapper;
 use Blue\Core\View\ViewComponent;
 use Blue\Snapps\Cms\CmsFooter;
-use Blue\Snapps\Cms\CmsNavigation;
-use Blue\Snapps\Cms\SnappNavigation;
+use Blue\Snapps\Cms\CmsHeader;
 
 /**
  * @property string $snapp
@@ -25,18 +25,10 @@ class PageView extends ViewComponent
     {
         return [
             PageWrapper::class => [
-                'title' => 'Pages - CMS',
+                'title' => 'Content Manager',
                 'body' => [
-                    'header' => [
-                        CmsNavigation::class => [
-
-                        ],
-                        'h1' => [
-                            'Content',
-                        ],
-                        SnappNavigation::class => [
-                            'basePath' => '{basePath}/pages'
-                        ],
+                    CmsHeader::class => [
+                        'basePath' => '{basePath}/pages'
                     ],
                     'main id="main"' => [
                         'a href="{basePath}/blocks/{snapp}"' => [
@@ -54,7 +46,7 @@ class PageView extends ViewComponent
                                         'icon' => 'layout'
                                     ],
                                     ' ',
-                                    $page->getCode() ?? ''
+                                    $page->getCode() ?? '',
                                 ],
                                 'content' => [
                                     PageEditView::class => [

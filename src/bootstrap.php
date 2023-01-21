@@ -17,15 +17,16 @@ $cache = fn(string $key) => "data/$key";
 $server = SnappyServer::fromEnv($env, $cache('server'));
 $server->addSnapp(BlueSnapp::fromEnv($env, $cache('blue')), '/')
     ->setName('Snappy');
-$server->addSnapp(SystemSnapp::fromEnv($env, $cache('system')), '/system')
-    ->setCms(false)
-    ->setName('System');
 $server->addSnapp(CmsSnapp::fromEnv($env, $cache('cms')), '/cms')
     ->setCms(false)
-    ->setName('CMS');
+    ->setName('Content Manager');
 $server->addSnapp(AnalyticsSnapp::fromEnv($env, $cache('analytics')), '/analytics')
     ->setCms(false)
     ->setName('Analytics');
+$server->addSnapp(SystemSnapp::fromEnv($env, $cache('system')), '/system')
+    ->setCms(false)
+    ->setName('Settings');
+
 
 $server->addSnapp(NicemobilSnapp::fromEnv($env, $cache('nicemobil')), '/', 'live.sonice.at')
     ->setName('NICEmobil Live')

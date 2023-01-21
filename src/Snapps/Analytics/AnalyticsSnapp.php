@@ -36,8 +36,6 @@ class AnalyticsSnapp extends AbstractSnapp
     {
         $this->get('/', fn() => new RedirectResponse('/analytics/day'));
 
-        $this->get('/my-account', MyAccountHandler::class);
-
         $this->get('/day[/{code}]', DayHandler::class);
         $this->post('/day/refresh', DayRefreshAction::class);
     }

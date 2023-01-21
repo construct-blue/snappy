@@ -53,17 +53,11 @@ class DefaultVariableMiddleware implements MiddlewareInterface
                 'session',
                 $session
             );
+
             $this->renderer->addDefaultParam(
                 TemplateRendererInterface::TEMPLATE_ALL,
                 'language',
                 $session->getLanguage()->value
-            );
-            /** @var Window $window */
-            $window = $request->getAttribute(Window::class);
-            $this->renderer->addDefaultParam(
-                TemplateRendererInterface::TEMPLATE_ALL,
-                'window',
-                $window
             );
 
             /** @var IngressResult $ingressResult */

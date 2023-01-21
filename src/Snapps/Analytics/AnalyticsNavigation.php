@@ -14,7 +14,6 @@ class AnalyticsNavigation extends ViewComponent
             'nav' => [
                 'a href="/"' => 'Home',
                 'a href="{basePath}/day"' => 'Day',
-                'a href="{basePath}/my-account"' => 'My Account'
             ],
         ];
     }

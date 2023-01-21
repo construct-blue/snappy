@@ -8,7 +8,6 @@ use Blue\Cms\Page\Handler\PageHandler;
 use Blue\Core\Application\Handler\TemplateHandlerFactory;
 use Blue\Snapps\Analytics\Day\DayHandler;
 use Blue\Snapps\System\Client\Tesla\TeslaSetupHandler;
-use Blue\Snapps\System\MyAccount\MyAccountHandler;
 use Blue\Snapps\System\User\UserHandler;
 
 class ConfigProvider
@@ -26,7 +25,6 @@ class ConfigProvider
                     UserHandler::class => TemplateHandlerFactory::class,
                     TeslaSetupHandler::class => TemplateHandlerFactory::class,
                     DayHandler::class => TemplateHandlerFactory::class,
-                    MyAccountHandler::class => TemplateHandlerFactory::class,
                     PageHandler::class => TemplateHandlerFactory::class,
                 ]
             ]

@@ -1,8 +1,16 @@
 
 class ReactiveForm extends HTMLFormElement {
+    public context: null|string;
+
     constructor() {
         super();
         this.onsubmit = this.handleSubmit
+        let context = this.getAttribute('context')
+            ?? this.closest('[id]')?.getAttribute('id')
+            ?? null;
+        if (context && window.document.getElementById(context)) {
+            this.context = context;
+        }
     }
 
     private async handleSubmit(event: SubmitEvent) {
@@ -12,24 +20,16 @@ class ReactiveForm extends HTMLFormElement {
         event.preventDefault()
         const formData = new FormData(this);
 
-        this.querySelectorAll("[contenteditable][name]").forEach(elem => {
-            const name = elem.getAttribute('name') as string;
-            formData.set(name, elem.innerHTML);
-        });
-
-        const closestElementWithId = this.closest('[id]');
-
         const response = await fetch(this.findFormActionFromSubmitter(submitter), {
             method: this.method,
             body: formData,
-            redirect: closestElementWithId ? 'follow' : 'manual'
+            redirect: this.context ? 'follow' : 'manual'
         })
 
-        if (!closestElementWithId || (closestElementWithId.getAttribute('id')?.trim() + '') === '') {
+        if (null === this.context) {
             location.reload();
             return;
         }
-        const id = closestElementWithId.getAttribute('id') as string;
 
         const parser = new DOMParser();
         const document = parser.parseFromString(await response.text(), 'text/html');
@@ -45,11 +45,11 @@ class ReactiveForm extends HTMLFormElement {
         }
 
         if (response.ok && !validations) {
-            const replacement = document.getElementById(id);
+            const replacement = document.getElementById(this.context);
             if (replacement) {
-                closestElementWithId.replaceWith(replacement)
+                window.document.getElementById(this.context)?.replaceWith(replacement)
             } else {
-                closestElementWithId.remove()
+                window.document.getElementById(this.context)?.remove()
             }
         } else {
             submitter.disabled = false;

@@ -15,11 +15,14 @@ details[open] > summary {
   border-top-right-radius: 5px;
 }
 
-a + a,
-button + button,
-button + select,
-input + button {
+form button + button,
+form button + select,
+form input + button {
   margin-left: .25rem;
+}
+
+footer > a + a, {
+  margin-left: .5rem;
 }
 
 @font-face {

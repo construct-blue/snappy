@@ -12,6 +12,7 @@ use Blue\Core\View\ViewComponent;
  * @property string $type
  * @property string $formaction
  * @property string $icon
+ * @property bool $fullwidth
  */
 class Button extends ViewComponent
 {
@@ -23,6 +24,9 @@ class Button extends ViewComponent
         }
         if (!empty($this->type)) {
             $attributes .= " type=\"{$this->type}\"";
+        }
+        if (!empty($this->fullwidth)) {
+            $attributes .= ' style="width: 100%"';
         }
         return [
             'button' . $attributes => [

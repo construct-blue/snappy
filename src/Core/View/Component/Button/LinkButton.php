@@ -10,6 +10,7 @@ use Blue\Core\View\ViewComponent;
  * @property string $icon
  * @property string $text
  * @property string $href
+ * @property bool $fullwidth
  * @property null|string $target
  */
 class LinkButton extends ViewComponent

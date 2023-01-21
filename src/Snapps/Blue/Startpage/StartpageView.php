@@ -23,37 +23,50 @@ class StartpageView extends ViewComponent
                 'body' => [
                     'header' => [
                         'h1' => [
-                            'svg height="7rem"' => [
+                            'svg style="height: 7rem;"' => [
                                 '<title>Blue Snappy</title>',
                                 '<use href="/logo.svg#logo"/>'
                             ],
                         ],
                     ],
                     'main' => [
-                        'div' => [
-                            'h3' => 'Snapps',
-                            array_map(
-                                fn($link, $name) => "<p><a href=\"$link\"><span>$name</span></a></p>",
-                                array_keys($this->snapps),
-                                array_values($this->snapps)
-                            ),
+                        fn() => $this->userIsGuest ?: [
+                            'aside style="font-size: 1rem"' => [
+                                'h4' => 'Administrator',
+                                array_map(
+                                    fn($link, $name) => [
+                                        'p' => LinkButton::fromParams([
+                                            'text' => $name,
+                                            'href' => $link,
+                                            'fullwidth' => true,
+                                        ]),
+                                    ],
+                                    array_keys($this->managers),
+                                    array_values($this->managers)
+                                ),
+                            ]
                         ],
-
+                        [
+                            'div' => [
+                                'h3' => 'Snapps',
+                                array_map(
+                                    fn($link, $name) => "<p><a href=\"$link\"><span>$name</span></a></p>",
+                                    array_keys($this->snapps),
+                                    array_values($this->snapps)
+                                ),
+                            ],
+                        ],
                     ],
                     'footer' => [
-                         [
-                            array_map(
-                                fn($link, $name) => [
-                                    LinkButton::fromParams([
-                                        'text' => $name,
-                                        'href' => $this->userIsGuest ? "$link/login?redirect=$link" : $link,
-                                    ]),
-                                    ' '
-                                ],
-                                array_keys($this->managers),
-                                array_values($this->managers)
-                            )
-                         ],
+                        fn() => $this->userIsGuest ?
+                            [
+                                ['a href="{loginPath}"' => 'Login',],
+                            ] : [
+                                'Logged in as {userName}: ',
+                                ['a href="{logoutPath}"' => 'Logout'],
+                                'span' => ', ',
+                                ['a href="{basePath}/my-account"' => 'Edit Account'],
+                            ],
                     ]
                 ],
             ],

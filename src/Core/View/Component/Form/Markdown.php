@@ -26,10 +26,11 @@ class Markdown extends ViewComponent
         if (!empty($this->required)) {
             $attributes .= ' required';
         }
+        $rows = $this->rows ?? 5;
         if (!empty($this->value)) {
-            $attributes .= ' rows="' . mb_substr_count($this->value, "\n") . '"';
+            $attributes .= ' rows="' . (mb_substr_count($this->value, "\n") + $rows) . '"';
         } else {
-            $attributes .= ' rows="' . ($this->rows ?? 5) . '"';
+            $attributes .= ' rows="' . $rows . '"';
         }
         return [
             fn() => isset($this->label) ? [

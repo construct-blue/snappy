@@ -37,22 +37,22 @@ class BlockEditView extends ViewComponent
                             'value' => '{code}',
                             'required' => true,
                         ]),
-                        SubmitButton::class => [
-                            'icon' => 'save',
-                            'text' => 'Save'
-                        ],
-                        ConfirmButton::class => [
-                            'text' => 'Delete',
-                            'icon' => 'trash-2',
-                            'message' => 'Sure?',
-                            'type' => 'submit',
-                            'formaction' => '{basePath}/blocks/delete/{snapp}',
-                        ],
                     ],
                     Markdown::class => [
                         'label' => 'Content',
                         'name' => 'content',
                         'value' =>  $this->content,
+                    ],
+                    SubmitButton::class => [
+                        'icon' => 'save',
+                        'text' => 'Save'
+                    ],
+                    ConfirmButton::class => [
+                        'text' => 'Delete',
+                        'icon' => 'trash-2',
+                        'message' => 'Sure?',
+                        'type' => 'submit',
+                        'formaction' => '{basePath}/blocks/delete/{snapp}',
                     ],
                 ]
             ],

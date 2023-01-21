@@ -6,7 +6,6 @@ namespace Blue\Snapps\Analytics;
 
 use Blue\Core\Application\Handler\TemplateHandlerFactory;
 use Blue\Snapps\Analytics\Day\DayHandler;
-use Blue\Snapps\Analytics\MyAccount\MyAccountHandler;
 
 class ConfigProvider
 {
@@ -15,7 +14,6 @@ class ConfigProvider
         return [
             'dependencies' => [
                 'factories' => [
-                    MyAccountHandler::class => TemplateHandlerFactory::class,
                     DayHandler::class => TemplateHandlerFactory::class,
                 ],
             ]
