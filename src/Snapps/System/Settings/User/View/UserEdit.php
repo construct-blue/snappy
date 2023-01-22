@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\System\Settings\User\View;
 
+use Blue\Core\View\Component\Button\SubmitButton;
+use Blue\Core\View\Component\Checkbox\Checkbox;
 use Blue\Core\View\Component\Checkbox\CheckboxGroup;
+use Blue\Core\View\Component\Form\Hidden;
+use Blue\Core\View\Component\Form\Textfield;
 use Blue\Core\View\Component\Icon\Icon;
 use Blue\Core\View\Component\Radio\RadioGroup;
 use Blue\Core\View\ViewComponent;
@@ -25,36 +29,45 @@ class UserEdit extends ViewComponent
     {
         return [
             'form is="reactive-form" method="post" action="{activePath}/save"' => [
-                '<input type="hidden" name="id" value="{id}"/>',
-                'label for="name_{id}"' => 'Username',
-                '<input type="text" id="name_{id}" name="name" value="{name}"/>',
-                'label for="password_{id}"' => 'Password',
-                '<input type="password" id="password_{id}" name="password"/>',
-                RadioGroup::class => [
-                    'name' => 'state',
-                    'legend' => 'Status',
-                    'options' => UserState::list(),
-                    'value' => $this->state->value,
+                Hidden::class => [
+                    'name' => 'id',
+                    'value' => $this->id,
                 ],
-                CheckboxGroup::class => [
+                Textfield::fromParams([
+                    'label' => 'Username',
+                    'name' => 'name',
+                    'value' => $this->name,
+                ]),
+                Textfield::fromParams([
+                    'label' => 'Password',
+                    'name' => 'password',
+                    'type' => 'password',
+                ]),
+                CheckboxGroup::fromParams([
                     'name' => 'roles',
                     'legend' => 'Roles',
                     'options' => UserRole::list(),
                     'values' => array_keys(UserRole::list($this->roles)),
-                ],
-                [
-                    CheckboxGroup::class => [
-                        'name' => 'snapps',
-                        'legend' => 'Snapps',
-                        'options' => $this->snappOptions,
-                        'values' => $this->snapps,
-                    ],
-                ],
-                'button type="submit"' => [
-                    Icon::class => [
-                        'icon' => 'save'
-                    ],
-                    'span' => 'Save',
+                ]),
+                CheckboxGroup::fromParams([
+                    'name' => 'snapps',
+                    'legend' => 'Snapps',
+                    'options' => $this->snappOptions,
+                    'values' => $this->snapps,
+                ]),
+                Hidden::fromParams([
+                    'name' => 'state',
+                    'value' => UserState::ACTIVE->value,
+                ]),
+                Checkbox::fromParams([
+                    'label' => 'Locked',
+                    'name' => 'state',
+                    'value' => UserState::LOCKED->value,
+                    'checked' => $this->state->is(UserState::LOCKED)
+                ]),
+                SubmitButton::class => [
+                    'icon' => 'save',
+                    'text' => 'Save',
                 ],
                 'button is="confirm-button" message="Sure?" type="submit" formaction="{activePath}/delete"' => [
                     Icon::class => [

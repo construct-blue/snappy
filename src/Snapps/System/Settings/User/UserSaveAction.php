@@ -39,9 +39,12 @@ class UserSaveAction extends ActionHandler
 
         $user->setRoles(UserRole::map($data['roles']));
 
+        $data['snapps'] = $data['snapps'] ?? [];
+
         if (!is_array($data['snapps'])) {
             throw new CoreException('snapps not array');
         }
+
         $user->setSnapps($data['snapps']);
 
         UserRepository::instance()->save($user);

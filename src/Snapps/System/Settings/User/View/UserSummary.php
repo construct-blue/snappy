@@ -19,7 +19,7 @@ class UserSummary extends ViewComponent
         return [
             $this->name,
             'aside' => [
-                array_map(fn(UserRole $role) => ['mark' => $role->value, ' '], $this->roles),
+                array_map(fn(UserRole $role) => ['mark' => $role->getName(), ' '], $this->roles),
                 ' ',
                 'mark' => [
                     Icon::class => [

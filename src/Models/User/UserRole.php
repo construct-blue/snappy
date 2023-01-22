@@ -16,11 +16,17 @@ enum UserRole: string
 
     public static function list(array $cases = null): array
     {
-        $list = array_map(fn(UserRole $state) => $state->value, $cases ?? UserRole::cases());
-        return array_combine(
-            $list,
-            array_map(fn($code) => ucwords(str_replace('_', ' ', $code)), $list)
-        );
+        $result = [];
+        $cases = $cases ?? UserRole::cases();
+        foreach ($cases as $case) {
+            $result[$case->value] = $case->getName();
+        }
+        return $result;
+    }
+
+    public function getName(): string
+    {
+        return ucwords(str_replace('_', ' ', $this->value));
     }
 
     public static function map(array $values): array

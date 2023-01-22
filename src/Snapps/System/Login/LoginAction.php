@@ -6,6 +6,7 @@ namespace Blue\Snapps\System\Login;
 
 use Blue\Core\Application\Handler\ActionHandler;
 use Blue\Models\User\UserRepository;
+use Blue\Models\User\UserState;
 use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -47,6 +48,11 @@ class LoginAction extends ActionHandler
 
         $session->renewToken();
         $user = $repo->findByName($username);
+
+        if (!$user->getState()->is(UserState::ACTIVE)) {
+            $session->addMessage($message);
+            return new Response();
+        }
 
         if (!$user->verifyPassword($password)) {
             $session->addMessage($message);
