@@ -29,7 +29,9 @@ class MyAccountAction extends ActionHandler
 
         UserRepository::instance()->save($user);
 
-        $session->getUser()->setName($user->getName());
+        if (!$user->isAdmin()) {
+            $session->getUser()->setName($user->getName());
+        }
 
         return new Response();
     }
