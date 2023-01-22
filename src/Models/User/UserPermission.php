@@ -8,6 +8,7 @@ enum UserPermission
 {
     case ACCOUNT;
     case CMS;
+    case ALL_SNAPPS;
     case SETTINGS;
     case ANALYTICS;
 }

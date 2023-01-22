@@ -17,7 +17,10 @@ enum UserRole: string
     public static function list(array $cases = null): array
     {
         $list = array_map(fn(UserRole $state) => $state->value, $cases ?? UserRole::cases());
-        return array_combine($list, array_map('ucfirst', $list));
+        return array_combine(
+            $list,
+            array_map(fn($code) => ucwords(str_replace('_', ' ', $code)), $list)
+        );
     }
 
     public static function map(array $values): array
@@ -32,6 +35,7 @@ enum UserRole: string
     {
         if ($this === self::ADMINISTRATOR) {
             return [
+                UserPermission::ALL_SNAPPS,
                 UserPermission::CMS,
                 UserPermission::ANALYTICS,
                 UserPermission::SETTINGS,

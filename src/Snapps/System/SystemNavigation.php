@@ -29,21 +29,21 @@ class SystemNavigation extends ViewComponent
                     ],
                 ],
                 fn() => !$this->isLoggedIn ?: [
-                    [
+                    fn() => !isset($this->cmsPath) ?: [
                         Link::class => [
                             'href' => $this->cmsPath,
                             'active' => $this->cmsPath === $this->activePath,
                             'text' => 'CMS',
                         ],
                     ],
-                    [
+                    fn() => !isset($this->analyticsPath) ?: [
                         Link::class => [
                             'href' => $this->analyticsPath,
                             'active' => $this->analyticsPath === $this->activePath,
                             'text' => 'Analytics',
                         ],
                     ],
-                    [
+                    fn() => !isset($this->settingsPath) ?: [
                         Link::class => [
                             'href' => $this->settingsPath,
                             'active' => $this->settingsPath === $this->activePath,

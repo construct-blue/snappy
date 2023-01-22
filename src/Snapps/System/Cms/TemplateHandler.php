@@ -16,13 +16,24 @@ abstract class TemplateHandler extends \Blue\Snapps\System\TemplateHandler imple
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $uriBuilder = $this->getUriBuilder($request);
-
+        $user = $this->getSession($request)->getUser();
         $snappCode = $request->getAttribute('snapp');
-        $siteSnapps = array_filter($this->getSnapps($request), fn(SnappRoute $route) => $route->isSite());
+        if ($snappCode && !$user->hasSnapp($snappCode)) {
+            return $handler->handle($request);
+        }
+
+        $siteSnapps = [];
+        foreach ($this->getSnapps($request) as $snapp) {
+            if ($snapp->isSite() && $user->hasSnapp($snapp->getCode())) {
+                $siteSnapps[] = $snapp;
+            }
+        }
+
         $this->assign('siteSnapps', $siteSnapps);
+
         $this->assign('basePath', (string)$uriBuilder->withMatchedRoutePath(['snapp' => null]));
-        $this->assign('blocksPath', (string) $uriBuilder->withRoute('blocks', ['snapp' => $snappCode]));
-        $this->assign('pagesPath', (string) $uriBuilder->withRoute('pages', ['snapp' => $snappCode]));
+        $this->assign('blocksPath', (string)$uriBuilder->withRoute('blocks', ['snapp' => $snappCode]));
+        $this->assign('pagesPath', (string)$uriBuilder->withRoute('pages', ['snapp' => $snappCode]));
 
         if (!$snappCode) {
             $firstSnapp = reset($siteSnapps);

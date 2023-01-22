@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\System\Cms\Page;
 
-use Blue\Core\Application\Handler\ActionHandler;
+use Blue\Snapps\System\Cms\ActionHandler;
 use Blue\Models\Cms\Block\Block;
 use Blue\Models\Cms\Block\BlockRepository;
 use Blue\Models\Cms\Page\Page;

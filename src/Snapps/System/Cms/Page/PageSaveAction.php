@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\System\Cms\Page;
 
-use Blue\Core\Application\Handler\ActionHandler;
+use Blue\Snapps\System\Cms\ActionHandler;
 use Blue\Models\Cms\Page\PageRepository;
 use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;

@@ -52,6 +52,7 @@ class UserView extends ViewComponent
                                             'name' => $user->getName(),
                                             'state' => $user->getState(),
                                             'roles' => $user->getRoles(),
+                                            'snapps' => $user->getSnapps(),
                                         ]
                                     ]
                                 ]

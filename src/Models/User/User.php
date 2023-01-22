@@ -31,8 +31,13 @@ final class User implements JsonSerializable
     /** @var UserRole[] */
     private array $roles = [];
 
+    /** @var UserPermission[] */
+    private array $permissions;
+
     /** @var UserOption[] */
     private array $options = [];
+
+    private array $snapps = [];
 
     public function __construct()
     {
@@ -202,6 +207,45 @@ final class User implements JsonSerializable
         return !$this->isGuest() || !empty($this->options);
     }
 
+    public function getSnapps(): array
+    {
+        return $this->snapps;
+    }
+
+    public function setSnapps(array $snapps): User
+    {
+        $this->snapps = $snapps;
+        return $this;
+    }
+
+    public function getPermissions(): array
+    {
+        if (!isset($this->permissions)) {
+            $this->permissions = [];
+            foreach ($this->getRoles() as $role) {
+                foreach ($role->permissions() as $permission) {
+                    if (!in_array($permission, $this->permissions)) {
+                        $this->permissions[] = $permission;
+                    }
+                }
+            }
+        }
+        return $this->permissions;
+    }
+
+    public function hasPermission(UserPermission $permission): bool
+    {
+        return in_array($permission, $this->getPermissions());
+    }
+
+    public function hasSnapp(string $snappCode): bool
+    {
+        if ($this->hasPermission(UserPermission::ALL_SNAPPS)) {
+            return true;
+        }
+        return in_array($snappCode, $this->getSnapps());
+    }
+
     public function jsonSerialize(): array
     {
         return [
@@ -211,7 +255,8 @@ final class User implements JsonSerializable
             'state' => $this->getState(),
             'pwHash' => $this->getPasswordHash(),
             'roles' => $this->getRoles(),
-            'options' => $this->getOptions()
+            'options' => $this->getOptions(),
+            'snapps' => $this->getSnapps(),
         ];
     }
 
@@ -225,6 +270,7 @@ final class User implements JsonSerializable
         $user->state = UserState::from($an_array['state']);
         $user->roles = UserRole::map($an_array['roles']);
         $user->options = UserOption::map($an_array['options']);
+        $user->snapps = $an_array['snapps'] ?? [];
         return $user;
     }
 }

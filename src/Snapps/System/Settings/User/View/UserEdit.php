@@ -16,6 +16,8 @@ use Blue\Models\User\UserState;
  * @property string $name
  * @property UserState $state
  * @property UserRole[] $roles
+ * @property array $snapps
+ * @property array $snappOptions
  */
 class UserEdit extends ViewComponent
 {
@@ -39,6 +41,14 @@ class UserEdit extends ViewComponent
                     'legend' => 'Roles',
                     'options' => UserRole::list(),
                     'values' => array_keys(UserRole::list($this->roles)),
+                ],
+                [
+                    CheckboxGroup::class => [
+                        'name' => 'snapps',
+                        'legend' => 'Snapps',
+                        'options' => $this->snappOptions,
+                        'values' => $this->snapps,
+                    ],
                 ],
                 'button type="submit"' => [
                     Icon::class => [

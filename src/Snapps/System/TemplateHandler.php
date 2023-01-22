@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\System;
 
+use Blue\Models\User\UserPermission;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -23,9 +24,15 @@ abstract class TemplateHandler extends \Blue\Core\Application\Handler\TemplateHa
         $this->assign('isLoggedIn', (string)$session->isLoggedIn());
         $this->assign('activeUserName', (string)$user?->getName());
         $this->assign('startPath', (string)$uriBuilder->withRoute('start'));
-        $this->assign('cmsPath', (string)$uriBuilder->withRoute('pages'));
-        $this->assign('analyticsPath', (string)$uriBuilder->withRoute('analytics'));
-        $this->assign('settingsPath', (string)$uriBuilder->withRoute('settings'));
+        if ($user && $user->hasPermission(UserPermission::CMS)) {
+            $this->assign('cmsPath', (string)$uriBuilder->withRoute('pages'));
+        }
+        if ($user && $user->hasPermission(UserPermission::ANALYTICS)) {
+            $this->assign('analyticsPath', (string)$uriBuilder->withRoute('analytics'));
+        }
+        if ($user && $user->hasPermission(UserPermission::SETTINGS)) {
+            $this->assign('settingsPath', (string)$uriBuilder->withRoute('settings'));
+        }
         $this->assign('teslaPath', (string)$uriBuilder->withRoute('tesla'));
         $this->assign('myAccountPath', (string)$uriBuilder->withRoute('account'));
         $this->assign('loginPath', (string)$uriBuilder->withRoute('login')->withRedirectParam());

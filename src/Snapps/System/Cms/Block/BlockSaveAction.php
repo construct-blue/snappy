@@ -2,7 +2,7 @@
 
 namespace Blue\Snapps\System\Cms\Block;
 
-use Blue\Core\Application\Handler\ActionHandler;
+use Blue\Snapps\System\Cms\ActionHandler;
 use Blue\Models\Cms\Block\BlockRepository;
 use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
