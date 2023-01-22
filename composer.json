@@ -12,8 +12,7 @@
       "Blue\\": "src"
     },
     "files": [
-      "src/Core/I18n/functions.php",
-      "src/Core/Util/functions.php"
+      "src/Core/I18n/functions.php"
     ]
   },
   "autoload-dev": {

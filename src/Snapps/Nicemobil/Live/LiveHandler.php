@@ -7,11 +7,12 @@ use Blue\Core\Database\Connection;
 use Blue\Core\Database\ObjectStorage;
 use Blue\Core\Logger\Logger;
 use Blue\Core\Queue\Queue;
-use Blue\Logic\Client\Tesla\Entity\VehicleData;
-use Blue\Logic\Client\Tesla\TeslaClientRepository;
+use Blue\Models\TeslaClient\TeslaClientRepository;
+use Blue\Models\TeslaClient\VehicleData;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Throwable;
 
 class LiveHandler extends TemplateHandler
 {
@@ -34,7 +35,7 @@ class LiveHandler extends TemplateHandler
             if (!$vehicle->isOnline() || $vehicle->isExpired()) {
                 Queue::instance()->deferTask(fn() => $storage->save($this->fetchVehicle(), 'vehicle', null));
             }
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             (new Logger())->error($exception);
         }
         return new HtmlResponse($this->render(Live::class, ['vehicle' => $vehicle]));

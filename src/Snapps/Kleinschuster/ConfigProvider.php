@@ -2,8 +2,8 @@
 
 namespace Blue\Snapps\Kleinschuster;
 
-use Blue\Cms\Page\Handler\PageHandler;
 use Blue\Core\Application\Handler\TemplateHandlerFactory;
+use Blue\Models\Cms\Page\Handler\PageHandler;
 use Blue\Snapps\Kleinschuster\Home\HomeHandler;
 
 class ConfigProvider

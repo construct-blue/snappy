@@ -10,8 +10,6 @@ use Blue\Core\Application\Session\SessionContainer;
 use Blue\Core\Application\Session\SessionContainerFactory;
 use Blue\Core\Application\Session\SessionMiddleware;
 use Blue\Core\Application\Session\SessionMiddlewareFactory;
-use Blue\Core\Application\Session\Window\WindowMiddleware;
-use Blue\Core\Application\Session\Window\WindowMiddlewareFactory;
 
 class ConfigProvider
 {
@@ -28,7 +26,6 @@ class ConfigProvider
             'factories' => [
                 SessionMiddleware::class => SessionMiddlewareFactory::class,
                 SessionContainer::class => SessionContainerFactory::class,
-                WindowMiddleware::class => WindowMiddlewareFactory::class,
                 EmitterInterface::class => EmitterFactory::class,
             ],
         ];

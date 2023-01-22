@@ -2,8 +2,8 @@
 
 namespace Blue\Snapps\Nicemobil;
 
-use Blue\Cms\Page\Handler\PageHandler;
 use Blue\Core\Application\Handler\TemplateHandlerFactory;
+use Blue\Models\Cms\Page\Handler\PageHandler;
 use Blue\Snapps\Nicemobil\Live\LiveHandler;
 use Blue\Snapps\Nicemobil\Live\LiveHandlerFactory;
 

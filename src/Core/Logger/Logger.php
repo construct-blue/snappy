@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Blue\Core\Logger;
 
-use Blue\Core\Util\Placeholder\PlaceholderHelper;
+use Blue\Core\Util\PlaceholderHelper;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 use Stringable;
 use Throwable;
-
 use function date;
 use function strtoupper;
 

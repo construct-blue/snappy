@@ -25,7 +25,6 @@ class ConfigProvider
                     ViewLogger::class => ViewLoggerFactory::class,
                     ViewRenderer::class => ViewRendererFactory::class,
                     ViewRendererMezzioBridge::class => ViewRendererMezzioBridgeFactory::class,
-                    DefaultVariableMiddleware::class => DefaultVariableMiddlewareFactory::class,
                 ],
             ]
         ];

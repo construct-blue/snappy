@@ -8,8 +8,7 @@ use Blue\Core\View\Entrypoint;
 use Blue\Core\View\PageWrapper;
 use Blue\Core\View\TemplateViewComponent;
 use Blue\Core\View\ViewComponent;
-use Blue\Logic\Client\Tesla\Entity\VehicleData;
-
+use Blue\Models\TeslaClient\VehicleData;
 use function number_format;
 
 /**

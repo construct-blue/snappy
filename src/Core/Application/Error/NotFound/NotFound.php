@@ -11,6 +11,8 @@ use Blue\Core\View\ViewComponent;
 
 /**
  * @property array $header
+ * @property array $footer
+ * @property string $basePath
  */
 class NotFound extends ViewComponent
 {
@@ -21,19 +23,19 @@ class NotFound extends ViewComponent
                 'title' => 'Oops!',
                 'body' => [
                     'header' => [
-                        'h1' => 'Oops!',
-                        $this->header ?? [],
+                        $this->header ?? ['h1' => 'Oops!'],
                     ],
                     TemplateViewComponent::forTemplate(__DIR__ . '/NotFound.phtml'),
                     'footer' => [
-                        'a href="{backPath}"' => [
-                            Icon::class => [
-                                'icon' => 'arrow-left'
+                        'p' => [
+                            'a href="#" onclick="window.location = document.referrer"' => [
+                                Icon::for('arrow-left'),
+                                'span' => 'Back'
                             ],
-                            'span' => 'Back'
+                            ' ',
+                            'a href="{basePath}/"' => 'Home',
                         ],
-                        ' ',
-                        'a href="{basePath}/"' => 'Home'
+                        $this->footer ?? [],
                     ]
                 ]
             ],

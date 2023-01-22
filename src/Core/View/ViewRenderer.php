@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Blue\Core\View;
 
+use Blue\Core\Util\PlaceholderHelper;
 use Blue\Core\View\Exception\InfiniteRecursionException;
-use Closure;
-use Blue\Core\Util\Placeholder\PlaceholderHelper;
 use Blue\Core\View\Exception\InvalidComponentClassException;
 use Blue\Core\View\Exception\InvalidComponentContentException;
 use Blue\Core\View\Exception\InvalidComponentParameterException;
 use Blue\Core\View\Exception\ViewException;
+use Closure;
 use Throwable;
-
 use function class_exists;
 use function explode;
 use function get_debug_type;

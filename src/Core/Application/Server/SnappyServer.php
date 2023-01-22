@@ -12,17 +12,17 @@ use Mezzio\Router\Middleware\ImplicitOptionsMiddleware;
 use Mezzio\Router\Middleware\MethodNotAllowedMiddleware;
 use Blue\Core\Application\AbstractSnapp;
 use Blue\Core\Application\ApplicationContainerConfig;
-use Blue\Core\Application\Ingress\IngressRoute;
+use Blue\Core\Application\Snapp\SnappRoute;
 use Blue\Core\Application\Session\SessionMiddleware;
 use Blue\Core\Database\Connection;
-use Blue\Core\Http\Attribute;
+use Blue\Core\Http\RequestAttribute;
 use Mezzio\Router\RouterInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 class SnappyServer extends AbstractSnapp
 {
-    /** @var IngressRoute[] */
+    /** @var SnappRoute[] */
     private array $snappRoutes = [];
 
     private function initDbConnection(): void
@@ -52,9 +52,9 @@ class SnappyServer extends AbstractSnapp
         return $config;
     }
 
-    public function addSnapp(SnappInterface $snapp, string $path, string $domain = null): IngressRoute
+    public function addSnapp(SnappInterface $snapp, string $path, string $domain = null): SnappRoute
     {
-        $route = new IngressRoute($snapp, $path, $domain);
+        $route = new SnappRoute($snapp, $path, $domain);
         if ($domain && $this->getDevDomain()) {
             $route->setDomainSuffix('.' . $this->getDevDomain());
         }
@@ -75,7 +75,7 @@ class SnappyServer extends AbstractSnapp
     {
         $this->pipe(
             fn(ServerRequestInterface $request, RequestHandlerInterface $handler) => $handler->handle(
-                Attribute::SNAPP_ROUTES->setTo($request, $this->snappRoutes)
+                RequestAttribute::SNAPP_ROUTES->setTo($request, $this->snappRoutes)
             )
         );
         foreach ($this->snappRoutes as $app) {

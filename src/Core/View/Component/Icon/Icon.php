@@ -12,6 +12,13 @@ use Blue\Core\View\{Entrypoint, ViewComponent};
 #[Entrypoint(__DIR__ . '/Icon.ts')]
 class Icon extends ViewComponent
 {
+    public static function for(string $icon): static
+    {
+        $component = new static();
+        $component->icon = $icon;
+        return $component;
+    }
+
     public function render(): array
     {
         return [

@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace Blue\Core\Application\Session;
 
-use Blue\Core\View\Component\Toast\ToastType;
-use JsonSerializable;
-use Blue\Core\Application\Session\Window\Window;
-use Blue\Core\Authentication\User;
 use Blue\Core\Database\Connection;
 use Blue\Core\Database\Exception\DatabaseException;
 use Blue\Core\Database\ObjectStorage;
 use Blue\Core\I18n\Language;
 use Blue\Core\Logger\Logger;
-use Psr\Http\Server\MiddlewareInterface;
+use Blue\Models\User\User;
+use JsonSerializable;
 
 use function uniqid;
 
@@ -29,7 +26,6 @@ class Session implements JsonSerializable
     private string $id;
     private string $token;
     private Language $language;
-    private array $windows = [];
     private ?User $user = null;
     private array $messages = [];
     private array $validations = [];
@@ -77,6 +73,12 @@ class Session implements JsonSerializable
         return $this->language ?? Language::DEFAULT;
     }
 
+    public function setLanguage(Language $language): Session
+    {
+        $this->language = $language;
+        return $this;
+    }
+
     /**
      * @return string
      */
@@ -88,29 +90,14 @@ class Session implements JsonSerializable
         return $this->token;
     }
 
-    public function renewToken()
+    public function checkToken(string $token): bool
     {
-        $this->token = uniqid('t-');
+        return $this->getToken() === $token;
     }
 
-    /**
-     * @return Window[]
-     */
-    public function getWindows(): array
+    public function renewToken(): string
     {
-        return $this->windows;
-    }
-
-    public function openWindow(MiddlewareInterface $application): Window
-    {
-        $window = new Window($this, $application);
-        $this->windows[$window->getId()] = $window;
-        return $window;
-    }
-
-    public function closeWindow(string $id)
-    {
-        unset($this->windows[$id]);
+        return $this->token = uniqid('t-');
     }
 
     public function getUser(): ?User
@@ -132,7 +119,7 @@ class Session implements JsonSerializable
         return $this;
     }
 
-    public function addMessage(string $message, ToastType $type = ToastType::INFO)
+    public function addMessage(string $message, MessageType $type = MessageType::INFO)
     {
         $this->messages[$type->value][] = $message;
     }
@@ -226,10 +213,15 @@ class Session implements JsonSerializable
     private function saveWhenModified(): void
     {
         if ($this->isModified()) {
-            $this->getRepo()->save($this, $this->getId(), null);
-            if ($this->getUser()) {
-                $this->getUserRepo()->save($this->getUser(), $this->getUser()->getId(), $this->getUser()->getName());
-            }
+            $this->save();
+        }
+    }
+
+    public function save(): void
+    {
+        $this->getRepo()->save($this, $this->getId(), null);
+        if ($this->getUser()) {
+            $this->getUserRepo()->save($this->getUser(), $this->getUser()->getId(), $this->getUser()->getName());
         }
     }
 

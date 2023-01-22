@@ -2,10 +2,10 @@
 
 namespace Blue\Snapps\Kleinschuster;
 
-use Blue\Cms\Page\Handler\PageHandler;
-use Blue\Core\Analytics\AnalyticsMiddleware;
 use Blue\Core\Application\AbstractSnapp;
-use Blue\Core\Util\FaviconHandler;
+use Blue\Core\Http\FaviconHandler;
+use Blue\Models\Analytics\AnalyticsMiddleware;
+use Blue\Models\Cms\Page\Handler\PageHandler;
 use Blue\Snapps\Kleinschuster\Home\HomeHandler;
 
 class KleinschusterSnapp extends AbstractSnapp

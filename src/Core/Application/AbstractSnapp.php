@@ -9,12 +9,13 @@ use Laminas\Stratigility\Middleware\ErrorHandler;
 use Laminas\Stratigility\MiddlewarePipeInterface;
 use Mezzio\Application;
 use Mezzio\Handler\NotFoundHandler;
+use Mezzio\Helper\ServerUrlMiddleware;
+use Mezzio\Helper\UrlHelperMiddleware;
 use Mezzio\MiddlewareFactory;
 use Mezzio\Router\Middleware\DispatchMiddleware;
 use Mezzio\Router\Middleware\RouteMiddleware;
 use Mezzio\Router\RouteCollectorInterface;
 use Blue\Core\Application\Debug\ConfigProvider as DebugConfigProvider;
-use Blue\Core\View\DefaultVariableMiddleware;
 
 abstract class AbstractSnapp extends Application implements SnappInterface
 {
@@ -73,9 +74,9 @@ abstract class AbstractSnapp extends Application implements SnappInterface
         $this->initRoutes();
         $this->pipe(ErrorHandler::class);
         $this->pipe(RouteMiddleware::class);
-        $this->pipe(DefaultVariableMiddleware::class);
+        $this->pipe(UrlHelperMiddleware::class);
+        $this->pipe(ServerUrlMiddleware::class);
         $this->initPipeline();
-        $this->pipe(DefaultVariableMiddleware::class);
         $this->pipe(DispatchMiddleware::class);
         $this->pipe(NotFoundHandler::class);
         return $this;

@@ -3,9 +3,9 @@
 namespace Blue\Core\Application\Error;
 
 use Blue\Core\Application\Session\Session;
+use Blue\Core\Application\Session\MessageType;
 use Blue\Core\Exception\CoreException;
 use Blue\Core\Http\Status;
-use Blue\Core\View\Component\Toast\ToastType;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -33,7 +33,7 @@ class ErrorResponseDelegator
                 ) {
                     $session->addValidation($e->getReference(), $e->getMessage());
                 } else {
-                    $session->addMessage($e->getMessage(), ToastType::ERROR);
+                    $session->addMessage($e->getMessage(), MessageType::ERROR);
                 }
             }
 

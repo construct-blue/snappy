@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Blue\Core\Application\Handler;
 
-use Blue\Core\Application\Ingress\IngressResult;
-use Blue\Core\Application\Ingress\IngressRoute;
+use Blue\Core\Application\Snapp\SnappRouteResult;
+use Blue\Core\Application\Snapp\SnappRoute;
 use Blue\Core\Application\Session\Session;
-use Blue\Core\Http\Attribute;
-use Blue\Core\Http\Uri\UriBuilder;
+use Blue\Core\Http\RequestAttribute;
+use Blue\Core\Http\UriBuilder;
 use Mezzio\Template\TemplateRendererInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 abstract class TemplateHandler implements RequestHandlerInterface
 {
-    public function __construct(private TemplateRendererInterface $renderer)
+    public function __construct(private readonly TemplateRendererInterface $renderer)
     {
     }
 
@@ -36,21 +36,21 @@ abstract class TemplateHandler implements RequestHandlerInterface
 
     public function getUriBuilder(ServerRequestInterface $request): UriBuilder
     {
-        return $this->getIngressResult($request)->getUriBuilder();
+        return $this->getSnappResult($request)->getUriBuilder();
     }
 
-    public function getIngressResult(ServerRequestInterface $request): IngressResult
+    public function getSnappResult(ServerRequestInterface $request): SnappRouteResult
     {
-        return $request->getAttribute(IngressResult::class);
+        return $request->getAttribute(SnappRouteResult::class);
     }
 
     /**
      * @param ServerRequestInterface $request
-     * @return IngressRoute[]
+     * @return SnappRoute[]
      */
     public function getSnapps(ServerRequestInterface $request): array
     {
-        return Attribute::SNAPP_ROUTES->getFrom($request);
+        return RequestAttribute::SNAPP_ROUTES->getFrom($request);
     }
 
     public function getSession(ServerRequestInterface $request): Session

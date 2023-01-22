@@ -2,12 +2,11 @@
 
 namespace Blue\Snapps\Kleinschuster\Home;
 
-use Blue\Cms\Block\BlockPlaceholder;
-use Blue\Cms\Block\BlockRepository;
-use Blue\Cms\Page\Page;
-use Blue\Cms\Page\PageRepository;
 use Blue\Core\Application\Handler\TemplateHandler;
-use Blue\Core\Application\Ingress\IngressResult;
+use Blue\Core\Application\Snapp\SnappRouteResult;
+use Blue\Models\Cms\Block\BlockPlaceholder;
+use Blue\Models\Cms\Block\BlockRepository;
+use Blue\Models\Cms\Page\PageRepository;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -16,8 +15,8 @@ class HomeHandler extends TemplateHandler
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var IngressResult $ingressResult */
-        $ingressResult = $request->getAttribute(IngressResult::class);
+        /** @var SnappRouteResult $ingressResult */
+        $ingressResult = $request->getAttribute(SnappRouteResult::class);
         $repo = new PageRepository($ingressResult->getRoute()->getCode());
         $code = $request->getUri()->getPath();
         if ($repo->existsByCode($code)) {

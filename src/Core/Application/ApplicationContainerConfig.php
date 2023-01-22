@@ -25,7 +25,6 @@ class ApplicationContainerConfig
         ConfigProvider::class,
         \Blue\Core\Logger\ConfigProvider::class,
         \Blue\Core\Http\ConfigProvider::class,
-        \Blue\Core\Authentication\ConfigProvider::class,
     ];
 
     protected array $postProcessors = [];

@@ -2,10 +2,10 @@
 
 namespace Blue\Snapps\Nicemobil;
 
-use Blue\Cms\Page\Handler\PageHandler;
-use Blue\Core\Analytics\AnalyticsMiddleware;
 use Blue\Core\Application\AbstractSnapp;
-use Blue\Core\Util\FaviconHandler;
+use Blue\Core\Http\FaviconHandler;
+use Blue\Models\Analytics\AnalyticsMiddleware;
+use Blue\Models\Cms\Page\Handler\PageHandler;
 use Blue\Snapps\Nicemobil\Live\LiveHandler;
 
 class NicemobilSnapp extends AbstractSnapp
