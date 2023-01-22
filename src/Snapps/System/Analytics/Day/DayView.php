@@ -36,7 +36,7 @@ class DayView extends ViewComponent
                             'section id="summary"' => [
                                 Form::class => [
                                     'method' => 'post',
-                                    'action' => '{basePath}/day/refresh',
+                                    'action' => '{basePath}/refresh',
                                     'id' => '',
                                     'content' => [
                                         'button type="submit"' => [
@@ -45,7 +45,7 @@ class DayView extends ViewComponent
                                             ],
                                             'span' => 'Refresh'
                                         ],
-                                        'select onchange="window.location = `{basePath}/day/${this.value}`"' => [
+                                        'select onchange="window.location = `{basePath}/${this.value}`"' => [
                                             array_map(
                                                 fn(string $code) => $this->summary->getCode() === $code ?
                                                     ['option selected' => $code] :

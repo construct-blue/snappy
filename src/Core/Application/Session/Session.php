@@ -11,6 +11,7 @@ use Blue\Core\I18n\Language;
 use Blue\Core\Logger\Logger;
 use Blue\Models\User\User;
 use JsonSerializable;
+use Throwable;
 
 use function uniqid;
 
@@ -37,7 +38,11 @@ class Session implements JsonSerializable
     {
         $this->id = $id ?: uniqid('s-');
         if ($id) {
-            $this->loadFromId($id);
+            try {
+                $this->loadFromId($id);
+            } catch (Throwable $exception) {
+                (new Logger())->error($exception);
+            }
         }
     }
 

@@ -14,6 +14,9 @@ class DayHandler extends TemplateHandler
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $uriBuilder = $this->getUriBuilder($request);
+        $this->assign('basePath', (string)$uriBuilder->withMatchedRoutePath(['code' => null]));
+
         $code = $request->getAttribute('code');
 
         if ($code && AnalyticsDayRepository::instance()->existsByCode($code)) {
