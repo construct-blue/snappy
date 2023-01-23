@@ -13,8 +13,6 @@ use stdClass;
  */
 class ObjectStorage
 {
-    private const COLUMN_ID_OBJECT = 3;
-
     private Connection $connection;
 
     private Closure $factory;
@@ -73,7 +71,7 @@ class ObjectStorage
     {
         $pdo = $this->getConnection()->getPDO();
         $pdo->exec(
-            <<<EOF
+            <<<SQL
 CREATE TABLE `{$this->getTable()}`
 (
     id VARCHAR(255) NOT NULL PRIMARY KEY,
@@ -85,7 +83,7 @@ CREATE TABLE `{$this->getTable()}`
     modified TIMESTAMP DEFAULT NULL,
     deleted TIMESTAMP DEFAULT NULL
 )
-EOF
+SQL
         );
     }
 
@@ -97,14 +95,21 @@ EOF
     public function loadById(string $id): object
     {
         $pdo = $this->getConnection()->getPDO();
-        $stmt = $pdo->prepare("SELECT * FROM `{$this->getTable()}` WHERE deleted IS NULL AND id = :id");
+        $stmt = $pdo->prepare(
+            <<<SQL
+SELECT object
+FROM `{$this->getTable()}`
+WHERE deleted IS NULL AND id = :id
+SQL
+        );
         $stmt->execute([
             'id' => $id
         ]);
-        $data = $stmt->fetchColumn(self::COLUMN_ID_OBJECT);
+        $data = $stmt->fetchColumn();
         if (empty($data)) {
             throw new Exception\ObjectLoadingException('Unable to load object with id ' . $id);
         }
+
         return ($this->factory)($data);
     }
 
@@ -116,11 +121,17 @@ EOF
     public function loadByCode(string $code): object
     {
         $pdo = $this->getConnection()->getPDO();
-        $stmt = $pdo->prepare("SELECT * FROM `{$this->getTable()}` WHERE deleted IS NULL AND code = :code");
+        $stmt = $pdo->prepare(
+            <<<SQL
+SELECT object
+FROM `{$this->getTable()}`
+WHERE deleted IS NULL AND code = :code
+SQL
+        );
         $stmt->execute([
             'code' => $code
         ]);
-        $data = $stmt->fetchColumn(self::COLUMN_ID_OBJECT);
+        $data = $stmt->fetchColumn();
         if (empty($data)) {
             throw new Exception\ObjectLoadingException('Unable to load object with code ' . $code);
         }
@@ -130,7 +141,13 @@ EOF
     public function loadCodes(): Generator
     {
         $pdo = $this->getConnection()->getPDO();
-        $stmt = $pdo->prepare("SELECT code FROM `{$this->getTable()}` WHERE deleted IS NULL AND code IS NOT NULL");
+        $stmt = $pdo->prepare(
+            <<<SQL
+SELECT code
+FROM `{$this->getTable()}`
+WHERE deleted IS NULL AND code IS NOT NULL
+SQL
+        );
         $stmt->execute();
         while ($code = $stmt->fetchColumn()) {
             yield $code;
@@ -143,12 +160,18 @@ EOF
     public function loadAll(): Generator
     {
         $pdo = $this->getConnection()->getPDO();
-        $stmt = $pdo->prepare("SELECT * FROM `{$this->getTable()}` WHERE deleted IS NULL AND type = :type");
+        $stmt = $pdo->prepare(
+            <<<SQL
+SELECT object
+FROM `{$this->getTable()}`
+WHERE deleted IS NULL AND type = :type
+SQL
+        );
         $stmt->execute([
             'type' => $this->getType()
         ]);
 
-        while ($data = $stmt->fetchColumn(self::COLUMN_ID_OBJECT)) {
+        while ($data = $stmt->fetchColumn()) {
             yield ($this->factory)($data);
         }
     }
@@ -162,7 +185,11 @@ EOF
     {
         $pdo = $this->getConnection()->getPDO();
         $stmt = $pdo->prepare(
-            "SELECT * FROM `{$this->getTable()}` WHERE deleted IS NULL AND type = :type LIMIT :offset, :limit"
+            <<<SQL
+SELECT object
+FROM `{$this->getTable()}`
+WHERE deleted IS NULL AND type = :type LIMIT :offset, :limit
+SQL
         );
         $stmt->execute([
             'type' => $this->getType(),
@@ -170,7 +197,7 @@ EOF
             'offset' => abs($limit * ($page - 1))
         ]);
 
-        while ($data = $stmt->fetchColumn(self::COLUMN_ID_OBJECT)) {
+        while ($data = $stmt->fetchColumn()) {
             yield ($this->factory)($data);
         }
     }
@@ -179,7 +206,7 @@ EOF
     {
         $pdo = $this->getConnection()->getPDO();
         $stmt = $closure($pdo, $this->getTable(), $this->getType());
-        while ($data = $stmt->fetchColumn(self::COLUMN_ID_OBJECT)) {
+        while ($data = $stmt->fetchColumn()) {
             yield ($this->factory)($data);
         }
     }
@@ -190,12 +217,18 @@ EOF
     public function loadDeleted(): Generator
     {
         $pdo = $this->getConnection()->getPDO();
-        $stmt = $pdo->prepare("SELECT * FROM `{$this->getTable()}` WHERE deleted IS NOT NULL AND type = :type");
+        $stmt = $pdo->prepare(
+            <<<SQL
+SELECT object
+FROM `{$this->getTable()}`
+WHERE deleted IS NOT NULL AND type = :type
+SQL
+        );
         $stmt->execute([
             'type' => $this->getType()
         ]);
 
-        while ($object = $stmt->fetchColumn(self::COLUMN_ID_OBJECT)) {
+        while ($object = $stmt->fetchColumn()) {
             yield ($this->factory)($object);
         }
     }
@@ -204,11 +237,11 @@ EOF
     {
         $pdo = $this->getConnection()->getPDO();
         $stmt = $pdo->prepare(
-            <<<EOF
-SELECT CASE WHEN 
-    EXISTS(SELECT * FROM `{$this->getTable()}` WHERE deleted IS NULL AND id = :id) 
-    THEN 1 ELSE 0 END
-EOF
+            <<<SQL
+SELECT CASE WHEN
+    EXISTS(SELECT NULL FROM `{$this->getTable()}` WHERE deleted IS NULL AND id = :id)
+THEN 1 ELSE 0 END
+SQL
         );
         $stmt->execute([
             'id' => $id
@@ -220,11 +253,11 @@ EOF
     {
         $pdo = $this->getConnection()->getPDO();
         $stmt = $pdo->prepare(
-            <<<EOF
-SELECT CASE WHEN 
-    EXISTS(SELECT * FROM `{$this->getTable()}` WHERE deleted IS NULL AND code = :code) 
-    THEN 1 ELSE 0 END
-EOF
+            <<<SQL
+SELECT CASE WHEN
+    EXISTS(SELECT NULL FROM `{$this->getTable()}` WHERE deleted IS NULL AND code = :code)
+THEN 1 ELSE 0 END
+SQL
         );
         $stmt->execute([
             'code' => $code
@@ -236,10 +269,10 @@ EOF
     {
         $pdo = $this->getConnection()->getPDO();
         $stmt = $pdo->prepare(
-            <<<EOF
-REPLACE INTO `{$this->getTable()}` (created, modified, id, code, type, object, meta) 
+            <<<SQL
+REPLACE INTO `{$this->getTable()}` (created, modified, id, code, type, object, meta)
     VALUES (:created, CURRENT_TIMESTAMP, :id, :code, :type, :object, :meta)
-EOF
+SQL
         );
         return $stmt->execute([
             'id' => $id,
@@ -255,9 +288,10 @@ EOF
     {
         $pdo = $this->getConnection()->getPDO();
         $stmt = $pdo->prepare(
-            <<<EOF
-UPDATE `{$this->getTable()}` SET code = NULL, deleted = CURRENT_TIMESTAMP WHERE id = :id
-EOF
+            <<<SQL
+UPDATE `{$this->getTable()}` 
+SET code = NULL, deleted = CURRENT_TIMESTAMP WHERE id = :id
+SQL
         );
         return $stmt->execute([
             'id' => $id

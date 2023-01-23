@@ -49,7 +49,7 @@ class AnalyticsEntryRepository
         return $this->storage->loadCustom(function (PDO $pdo, string $table, string $type) {
             $stmt = $pdo->prepare(
                 <<<EOF
-SELECT * 
+SELECT object 
 FROM `$table` 
 WHERE deleted IS NULL AND type = :type 
 ORDER BY created DESC
@@ -69,7 +69,7 @@ EOF
         return $this->storage->loadCustom(function (PDO $pdo, string $table, string $type) use ($timestamp) {
             $stmt = $pdo->prepare(
                 <<<EOF
-SELECT * 
+SELECT object 
 FROM `$table` 
 WHERE deleted IS NULL AND type = :type AND created > :since
 ORDER BY modified ASC

@@ -6,7 +6,6 @@ import "./Component/Button/ConfirmButton"
 import "./ReactiveDetails"
 import "./Component/Form/ReactiveForm"
 import Toast from "./Component/Toast/Toast";
-import ViewWindow from "./ViewWindow";
 
 customElements.define('toast-messages', class extends HTMLScriptElement {
     constructor() {
@@ -37,10 +36,6 @@ customElements.define('toast-validations', class extends HTMLScriptElement {
 
 document.addEventListener('click', event => {
     const anchor = (event.target as HTMLElement).closest('a');
-    if (anchor?.target === 'winbox' && anchor.href) {
-        event.preventDefault()
-        ViewWindow.openAnchor(anchor)
-    }
     if (anchor?.target === 'popup' && anchor.href) {
         event.preventDefault()
         window.open(anchor.href, '_blank', 'popup,width=800,height=600')

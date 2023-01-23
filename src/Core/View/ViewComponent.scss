@@ -115,5 +115,5 @@ info:nth-of-type(1) {
 }
 
 [type=markdown] {
-  background: url("Markdown.svg") no-repeat 99% 4px;
+  background: url("Markdown.svg") no-repeat 99% 4px, var(--bg);
 }

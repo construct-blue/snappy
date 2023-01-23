@@ -16,6 +16,7 @@ use Blue\Snapps\System\Cms\Block\BlockDeleteAction;
 use Blue\Snapps\System\Cms\Block\BlockHandler;
 use Blue\Snapps\System\Cms\Block\BlockSaveAction;
 use Blue\Snapps\System\Cms\Page\PageAddAction;
+use Blue\Snapps\System\Cms\Page\PageCreateBlocksAction;
 use Blue\Snapps\System\Cms\Page\PageDeleteAction;
 use Blue\Snapps\System\Cms\Page\PageHandler;
 use Blue\Snapps\System\Cms\Page\PageSaveAction;
@@ -83,6 +84,8 @@ class SystemSnapp extends AbstractSnapp
         $this->post('/cms/pages/add[/[{snapp}]]', PageAddAction::class)
             ->setOptions([UserPermission::class => UserPermission::CMS]);
         $this->post('/cms/pages/save[/[{snapp}]]', PageSaveAction::class)
+            ->setOptions([UserPermission::class => UserPermission::CMS]);
+        $this->post('/cms/pages/createBlocks[/[{snapp}]]', PageCreateBlocksAction::class)
             ->setOptions([UserPermission::class => UserPermission::CMS]);
 
         $this->get('/cms/blocks[/[{snapp}]]', BlockHandler::class, 'blocks')
