@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace Blue\Models\Analytics;
 
+use Blue\Core\Util\BackedEnumTrait;
+
 enum Event: string
 {
-    case PAGE_HIDDEN = 'page_hidden';
+    use BackedEnumTrait;
+
+    case PAGE_SHOW = 'page_show';
+    case PAGE_HIDE = 'page_hide';
 }

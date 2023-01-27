@@ -5,7 +5,7 @@ if (isset($this->requestId)): ?>
             "rid": "<?= $this->requestId ?>",
             "rt": "<?= $this->requestTimestamp ?? time() ?>",
             "events": {
-                "hidden": "<?= \Blue\Models\Analytics\Event::PAGE_HIDDEN->value ?>"
+                "hidden": "<?= \Blue\Models\Analytics\Event::PAGE_HIDE->value ?>"
             },
             "params": {
                 "rid": "<?= \Blue\Core\Http\QueryParameter::analytics_rid->name ?>",

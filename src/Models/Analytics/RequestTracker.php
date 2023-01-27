@@ -46,30 +46,26 @@ class RequestTracker
         Queue::instance()->deferTask($this->save(...));
     }
 
-    private function save(): void
+    public function save(): void
     {
         if (isset($this->request) && Method::GET->matches($this->request)) {
-            if (in_array(Header::CACHE_CONTROL->getFrom($this->request), ['max-age=0', 'no-cache'])) {
-                return;
-            }
-
-            $entry = (new EntryFactory())->create($this->request, $this->response ?? null);
             $requestId = QueryParameter::analytics_rid->getFrom($this->request);
             if ($requestId) {
-                $entry = AnalyticsEntryRepository::instance()->findByRequestId($requestId) ?? $entry;
+                $entry = AnalyticsEntryRepository::instance()->findByRequestId($requestId);
+            } else {
+                $entry = (new EntryFactory())->create($this->request, $this->response ?? null);
             }
 
             $requestTimestamp = QueryParameter::analytics_rt->getFrom($this->request);
             if ($requestTimestamp) {
                 $entry->setTimestamp((int)$requestTimestamp);
             }
+
             $event = QueryParameter::analytics_event->getFrom($this->request);
-            if ($event) {
-                $event = Event::from($event);
-                if (Event::PAGE_HIDDEN === $event) {
-                    $entry->setTimestampUnload(time());
-                }
+            if ($event && Event::from($event)->is(Event::PAGE_HIDE)) {
+                $entry->setTimestampUnload(time());
             }
+
             $click = QueryParameter::analytics_click->getFrom($this->request);
             if ($click) {
                 $entry->setClickHref(UrlSanitizer::hostWithPath($click));

@@ -8,7 +8,6 @@ use Blue\Core\I18n\Region;
 use Blue\Core\Queue\Queue;
 use DeviceDetector\DeviceDetector;
 use DeviceDetector\Parser\Client\Browser;
-use function Blue\Core\Analytics\count;
 
 class DayCalculation
 {

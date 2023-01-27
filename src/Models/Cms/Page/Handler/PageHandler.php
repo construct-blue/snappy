@@ -28,7 +28,7 @@ class PageHandler extends TemplateHandler implements MiddlewareInterface
         if ($repo->existsByCode($code)) {
             return $this->handle($request->withAttribute(Page::class, $repo->findByCode($code)));
         }
-        return $handler->handle($request);
+        return parent::process($request, $handler);
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

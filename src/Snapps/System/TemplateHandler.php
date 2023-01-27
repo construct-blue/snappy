@@ -37,6 +37,6 @@ abstract class TemplateHandler extends \Blue\Core\Application\Handler\TemplateHa
         $this->assign('myAccountPath', (string)$uriBuilder->withRoute('account'));
         $this->assign('loginPath', (string)$uriBuilder->withRoute('login')->withRedirectParam());
         $this->assign('logoutPath', (string)$uriBuilder->withRoute('logout'));
-        return $this->handle($request);
+        return parent::process($request, $handler);
     }
 }

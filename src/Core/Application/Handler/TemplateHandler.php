@@ -10,13 +10,22 @@ use Blue\Core\Application\Session\Session;
 use Blue\Core\Http\RequestAttribute;
 use Blue\Core\Http\UriBuilder;
 use Mezzio\Template\TemplateRendererInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-abstract class TemplateHandler implements RequestHandlerInterface
+abstract class TemplateHandler implements RequestHandlerInterface, MiddlewareInterface
 {
     public function __construct(private readonly TemplateRendererInterface $renderer)
     {
+    }
+
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        $this->assign('requestId', RequestAttribute::REQUEST_ID->getFrom($request));
+
+        return $this->handle($request);
     }
 
     public function getRenderer(): TemplateRendererInterface
