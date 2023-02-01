@@ -8,7 +8,7 @@ namespace BlueTest\Analytics;
 use Blue\Core\Http\Header;
 use Blue\Core\Http\Method;
 use Blue\Core\Http\RequestAttribute;
-use Blue\Models\Analytics\EntryFactory;
+use Blue\Models\Analytics\Tracker\EntryFactory;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Uri;
 use PHPUnit\Framework\TestCase;

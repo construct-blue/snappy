@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Blue\Snapps\System;
 
 use Blue\Core\Application\Handler\TemplateHandlerFactory;
-use Blue\Snapps\System\Analytics\Day\DayHandler;
 use Blue\Snapps\System\Cms\Block\BlockHandler;
 use Blue\Snapps\System\Cms\Page\PageHandler;
 use Blue\Snapps\System\Login\LoginHandler;
@@ -41,7 +40,6 @@ class ConfigProvider
                     PageHandler::class => TemplateHandlerFactory::class,
                     UserHandler::class => TemplateHandlerFactory::class,
                     TeslaSetupHandler::class => TemplateHandlerFactory::class,
-                    DayHandler::class => TemplateHandlerFactory::class,
                 ],
             ]
         ];

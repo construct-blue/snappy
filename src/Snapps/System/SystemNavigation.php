@@ -36,13 +36,6 @@ class SystemNavigation extends ViewComponent
                             'text' => 'CMS',
                         ],
                     ],
-                    fn() => !isset($this->analyticsPath) ?: [
-                        Link::class => [
-                            'href' => $this->analyticsPath,
-                            'active' => $this->analyticsPath === $this->activePath,
-                            'text' => 'Analytics',
-                        ],
-                    ],
                     fn() => !isset($this->settingsPath) ?: [
                         Link::class => [
                             'href' => $this->settingsPath,

@@ -9,8 +9,6 @@ use Blue\Core\Http\FaviconHandler;
 use Blue\Core\Http\PostRedirectGetMiddleware;
 use Blue\Models\User\UserPermission;
 use Blue\Models\User\UserPermissionMiddleware;
-use Blue\Snapps\System\Analytics\Day\DayHandler;
-use Blue\Snapps\System\Analytics\Day\DayRefreshAction;
 use Blue\Snapps\System\Cms\Block\BlockAddAction;
 use Blue\Snapps\System\Cms\Block\BlockDeleteAction;
 use Blue\Snapps\System\Cms\Block\BlockHandler;
@@ -96,10 +94,5 @@ class SystemSnapp extends AbstractSnapp
             ->setOptions([UserPermission::class => UserPermission::CMS]);
         $this->post('/cms/blocks/save[/[{snapp}]]', BlockSaveAction::class)
             ->setOptions([UserPermission::class => UserPermission::CMS]);
-
-        $this->get('/analytics/day[/{code}]', DayHandler::class, 'analytics')
-            ->setOptions([UserPermission::class => UserPermission::ANALYTICS]);
-        $this->post('/analytics/day/refresh', DayRefreshAction::class)
-            ->setOptions([UserPermission::class => UserPermission::ANALYTICS]);
     }
 }

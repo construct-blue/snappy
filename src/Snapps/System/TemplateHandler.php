@@ -27,9 +27,6 @@ abstract class TemplateHandler extends \Blue\Core\Application\Handler\TemplateHa
         if ($user && $user->hasPermission(UserPermission::CMS)) {
             $this->assign('cmsPath', (string)$uriBuilder->withRoute('pages'));
         }
-        if ($user && $user->hasPermission(UserPermission::ANALYTICS)) {
-            $this->assign('analyticsPath', (string)$uriBuilder->withRoute('analytics'));
-        }
         if ($user && $user->hasPermission(UserPermission::SETTINGS)) {
             $this->assign('settingsPath', (string)$uriBuilder->withRoute('settings'));
         }

@@ -6,6 +6,7 @@ namespace Blue\Models\Analytics;
 
 use Blue\Core\Http\QueryParameter;
 use Blue\Core\Http\RequestAttribute;
+use Blue\Models\Analytics\Tracker\RequestTracker;
 use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -26,8 +27,6 @@ class AnalyticsMiddleware implements MiddlewareInterface
         }
         $response = $handler->handle($request);
         $tracker->setResponse($response);
-        $calc = new DayCalculation();
-        $calc->queueExecution();
         return $response;
     }
 }
