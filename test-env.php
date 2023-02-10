@@ -4,5 +4,6 @@ return [
     "resources" => "/resources.json",
     "pdo_dsn" => "sqlite::memory:",
     "pdo_username" => null,
-    "pdo_password" => null
+    "pdo_password" => null,
+    "dev_mode" => true,
 ];
