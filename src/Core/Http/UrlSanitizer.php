@@ -13,6 +13,6 @@ final class UrlSanitizer
 
     public static function path(string $url): string
     {
-        return parse_url($url, PHP_URL_PATH);
+        return (string)parse_url($url, PHP_URL_PATH);
     }
 }

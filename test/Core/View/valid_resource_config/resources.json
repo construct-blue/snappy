@@ -1,0 +1,82 @@
+{
+  "entrypoints": {
+    "snapps_system_settings_tesla_teslasetup": {
+      "js": [
+        "/static/runtime.js",
+        "/static/snapps_system_settings_tesla_teslasetup.js"
+      ],
+      "css": [
+        "/static/snapps_system_settings_tesla_teslasetup.css"
+      ]
+    },
+    "snapps_system_login": {
+      "js": [
+        "/static/runtime.js",
+        "/static/snapps_system_login.js"
+      ],
+      "css": [
+        "/static/snapps_system_login.css"
+      ]
+    },
+    "snapps_nicemobil_live": {
+      "js": [
+        "/static/runtime.js",
+        "/static/vendors-node_modules_core-js_modules_es_error_cause_js.js",
+        "/static/vendors-node_modules_leaflet_dist_leaflet-src_js-node_modules_leaflet_dist_leaflet_css-node_m-8be12a.js",
+        "/static/snapps_nicemobil_live.js"
+      ],
+      "css": [
+        "/static/vendors-node_modules_leaflet_dist_leaflet-src_js-node_modules_leaflet_dist_leaflet_css-node_m-8be12a.css",
+        "/static/snapps_nicemobil_live.css"
+      ]
+    },
+    "core_view_viewcomponent": {
+      "js": [
+        "/static/runtime.js",
+        "/static/vendors-node_modules_core-js_modules_es_error_cause_js.js",
+        "/static/vendors-node_modules_ungap_custom-elements_index_js-node_modules_simpledotcss_simple_css.js",
+        "/static/core_view_viewcomponent.js"
+      ],
+      "css": [
+        "/static/vendors-node_modules_ungap_custom-elements_index_js-node_modules_simpledotcss_simple_css.css",
+        "/static/core_view_viewcomponent.css"
+      ]
+    },
+    "core_view_component_icon": {
+      "js": [
+        "/static/runtime.js",
+        "/static/core_view_component_icon.js"
+      ],
+      "css": [
+        "/static/core_view_component_icon.css"
+      ]
+    },
+    "core_view_script1": {
+      "js": [
+        "/static/runtime.js",
+        "/static/core_view_script1.js"
+      ],
+      "css": [
+        "/static/core_view_script1.css"
+      ]
+    },
+    "core_view_script2": {
+      "js": [
+        "/static/runtime.js",
+        "/static/core_view_script2.js"
+      ],
+      "css": [
+        "/static/core_view_script2.css"
+      ]
+    },
+    "core_view_script3": {
+      "js": [
+        "/static/runtime.js",
+        "/static/core_view_script3.js"
+      ],
+      "css": [
+        "/static/core_view_script3.css"
+      ]
+    }
+  }
+}

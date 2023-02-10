@@ -10,10 +10,10 @@ use Blue\Core\Application\Session\Session;
  * @property string $lang
  * @property string $title
  * @property string $description
- * @property Closure $styles
- * @property Closure $scripts
+ * @property ClientResources $resources
  * @property array $body
  * @property array $content
+ * @property null|array $head
  * @property null|Session $session
  */
 class PageWrapper extends ViewComponent
@@ -46,13 +46,20 @@ class PageWrapper extends ViewComponent
                     '<link rel="apple-touch-icon" href="/apple-touch-icon.png">',
                     '<link rel="manifest" href="/manifest.webmanifest">',
                     $this->buildMetaDescriptionTag(),
-                    $this->styles,
+                    $this->head ?? '',
+                    fn() => array_map(
+                        fn(string $file) => "<link rel='stylesheet' href='$file'>",
+                        $this->resources->getCSSFiles()
+                    ),
                 ],
                 'body' => PriorityViewComponent::from([
                     new DevInfoComponent(),
                     $this->body ?? [],
                     $this->content ?? [],
-                    $this->scripts,
+                    fn() => array_map(
+                        fn(string $file) => "<script src='$file'></script>",
+                        $this->resources->getJSFiles()
+                    ),
                     fn() => isset($this->session) ?
                         TemplateViewComponent::forTemplate(
                             __DIR__ . '/Messages.phtml',

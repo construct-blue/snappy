@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Core\Database;
 
+use Blue\Core\Environment\Environment;
 use Blue\Core\Database\Exception\ConnectionInitException;
 use Blue\Core\Util\MultitonTrait;
 use PDO;
@@ -72,20 +73,14 @@ class Connection
         }
     }
 
-    public function initMySQL(
-        string $host,
-        string $port,
-        string $db,
-        string $user,
-        string $pw,
-        string $tablePrefix = 'blue_'
-    ): self {
+    public function initMySQL(): self {
+        $env = Environment::instance();
         $this->assertUninitialized();
-        $this->tablePrefix = $tablePrefix;
+        $this->tablePrefix = $env->get('pdo_prefix', 'blue_');
         $this->pdo = new PDO(
-            "mysql:host=$host;port=$port;dbname=$db",
-            $user,
-            $pw,
+            $env->get('pdo_dsn', null, true),
+            $env->get('pdo_username', null, true),
+            $env->get('pdo_password', null, true),
             [PDO::ATTR_PERSISTENT => true]
         );
         return $this;

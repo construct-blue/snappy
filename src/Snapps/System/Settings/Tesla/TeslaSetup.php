@@ -3,7 +3,7 @@
 namespace Blue\Snapps\System\Settings\Tesla;
 
 use Blue\Core\Application\Snapp\SnappRoute;
-use Blue\Core\View\Entrypoint;
+use Blue\Core\View\ClientScript;
 use Blue\Core\View\PageWrapper;
 use Blue\Core\View\TemplateViewComponent;
 use Blue\Core\View\ViewComponent;
@@ -14,7 +14,7 @@ use Blue\Snapps\System\SystemNavigation;
 /**
  * @property SnappRoute $activeSnapp
  */
-#[Entrypoint(__DIR__ . '/TeslaSetup.ts')]
+#[ClientScript(__DIR__ . '/TeslaSetup.ts')]
 class TeslaSetup extends ViewComponent
 {
     public function render(): array

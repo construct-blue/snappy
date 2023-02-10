@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Core\View;
 
+use Blue\Core\Environment\Environment;
 use Blue\Core\Util\PlaceholderHelper;
 use Blue\Core\View\Exception\InfiniteRecursionException;
 use Blue\Core\View\Exception\InvalidComponentClassException;
@@ -12,6 +13,7 @@ use Blue\Core\View\Exception\InvalidComponentParameterException;
 use Blue\Core\View\Exception\ViewException;
 use Closure;
 use Throwable;
+
 use function class_exists;
 use function explode;
 use function get_debug_type;
@@ -20,13 +22,13 @@ use function is_string;
 
 class ViewRenderer
 {
-    private EntrypointHelper $entrypointHelper;
+    private ClientResources $resources;
 
     final public function __construct(
         private readonly ?ViewLogger $logger = null,
-        private readonly bool $debug = false
+        private readonly bool $debug = false,
     ) {
-        $this->entrypointHelper = new EntrypointHelper();
+        $this->resources = new ClientResources(Environment::instance());
     }
 
     /**
@@ -90,7 +92,10 @@ class ViewRenderer
         int $index = 1
     ): ViewComponentInterface {
         try {
-            $this->entrypointHelper->enableComponent($component);
+            $this->resources->importComponent($component);
+            if ($component instanceof PageWrapper) {
+                $component->resources = $this->resources;
+            }
 
             if ($parent) {
                 $id = $parent->__id() . '-' . $index;
@@ -103,11 +108,6 @@ class ViewRenderer
 
             if ($parent && strlen($component->__id()) > 1000) {
                 throw InfiniteRecursionException::forComponent('Maximum nesting reached', $parent);
-            }
-
-            if ($component instanceof PageWrapper) {
-                $component->styles = $this->entrypointHelper->dumpCss(...);
-                $component->scripts = $this->entrypointHelper->dumpJs(...);
             }
         } catch (ViewException $exception) {
             $this->logger?->error($exception);
@@ -143,7 +143,7 @@ class ViewRenderer
     ): array {
         $result = [];
         foreach ($content as $key => $item) {
-            if (is_string($key) && class_exists($key)) {
+            if (is_string($key) && str_contains($key, '\\') && class_exists($key)) {
                 if (!is_array($item)) {
                     throw InvalidComponentParameterException::forComponent(
                         'Component params must be assoc array',

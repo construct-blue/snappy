@@ -4,42 +4,85 @@ declare(strict_types=1);
 
 chdir(dirname(__DIR__));
 
-exec('composer install --no-dev --optimize-autoloader');
-exec('yarn install');
-exec('yarn build');
-exec('rm -rf dist');
-exec('mkdir dist');
-exec('mkdir dist/data');
+const FILES = [
+        '.yarnrc.yml',
+        'composer.json',
+        'composer.lock',
+        'entrypoints.json',
+        'LICENSE',
+        'package.json',
+        'postcss.config.js',
+        'tsconfig.json',
+        'webpack.config.js',
+        'yarn.lock',
+];
+
+const KEEP_FILES = [
+];
 
 const FOLDERS = [
+        '.yarn',
         'public',
         'src',
         'vendor',
 ];
 
+const TEMP_FOLDERS = [
+        '.yarn',
+        'node_modules'
+];
+
+const TEMP_FILE_TYPES = [
+        '.ts',
+        '.scss'
+];
+
+exec('bin/entrypoints');
+
+exec('rm -rf dist');
+exec('mkdir dist');
+
+exec('cp build-env.php dist/env.php');
+
+foreach (FILES as $FILE) {
+    exec("cp $FILE dist/");
+}
 foreach (FOLDERS as $FOLDER) {
-    exec("cp -r $FOLDER dist/$FOLDER");
+    exec("cp -r $FOLDER dist/");
 }
 
-exec("cp LICENSE dist/");
-exec("cp env.php.dist dist/");
-exec("echo 'rc' >> dist/VERSION");
+exec('rm -rf dist/public/static');
 
 // CWD /dist/
 chdir('dist');
-$autoloader = require 'vendor/autoload.php';
 
-(new \Blue\Core\View\EntrypointHelper(getcwd() . '/'))->build();
+exec('yarn install');
+exec('yarn build');
+exec('composer install --no-dev --optimize-autoloader');
+exec('mkdir cache');
 
-global $env;
-$env = [];
+require "vendor/autoload.php";
 
 /** @var Blue\Core\Application\Server\SnappyServer $application */
-$application = require 'src/bootstrap.php';
+$application = require "src/server.php";
 $application->build();
-chdir(dirname(__DIR__));
-// CWD /
 
-// restore dev env
-exec('composer install');
-exec('yarn dev');
+foreach (TEMP_FOLDERS as $FOLDER) {
+    exec("rm -rf $FOLDER");
+}
+
+exec('rm -rf .yarn');
+exec('rm -rf node_modules');
+
+exec('rm env.php');
+foreach (FILES as $FILE) {
+    if (in_array($FILE, KEEP_FILES)) {
+        continue;
+    }
+    exec("rm $FILE");
+}
+
+foreach (TEMP_FILE_TYPES as $TEMP_FILE_TYPE) {
+    exec("rm -rf */**/*$TEMP_FILE_TYPE");
+}
+

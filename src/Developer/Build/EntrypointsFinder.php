@@ -4,32 +4,34 @@ declare(strict_types=1);
 
 namespace Blue\Developer\Build;
 
-use Blue\Core\View\Entrypoint;
-use Blue\Core\View\EntrypointHelper;
+use Blue\Core\Environment\Environment;
+use Blue\Core\View\ClientResources;
+use Blue\Core\View\ClientScript;
+use ReflectionClass;
 use Throwable;
 
 use function class_exists;
 use function file_put_contents;
-use function getcwd;
-use function is_subclass_of;
 use function json_encode;
 
 class EntrypointsFinder
 {
-    public function execute()
+    public function execute(): void
     {
-        $classes = $this->findClasses();
+        $env = Environment::instance();
+        $root = $env->getRootPath();
+        $classes = $this->findClasses($root . '/src');
 
         $entrypoints = [];
         foreach ($classes as $class) {
             try {
                 if (@class_exists($class)) {
-                    $reflector = new \ReflectionClass($class);
-                    $attributes = $reflector->getAttributes(Entrypoint::class);
+                    $reflector = new ReflectionClass($class);
+                    $attributes = $reflector->getAttributes(ClientScript::class);
                     foreach ($attributes as $attribute) {
-                        $entrypoint = $attribute->newInstance()->file;
-                        $entrypoint = EntrypointHelper::buildEntrypoint($entrypoint);
-                        $entrypoints[EntrypointHelper::buildEntrypointName($entrypoint)] = $entrypoint;
+                        /** @var ClientScript $entrypoint */
+                        $entrypoint = $attribute->newInstance();
+                        $entrypoints[$entrypoint->getKey($root)] = $entrypoint->getProjectPath($root);
                     }
                 }
             } catch (Throwable $throwable) {
@@ -38,7 +40,7 @@ class EntrypointsFinder
             }
         }
         $json = json_encode($entrypoints);
-        $filename = 'entrypoints.json';
+        $filename = $env->getFilepath('entrypoints', ClientResources::DEFAULT_ENTRYPOINTS_FILE, false);
         file_put_contents($filename, $json);
 
         $count = (string)count($entrypoints);
@@ -46,10 +48,10 @@ class EntrypointsFinder
     }
 
 
-    private function findClasses(): array
+    private function findClasses(string $path): array
     {
         $classes = [];
-        $iti = new \RecursiveDirectoryIterator(getcwd() . '/src');
+        $iti = new \RecursiveDirectoryIterator($path);
         $scanner = new TokenScanner();
         foreach (new \RecursiveIteratorIterator($iti) as $file) {
             $file = (string)$file;

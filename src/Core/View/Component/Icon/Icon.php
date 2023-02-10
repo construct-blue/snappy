@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Blue\Core\View\Component\Icon;
 
-use Blue\Core\View\{Entrypoint, ViewComponent};
+use Blue\Core\View\{ClientScript, ViewComponent};
 
 /**
  * @property string $icon
  */
-#[Entrypoint(__DIR__ . '/Icon.ts')]
+#[ClientScript(__DIR__ . '/Icon.ts')]
 class Icon extends ViewComponent
 {
     public static function for(string $icon): static

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\Nicemobil\Live;
 
-use Blue\Core\View\Entrypoint;
+use Blue\Core\View\ClientScript;
 use Blue\Core\View\PageWrapper;
 use Blue\Core\View\TemplateViewComponent;
 use Blue\Core\View\ViewComponent;
@@ -16,7 +16,7 @@ use function number_format;
  * @property callable $formatNumber
  * @method string formatNumber(float|int $number, string $unit, int $decimals = 0)
  */
-#[Entrypoint(__DIR__ . '/Live.ts')]
+#[ClientScript(__DIR__ . '/Live.ts')]
 class Live extends ViewComponent
 {
     protected function __init()

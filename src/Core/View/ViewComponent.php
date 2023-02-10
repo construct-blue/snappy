@@ -9,10 +9,9 @@ use Blue\Core\View\Exception\UndefinedMethodException;
 use Blue\Core\View\Exception\UndefinedPropertyException;
 use Blue\Core\View\Exception\ViewException;
 use Closure;
-
 use function array_replace_recursive;
 
-#[Entrypoint(__DIR__ . '/ViewComponent.ts')]
+#[ClientScript(__DIR__ . '/ViewComponent.ts')]
 abstract class ViewComponent implements ViewComponentInterface
 {
     // phpcs:ignore

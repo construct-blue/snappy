@@ -1,0 +1,10 @@
+{
+  "snapps_system_settings_tesla_teslasetup": ".\/src\/Snapps\/System\/Settings\/Tesla\/TeslaSetup.ts",
+  "snapps_system_login": ".\/src\/Snapps\/System\/Login\/Login.ts",
+  "snapps_nicemobil_live": ".\/src\/Snapps\/Nicemobil\/Live\/Live.ts",
+  "core_view_viewcomponent": ".\/src\/Core\/View\/ViewComponent.ts",
+  "core_view_component_icon": ".\/src\/Core\/View\/Component\/Icon\/Icon.ts",
+  "core_view_script1": ".\/Core\/View\/script1.ts",
+  "core_view_script2": ".\/Core\/View\/script2.ts",
+  "core_view_script3": ".\/Core\/View\/script3.ts"
+}

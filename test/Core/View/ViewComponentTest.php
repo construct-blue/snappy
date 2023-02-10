@@ -72,10 +72,10 @@ class ViewComponentTest extends TestCase
     public function testShouldHaveAccurateLineInfoInUndefinedPropertyException()
     {
         $component = new TemplateExceptionComponent();
-        $renderer = new ViewRenderer(null, false);
+        $renderer = new ViewRenderer(null, false, __DIR__);
         $this->assertEquals('', $renderer->render($component));
         $this->expectException(UndefinedPropertyException::class);
-        $renderer = new ViewRenderer(null, true);
+        $renderer = new ViewRenderer(null, true, __DIR__);
         $renderer->render($component);
     }
 }

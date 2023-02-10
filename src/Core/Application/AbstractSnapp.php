@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Core\Application;
 
+use Blue\Core\Environment\Environment;
 use Laminas\HttpHandlerRunner\RequestHandlerRunnerInterface;
 use Laminas\Stratigility\Middleware\ErrorHandler;
 use Laminas\Stratigility\MiddlewarePipeInterface;
@@ -19,16 +20,11 @@ use Blue\Core\Application\Debug\ConfigProvider as DebugConfigProvider;
 
 abstract class AbstractSnapp extends Application implements SnappInterface
 {
-    public const ENV_DEV_DOMAIN = 'DEV_DOMAIN';
-    public const ENV_DEV_MODE = 'DEV_MODE';
-    public const ENV_CACHE_PATH = 'CACHE_PATH';
-
     private ApplicationContainer $container;
-    private array $env;
+    public Environment $config;
 
-    final private function __construct(array $env = [])
+    final private function __construct()
     {
-        $this->env = $env;
         parent::__construct(
             $this->getContainer()->get(MiddlewareFactory::class),
             $this->getContainer()->get(MiddlewarePipeInterface::class),
@@ -38,36 +34,14 @@ abstract class AbstractSnapp extends Application implements SnappInterface
     }
 
     /**
-     * @param array $env
-     * @param string|null $configCacheFile
      * @return SnappProxy<static>
      */
-    public static function fromEnv(array $env, string $configCacheFile = null): SnappInterface
+    public static function default(): SnappInterface
     {
-        $env[self::ENV_CACHE_PATH] = $configCacheFile;
         /** @phpstan-ignore-next-line */
-        return new SnappProxy(fn() => new static($env));
+        return new SnappProxy(fn() => new static());
     }
 
-    protected function getEnv(string $name, $default = null)
-    {
-        return $this->env[$name] ?? $default;
-    }
-
-    protected function getDevDomain(): ?string
-    {
-        return $this->getEnv(self::ENV_DEV_DOMAIN);
-    }
-
-    protected function isDevMode(): bool
-    {
-        return (bool)$this->getEnv(self::ENV_DEV_MODE);
-    }
-
-    protected function getCachePath(): ?string
-    {
-        return $this->getEnv(self::ENV_CACHE_PATH);
-    }
 
     final public function init(): static
     {
@@ -93,7 +67,7 @@ abstract class AbstractSnapp extends Application implements SnappInterface
 
     protected function createConfig(): ApplicationContainerConfig
     {
-        $config = new ApplicationContainerConfig($this->getCachePath() . '.config.php');
+        $config = new ApplicationContainerConfig('cache' . DIRECTORY_SEPARATOR . md5(static::class) . '.config.cache');
         foreach ($this->getConfigProviderList() as $configProvider) {
             $config->addProviderClass($configProvider);
         }
@@ -101,11 +75,12 @@ abstract class AbstractSnapp extends Application implements SnappInterface
             'router' => [
                 'fastroute' => [
                     'cache_enabled' => true,
-                    'cache_file' => $this->getCachePath() . '.router.php'
+                    'cache_file' => 'cache' . DIRECTORY_SEPARATOR . md5(static::class) . '.router.cache'
                 ],
             ],
         ]);
-        if ($this->isDevMode()) {
+        if (Environment::instance()->isDevMode()) {
+            opcache_reset();
             $config->addProviderClass(DebugConfigProvider::class);
         }
         return $config;

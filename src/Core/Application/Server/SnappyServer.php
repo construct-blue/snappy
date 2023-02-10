@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Blue\Core\Application\Server;
 
 use Blue\Core\Application\SnappInterface;
-use Blue\Core\Http\Header;
+use Blue\Core\Environment\Environment;
 use Laminas\Diactoros\ServerRequest;
 use Mezzio\Router\Middleware\ImplicitHeadMiddleware;
 use Mezzio\Router\Middleware\ImplicitOptionsMiddleware;
@@ -27,22 +27,12 @@ class SnappyServer extends AbstractSnapp
 
     private function initDbConnection(): void
     {
-        if (!$this->getEnv('MYSQL_HOST')) {
-            return;
-        }
-        Connection::main()->initMySQL(
-            $this->getEnv('MYSQL_HOST'),
-            $this->getEnv('MYSQL_PORT'),
-            $this->getEnv('MYSQL_DATABASE'),
-            $this->getEnv('MYSQL_USER'),
-            $this->getEnv('MYSQL_PASSWORD'),
-            $this->getEnv('MYSQL_TABLE_PREFIX', 'blue_'),
-        );
+        Connection::main()->initMySQL();
     }
 
-    public static function fromEnv(array $env, string $configCacheFile = null): self
+    public static function default(): self
     {
-        return parent::fromEnv($env, $configCacheFile)->resolve();
+        return parent::default()->resolve();
     }
 
     protected function createConfig(): ApplicationContainerConfig
@@ -55,8 +45,9 @@ class SnappyServer extends AbstractSnapp
     public function addSnapp(SnappInterface $snapp, string $path, string $domain = null): SnappRoute
     {
         $route = new SnappRoute($snapp, $path, $domain);
-        if ($domain && $this->getDevDomain()) {
-            $route->setDomainSuffix('.' . $this->getDevDomain());
+        $env = Environment::instance();
+        if ($domain && $env->getDevDomain()) {
+            $route->setDomainSuffix('.' . $env->getDevDomain());
         }
         return $this->snappRoutes[] = $route;
     }

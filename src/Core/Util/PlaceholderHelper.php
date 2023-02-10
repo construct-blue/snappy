@@ -13,6 +13,8 @@ use function str_replace;
 
 class PlaceholderHelper
 {
+    use UtilClassTrait;
+
     /**
      * @param string $str
      * @return array

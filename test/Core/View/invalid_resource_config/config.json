@@ -1,0 +1,4 @@
+{
+  "resources": "/Core/View/invalid_resource_config/resources.json",
+  "entrypoints": "/Core/View/invalid_resource_config/entrypoints.json"
+}

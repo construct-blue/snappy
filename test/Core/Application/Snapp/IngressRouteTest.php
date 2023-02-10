@@ -14,7 +14,7 @@ class IngressRouteTest extends TestCase
 {
     public function testProcessSuccessWithPath()
     {
-        $app = ApplicationStub::fromEnv(['DEV_MODE' => true])->resolve();
+        $app = ApplicationStub::default(['DEV_MODE' => true])->resolve();
         $app->get('/', fn() => new TextResponse('test'));
 
         $handler = new HandlerStub();
@@ -29,7 +29,7 @@ class IngressRouteTest extends TestCase
 
     public function testProcessSuccessWithDomain()
     {
-        $app = ApplicationStub::fromEnv(['DEV_MODE' => true])->resolve();
+        $app = ApplicationStub::default(['DEV_MODE' => true])->resolve();
         $app->get('/', fn() => new TextResponse('test'));
 
         $handler = new HandlerStub();
@@ -44,7 +44,7 @@ class IngressRouteTest extends TestCase
 
     public function testProcessFailure()
     {
-        $app = ApplicationStub::fromEnv(['DEV_MODE' => true]);
+        $app = ApplicationStub::default(['DEV_MODE' => true]);
         $handler = new HandlerStub();
         $route = new SnappRoute($app, '/test');
         $request = (new ServerRequest())->withUri(new Uri('https://www.example.com/foo'));

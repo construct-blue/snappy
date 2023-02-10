@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\System\Login;
 
-use Blue\Core\View\Component\Icon\Icon;
 use Blue\Core\View\Component\Link;
-use Blue\Core\View\Entrypoint;
+use Blue\Core\View\ClientScript;
 use Blue\Core\View\PageWrapper;
 use Blue\Core\View\TemplateViewComponent;
 use Blue\Core\View\ViewComponent;
@@ -16,7 +15,7 @@ use Blue\Snapps\System\SystemNavigation;
  * @property string $token
  * @property string $backPath
  */
-#[Entrypoint(__DIR__ . '/Login.ts')]
+#[ClientScript(__DIR__ . '/Login.ts')]
 class LoginView extends ViewComponent
 {
     public function render(): array

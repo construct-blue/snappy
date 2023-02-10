@@ -19,7 +19,7 @@ class FormTest extends TestCase
                 'content' => ''
             ],
         ]);
-        $renderer = new ViewRenderer();
+        $renderer = new ViewRenderer(null, true, __DIR__);
         $this->assertEquals('<form is="reactive-form" id="id"></form>', $renderer->render($component));
     }
 
@@ -30,7 +30,7 @@ class FormTest extends TestCase
                 'content' => ''
             ],
         ]);
-        $renderer = new ViewRenderer();
+        $renderer = new ViewRenderer(null, true, __DIR__);
         $this->assertEquals('<form is="reactive-form"></form>', $renderer->render($component));
     }
 
@@ -42,7 +42,7 @@ class FormTest extends TestCase
                 'content' => ''
             ],
         ]);
-        $renderer = new ViewRenderer();
+        $renderer = new ViewRenderer(null, true, __DIR__);
         $this->assertEquals('<form is="reactive-form"></form>', $renderer->render($component, ['id' => 'id']));
     }
 
@@ -53,7 +53,7 @@ class FormTest extends TestCase
                 'content' => ''
             ],
         ]);
-        $renderer = new ViewRenderer();
+        $renderer = new ViewRenderer(null, true, __DIR__);
         $this->assertEquals('<form is="reactive-form" id="id"></form>', $renderer->render($component, ['id' => 'id']));
     }
 }
