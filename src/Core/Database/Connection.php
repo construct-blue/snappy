@@ -73,7 +73,8 @@ class Connection
         }
     }
 
-    public function initMySQL(): self {
+    public function initMySQL(): self
+    {
         $env = Environment::instance();
         $this->assertUninitialized();
         $this->tablePrefix = $env->get('pdo_prefix', 'blue_');

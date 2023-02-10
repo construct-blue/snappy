@@ -9,6 +9,7 @@ use Blue\Core\View\Exception\UndefinedMethodException;
 use Blue\Core\View\Exception\UndefinedPropertyException;
 use Blue\Core\View\Exception\ViewException;
 use Closure;
+
 use function array_replace_recursive;
 
 #[ClientScript(__DIR__ . '/ViewComponent.ts')]

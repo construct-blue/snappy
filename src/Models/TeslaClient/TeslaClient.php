@@ -9,6 +9,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use JsonSerializable;
 use Laminas\Diactoros\Uri;
+
 use function base64_encode;
 use function hash;
 use function http_build_query;

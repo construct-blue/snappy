@@ -8,5 +8,4 @@ use Blue\Core\Exception\CoreException;
 
 class MissingRequiredValueException extends CoreException
 {
-
 }

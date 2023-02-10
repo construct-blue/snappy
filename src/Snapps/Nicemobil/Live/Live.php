@@ -9,6 +9,7 @@ use Blue\Core\View\PageWrapper;
 use Blue\Core\View\TemplateViewComponent;
 use Blue\Core\View\ViewComponent;
 use Blue\Models\TeslaClient\VehicleData;
+
 use function number_format;
 
 /**

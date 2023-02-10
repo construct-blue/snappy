@@ -9,6 +9,7 @@ use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 use Stringable;
 use Throwable;
+
 use function date;
 use function strtoupper;
 

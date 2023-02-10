@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Blue\Core\Environment;
 
 use Blue\Core\Environment\Exception\MissingRequiredValueException;
-
 use Blue\Core\Util\SingletonTrait;
 use Error;
 

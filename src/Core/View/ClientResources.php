@@ -31,7 +31,7 @@ class ClientResources
         $resourceFile = $env->getFilepath(self::CONFIG_KEY_RESOURCES, self::DEFAULT_RESOURCE_FILE, false);
         try {
             $staticFilesData = Json::decodeFileAssoc($resourceFile);
-        } catch (JsonException|FileNotFoundException|FileReadException $exception) {
+        } catch (JsonException | FileNotFoundException | FileReadException $exception) {
             throw InvalidStaticResourceFileException::from($exception);
         }
         if (!isset($staticFilesData[self::ENTRYPOINTS]) || !is_array($staticFilesData[self::ENTRYPOINTS])) {
@@ -61,13 +61,6 @@ class ClientResources
             }
         }
         return $this;
-    }
-
-    private function getFile(ResourceType $type, string $key): array
-    {
-        if (!isset($this->filesMap[$key][$type->name]) && !is_array($this->filesMap[$key][$type->name])) {
-        }
-        return $this->filesMap[$key][$type->name] ?? [];
     }
 
     public function getFiles(ResourceType $type): array

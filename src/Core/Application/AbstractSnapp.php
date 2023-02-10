@@ -101,8 +101,6 @@ abstract class AbstractSnapp extends Application implements SnappInterface
 
     public function __debugInfo(): ?array
     {
-        return [
-            'env' => $this->env
-        ];
+        return [];
     }
 }
