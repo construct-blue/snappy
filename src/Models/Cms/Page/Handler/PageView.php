@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Blue\Models\Cms\Page\Handler;
 
-use Blue\Core\View\PageWrapper;
+use Blue\Core\View\Helper\PageWrapper;
 use Blue\Core\View\ViewComponent;
+use Blue\Models\Analytics\Tracker\Client\Analytics;
 
 /**
  * @property string $title
@@ -27,6 +28,7 @@ class PageView extends ViewComponent
                     'main' => $this->main ?? '',
                     'footer' => $this->footer ?? '',
                 ],
+                'after' => Analytics::create()
             ],
         ];
     }

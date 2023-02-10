@@ -1,11 +1,11 @@
 import '@ungap/custom-elements'
 import 'simpledotcss';
 import "./ViewComponent.scss"
-import "./Analytics"
 import "./Component/Button/ConfirmButton"
-import "./ReactiveDetails"
+import "./Component/Details/ReactiveDetails"
 import "./Component/Form/ReactiveForm"
 import Toast from "./Component/Toast/Toast";
+import Popup from "./Popup";
 
 customElements.define('toast-messages', class extends HTMLScriptElement {
     constructor() {
@@ -34,11 +34,26 @@ customElements.define('toast-validations', class extends HTMLScriptElement {
     }
 }, {extends: 'script'});
 
-document.addEventListener('click', event => {
+window.addEventListener('message', e => {
+    if (e.data.popup) {
+        Popup.open(e.data.popup)
+    }
+    if (e.data.remove) {
+        document.querySelector(e.data.remove)?.remove()
+    }
+})
+
+window.addEventListener('click', event => {
     const anchor = (event.target as HTMLElement).closest('a');
-    if (anchor?.target === 'popup' && anchor.href) {
+    if (!anchor?.href) {
+        return;
+    }
+    if (window.top && window.self !== window.top) {
+        event.preventDefault();
+        window.top.postMessage({popup: anchor.href}, '*');
+    } else if (anchor?.target === 'popup') {
         event.preventDefault()
-        window.open(anchor.href, '_blank', 'popup,width=800,height=600')
+        Popup.open(anchor.href)
     }
 })
 

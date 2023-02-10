@@ -11,6 +11,8 @@ use Blue\Core\View\Exception\InvalidComponentClassException;
 use Blue\Core\View\Exception\InvalidComponentContentException;
 use Blue\Core\View\Exception\InvalidComponentParameterException;
 use Blue\Core\View\Exception\ViewException;
+use Blue\Core\View\Helper\PageWrapper;
+use Blue\Core\View\Helper\RenderFirst;
 use Closure;
 use Throwable;
 
@@ -180,7 +182,7 @@ class ViewRenderer
                     $parent,
                     $index
                 );
-            } elseif ($render && $item instanceof PriorityViewComponent) {
+            } elseif ($render && $item instanceof RenderFirst) {
                 $result[$key] = $this->render($item, null, $parent);
             } elseif ($item instanceof ViewComponentInterface) {
                 $result[$key] = $this->prepareComponent(

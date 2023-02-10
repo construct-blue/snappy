@@ -4,8 +4,8 @@ namespace Blue\Snapps\System\Settings\Tesla;
 
 use Blue\Core\Application\Snapp\SnappRoute;
 use Blue\Core\View\ClientScript;
-use Blue\Core\View\PageWrapper;
-use Blue\Core\View\TemplateViewComponent;
+use Blue\Core\View\Helper\PageWrapper;
+use Blue\Core\View\Helper\Template;
 use Blue\Core\View\ViewComponent;
 use Blue\Snapps\System\Settings\SettingsNavigation;
 use Blue\Snapps\System\SystemFooter;
@@ -27,7 +27,7 @@ class TeslaSetup extends ViewComponent
                         SystemNavigation::class => [],
                         SettingsNavigation::class => [],
                     ],
-                    'main' => TemplateViewComponent::forTemplate(__DIR__ . '/TeslaSetup.phtml'),
+                    'main' => Template::include(__DIR__ . '/TeslaSetup.phtml'),
                     new SystemFooter()
                 ]
             ],

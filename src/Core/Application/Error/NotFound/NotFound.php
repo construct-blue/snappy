@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Blue\Core\Application\Error\NotFound;
 
 use Blue\Core\View\Component\Icon\Icon;
-use Blue\Core\View\PageWrapper;
-use Blue\Core\View\TemplateViewComponent;
+use Blue\Core\View\Helper\PageWrapper;
+use Blue\Core\View\Helper\Template;
 use Blue\Core\View\ViewComponent;
 
 /**
@@ -25,7 +25,7 @@ class NotFound extends ViewComponent
                     'header' => [
                         $this->header ?? ['h1' => 'Oops!'],
                     ],
-                    TemplateViewComponent::forTemplate(__DIR__ . '/NotFound.phtml'),
+                    Template::include(__DIR__ . '/NotFound.phtml'),
                     'footer' => [
                         'p' => [
                             'a href="#" onclick="window.location = document.referrer"' => [

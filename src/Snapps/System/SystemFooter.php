@@ -37,7 +37,8 @@ class SystemFooter extends ViewComponent
                     [
                         Link::class => [
                             'href' => $this->myAccountPath,
-                            'text' => 'My Account'
+                            'text' => 'My Account',
+                            'target' => 'popup'
                         ],
                     ],
                 ] : [

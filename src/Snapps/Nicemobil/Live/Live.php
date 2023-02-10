@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Blue\Snapps\Nicemobil\Live;
 
 use Blue\Core\View\ClientScript;
-use Blue\Core\View\PageWrapper;
-use Blue\Core\View\TemplateViewComponent;
+use Blue\Core\View\Helper\PageWrapper;
+use Blue\Core\View\Helper\Template;
 use Blue\Core\View\ViewComponent;
+use Blue\Models\Analytics\Tracker\Client\Analytics;
 use Blue\Models\TeslaClient\VehicleData;
 
 use function number_format;
@@ -33,7 +34,8 @@ class Live extends ViewComponent
         return [
             PageWrapper::class => [
                 'title' => 'Live - NICEmobil',
-                'body' => TemplateViewComponent::forTemplate(__DIR__ . '/Live.phtml')
+                'body' => Template::include(__DIR__ . '/Live.phtml'),
+                'after' => Analytics::create()
             ]
         ];
     }

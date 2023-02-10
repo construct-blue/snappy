@@ -2,11 +2,9 @@
 
 namespace BlueTest\Core\View;
 
-use Blue\Core\View\ClientResources;
-use Blue\Core\View\PageWrapper;
+use Blue\Core\View\Helper\PageWrapper;
 use Blue\Core\View\ViewRenderer;
 use PHPUnit\Framework\TestCase;
-use ReflectionObject;
 
 class PageViewComponentTest extends TestCase
 {

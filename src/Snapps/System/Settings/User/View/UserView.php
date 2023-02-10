@@ -6,7 +6,7 @@ namespace Blue\Snapps\System\Settings\User\View;
 
 use Blue\Core\Application\Snapp\SnappRoute;
 use Blue\Core\View\Component\Details\Details;
-use Blue\Core\View\PageWrapper;
+use Blue\Core\View\Helper\PageWrapper;
 use Blue\Core\View\ViewComponent;
 use Blue\Models\User\User;
 use Blue\Snapps\System\Settings\SettingsNavigation;

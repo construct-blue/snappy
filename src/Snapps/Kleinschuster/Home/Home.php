@@ -2,9 +2,10 @@
 
 namespace Blue\Snapps\Kleinschuster\Home;
 
-use Blue\Core\View\PageWrapper;
-use Blue\Core\View\TemplateViewComponent;
+use Blue\Core\View\Helper\PageWrapper;
+use Blue\Core\View\Helper\Template;
 use Blue\Core\View\ViewComponent;
+use Blue\Models\Analytics\Tracker\Client\Analytics;
 
 /**
  * @property string $header
@@ -19,10 +20,11 @@ class Home extends ViewComponent
             PageWrapper::class => [
                 'title' => 'Robert Kleinschuster',
                 'body' => [
-                    TemplateViewComponent::forTemplate(__DIR__ . '/Home.phtml'),
+                    Template::include(__DIR__ . '/Home.phtml'),
                     'main' => $this->main ?? '',
                     'footer' => $this->footer ?? '',
-                ]
+                ],
+                'after' => Analytics::create()
             ],
         ];
     }

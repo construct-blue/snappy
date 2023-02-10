@@ -45,7 +45,7 @@ abstract class ViewComponent implements ViewComponentInterface
         return new $className();
     }
 
-    public static function fromParams(array $params): static
+    public static function create(array $params = []): static
     {
         $component = new static();
         $component->__data = array_replace_recursive($component->__data, $params);

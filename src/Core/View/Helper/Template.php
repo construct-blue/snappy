@@ -2,20 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Blue\Core\View;
+namespace Blue\Core\View\Helper;
 
 use Blue\Core\View\Exception\MissingPropertyException;
+use Blue\Core\View\ViewComponent;
 
 use function ob_get_clean;
 use function ob_start;
 
-class TemplateViewComponent extends ViewComponent
+class Template extends ViewComponent
 {
     private string $template;
     private array $params = [];
-    public static function forTemplate(string $templateFile, array $params = []): static
+    public static function include(string $templateFile, array $params = []): static
     {
-        $component = static::fromParams($params);
+        $component = static::create($params);
         $component->params = $params;
         $component->template = $templateFile;
         return $component;

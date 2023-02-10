@@ -1,4 +1,4 @@
-import AttributeStorage from "./AttributeStorage";
+import AttributeStorage from "../../AttributeStorage";
 
 class ReactiveDetails extends HTMLDetailsElement {
     private attributeStorage = new AttributeStorage(this, ReactiveDetails.observedAttributes)

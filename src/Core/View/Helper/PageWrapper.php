@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Blue\Core\View;
+namespace Blue\Core\View\Helper;
 
 use Blue\Core\Application\Session\Session;
+use Blue\Core\View\ClientResources;
+use Blue\Core\View\ViewComponent;
 
 /**
  * @property string $lang
@@ -13,6 +15,7 @@ use Blue\Core\Application\Session\Session;
  * @property ClientResources $resources
  * @property array $body
  * @property array $content
+ * @property array $after
  * @property null|array $head
  * @property null|Session $session
  */
@@ -47,28 +50,15 @@ class PageWrapper extends ViewComponent
                     '<link rel="manifest" href="/manifest.webmanifest">',
                     $this->buildMetaDescriptionTag(),
                     $this->head ?? '',
-                    fn() => array_map(
-                        fn(string $file) => "<link rel='stylesheet' href='$file'>",
-                        $this->resources->getCSSFiles()
-                    ),
+                    Stylesheets::create(),
                 ],
-                'body' => PriorityViewComponent::from([
-                    new DevInfoComponent(),
+                'body' => RenderFirst::from([
+                    Development::create(),
                     $this->body ?? [],
                     $this->content ?? [],
-                    fn() => array_map(
-                        fn(string $file) => "<script src='$file'></script>",
-                        $this->resources->getJSFiles()
-                    ),
-                    fn() => isset($this->session) ?
-                        TemplateViewComponent::forTemplate(
-                            __DIR__ . '/Messages.phtml',
-                            [
-                                'messages' => $this->session->popMessages(),
-                                'validations' => $this->session->popValidations(),
-                            ]
-                        ) : '',
-                    TemplateViewComponent::forTemplate(__DIR__ . '/Analytics.phtml'),
+                    $this->after ?? [],
+                    Scripts::create(),
+                    Messages::create(),
                 ])
             ]
         ];

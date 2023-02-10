@@ -34,7 +34,7 @@ class BlockEditView extends ViewComponent
                         'value' => $this->id,
                     ],
                     'p' => [
-                        Textfield::fromParams([
+                        Textfield::create([
                             'label' => 'Code',
                             'name' => 'code',
                             'value' => '{code}',

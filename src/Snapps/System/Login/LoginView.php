@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\System\Login;
 
-use Blue\Core\View\Component\Link;
 use Blue\Core\View\ClientScript;
-use Blue\Core\View\PageWrapper;
-use Blue\Core\View\TemplateViewComponent;
+use Blue\Core\View\Component\Link;
+use Blue\Core\View\Helper\PageWrapper;
+use Blue\Core\View\Helper\Template;
 use Blue\Core\View\ViewComponent;
 use Blue\Snapps\System\SystemNavigation;
 
@@ -33,7 +33,7 @@ class LoginView extends ViewComponent
                             ],
                         ],
                     ],
-                    TemplateViewComponent::forTemplate(__DIR__ . '/Login.phtml'),
+                    Template::include(__DIR__ . '/Login.phtml'),
                     'footer' => [
                         Link::class => [
                             'href' => $this->backPath,

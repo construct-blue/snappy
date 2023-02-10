@@ -9,8 +9,8 @@ use Blue\Core\View\Exception\InfiniteRecursionException;
 use Blue\Core\View\Exception\InvalidComponentClassException;
 use Blue\Core\View\Exception\InvalidComponentContentException;
 use Blue\Core\View\Exception\InvalidComponentParameterException;
-use Blue\Core\View\PageWrapper;
-use Blue\Core\View\PriorityViewComponent;
+use Blue\Core\View\Helper\PageWrapper;
+use Blue\Core\View\Helper\RenderFirst;
 use Blue\Core\View\ViewAction;
 use Blue\Core\View\ViewComponent;
 use Blue\Core\View\ViewRenderer;
@@ -225,7 +225,7 @@ EOF;
             'head' => function () use (&$check) {
                 return $check;
             },
-            'body' => PriorityViewComponent::from([
+            'body' => RenderFirst::from([
                 function () use (&$check) {
                     $check = 'hello from body';
                     return '';

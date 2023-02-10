@@ -33,33 +33,33 @@ class UserEdit extends ViewComponent
                     'name' => 'id',
                     'value' => $this->id,
                 ],
-                Textfield::fromParams([
+                Textfield::create([
                     'label' => 'Username',
                     'name' => 'name',
                     'value' => $this->name,
                 ]),
-                Textfield::fromParams([
+                Textfield::create([
                     'label' => 'Password',
                     'name' => 'password',
                     'type' => 'password',
                 ]),
-                CheckboxGroup::fromParams([
+                CheckboxGroup::create([
                     'name' => 'roles',
                     'legend' => 'Roles',
                     'options' => UserRole::list(),
                     'values' => array_keys(UserRole::list($this->roles)),
                 ]),
-                CheckboxGroup::fromParams([
+                CheckboxGroup::create([
                     'name' => 'snapps',
                     'legend' => 'Snapps',
                     'options' => $this->snappOptions,
                     'values' => $this->snapps,
                 ]),
-                Hidden::fromParams([
+                Hidden::create([
                     'name' => 'state',
                     'value' => UserState::ACTIVE->value,
                 ]),
-                Checkbox::fromParams([
+                Checkbox::create([
                     'label' => 'Locked',
                     'name' => 'state',
                     'value' => UserState::LOCKED->value,
