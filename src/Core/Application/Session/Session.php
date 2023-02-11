@@ -5,14 +5,9 @@ declare(strict_types=1);
 namespace Blue\Core\Application\Session;
 
 use Blue\Core\Database\Connection;
-use Blue\Core\Database\Exception\DatabaseException;
 use Blue\Core\Database\ObjectStorage;
 use Blue\Core\Database\Serializer\StdClassSerializer;
-use Blue\Core\Database\Serializer\StorableSerializer;
 use Blue\Core\I18n\Language;
-use Blue\Core\Logger\Logger;
-use Blue\Models\User\User;
-use Throwable;
 
 use function uniqid;
 
@@ -27,23 +22,24 @@ class Session
 
     private string $id;
     private string $token;
+    private ?string $userId = null;
     private Language $language;
-    private ?User $user = null;
     private array $messages = [];
     private array $validations = [];
 
-    private ObjectStorage $sessionRepo;
-    private ObjectStorage $userRepo;
+    private ObjectStorage $storage;
 
     public function __construct(string $id = null)
     {
-        $this->id = $id ?: uniqid('s-');
-        if ($id) {
-            try {
-                $this->loadFromId($id);
-            } catch (Throwable $exception) {
-                (new Logger())->error($exception);
-            }
+        $this->init($id);
+    }
+
+    private function init(string $id = null): void
+    {
+        if (null === $id) {
+            $this->generateId();
+        } else {
+            $this->loadFromId($id);
         }
     }
 
@@ -57,7 +53,7 @@ class Session
         return [
             self::ATTR_TOKEN => $this->getToken(),
             self::ATTR_LANGUAGE => $this->getLanguage()->value,
-            self::ATTR_USER_ID => $this->getUser()?->getId(),
+            self::ATTR_USER_ID => $this->getUserId(),
             self::ATTR_MESSAGES => $this->getMessages(),
             self::ATTR_VALIDATIONS => $this->getValidations(),
         ];
@@ -69,6 +65,11 @@ class Session
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function getCookie(): string
+    {
+        return Session::COOKIE_NAME . '=' . $this->getId() . '; Path=/';
     }
 
     /**
@@ -106,22 +107,26 @@ class Session
         return $this->token = uniqid('t-');
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
     public function isLoggedIn(): bool
     {
-        if (null === $this->getUser()) {
-            return false;
-        }
-        return !$this->getUser()->isGuest();
+        return null !== $this->getUserId();
     }
 
-    public function setUser(?User $user): Session
+    /**
+     * @return string|null
+     */
+    public function getUserId(): ?string
     {
-        $this->user = $user;
+        return $this->userId;
+    }
+
+    /**
+     * @param string|null $userId
+     * @return Session
+     */
+    public function setUserId(?string $userId): Session
+    {
+        $this->userId = $userId;
         return $this;
     }
 
@@ -172,47 +177,41 @@ class Session
         return $this;
     }
 
-    private function getRepo(): ObjectStorage
+    private function getStorage(): ObjectStorage
     {
-        if (!isset($this->sessionRepo)) {
-            $this->sessionRepo = new ObjectStorage(new StdClassSerializer(), 'session', 'object', Connection::session());
+        if (!isset($this->storage)) {
+            $this->storage = new ObjectStorage(new StdClassSerializer(), 'session', 'object', Connection::session());
         }
-        return $this->sessionRepo;
+        return $this->storage;
     }
 
-    private function getUserRepo(): ObjectStorage
+    private function generateId(): void
     {
-        if (!isset($this->userRepo)) {
-            $this->userRepo = new ObjectStorage(new StorableSerializer(User::class), 'user', 'user', Connection::session());
-        }
-        return $this->userRepo;
+        $this->id = uniqid('s-');
     }
 
     private function loadFromId(string $id): void
     {
-        if ($this->getRepo()->existsById($id)) {
-            $data = (array)$this->getRepo()->loadById($id);
-            if ($data) {
-                if (!empty($data[self::ATTR_LANGUAGE])) {
-                    $this->language = Language::from($data[self::ATTR_LANGUAGE]);
-                }
-                if (!empty($data[self::ATTR_TOKEN])) {
-                    $this->token = $data[self::ATTR_TOKEN];
-                }
-                if (!empty($data[self::ATTR_MESSAGES])) {
-                    $this->messages = (array)$data[self::ATTR_MESSAGES];
-                }
-                if (!empty($data[self::ATTR_VALIDATIONS])) {
-                    $this->validations = (array)$data[self::ATTR_VALIDATIONS];
-                }
-                if (!empty($data[self::ATTR_USER_ID])) {
-                    try {
-                        $this->user = $this->getUserRepo()->loadById($data[self::ATTR_USER_ID]);
-                    } catch (DatabaseException $exception) {
-                        (new Logger())->error($exception);
-                    }
-                }
+        if ($this->getStorage()->existsById($id)) {
+            $this->id = $id;
+            $data = (array)$this->getStorage()->loadById($id);
+            if (!empty($data[self::ATTR_LANGUAGE])) {
+                $this->language = Language::from($data[self::ATTR_LANGUAGE]);
             }
+            if (!empty($data[self::ATTR_TOKEN])) {
+                $this->token = $data[self::ATTR_TOKEN];
+            }
+            if (!empty($data[self::ATTR_MESSAGES])) {
+                $this->messages = (array)$data[self::ATTR_MESSAGES];
+            }
+            if (!empty($data[self::ATTR_VALIDATIONS])) {
+                $this->validations = (array)$data[self::ATTR_VALIDATIONS];
+            }
+            if (!empty($data[self::ATTR_USER_ID])) {
+                $this->userId = $data[self::ATTR_USER_ID];
+            }
+        } else {
+            $this->init();
         }
     }
 
@@ -225,17 +224,14 @@ class Session
 
     public function save(): void
     {
-        $this->getRepo()->save((object)$this->toStorage(), $this->getId(), null);
-        if ($this->getUser()) {
-            $this->getUserRepo()->save($this->getUser(), $this->getUser()->getId(), $this->getUser()->getName());
-        }
+        $this->getStorage()->save((object)$this->toStorage(), $this->getId(), null);
     }
 
     public function isModified(): bool
     {
-        return isset($this->token)
-            || isset($this->language)
-            || ($this->getUser() && $this->getUser()->isModified())
+        return !empty($this->token)
+            || !empty($this->language)
+            || !empty($this->userId)
             || !empty($this->messages)
             || !empty($this->validations);
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Blue\Snapps\System\MyAccount;
 
 use Blue\Core\Application\Handler\ActionHandler;
+use Blue\Models\User\User;
 use Blue\Models\User\UserRepository;
 use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
@@ -15,22 +16,20 @@ class MyAccountAction extends ActionHandler
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $data = $request->getParsedBody();
-        $session = $this->getSession($request);
-        $userId = $session->getUser()->getId();
-        $user = UserRepository::instance()->findById($userId);
 
-        if (!empty($data['name'])) {
-            $user->setName($data['name']);
+        /** @var User|null $user */
+        $user = $request->getAttribute(User::class);
+
+        if (!empty($data['name']) && !$user?->isAdmin()) {
+            $user?->setName($data['name']);
         }
 
         if (!empty($data['password'])) {
-            $user->setPasswordPlain($data['password']);
+            $user?->setPasswordPlain($data['password']);
         }
 
-        UserRepository::instance()->save($user);
-
-        if (!$user->isAdmin()) {
-            $session->getUser()->setName($user->getName());
+        if ($user) {
+            UserRepository::instance()->save($user);
         }
 
         return new Response();

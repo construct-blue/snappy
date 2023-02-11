@@ -20,22 +20,26 @@ class UserPermissionMiddleware implements MiddlewareInterface
         $routeResult = $request->getAttribute(RouteResult::class);
         /** @var Session $session */
         $session = $request->getAttribute(Session::class);
+        $user = UserRepository::instance()->findBySession($session);
+        $request = $request->withAttribute(User::class, $user);
 
         if ($routeResult->isSuccess()) {
             $routeOptions = $routeResult->getMatchedRoute()->getOptions();
             if (empty($routeOptions[UserPermission::class])) {
                 return $handler->handle($request);
             }
+
             Assert::isInstanceOf(
                 $routeOptions[UserPermission::class],
                 UserPermission::class,
                 'Invalid permission route option'
             );
-            if (!$session->isLoggedIn()) {
+
+            if (null === $user) {
                 return $handler->handle($request->withoutAttribute(RouteResult::class));
             }
 
-            foreach ($session->getUser()->getRoles() as $role) {
+            foreach ($user->getRoles() as $role) {
                 if ($role->hasPermission($routeOptions[UserPermission::class])) {
                     return $handler->handle($request);
                 }

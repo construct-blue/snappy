@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Models\User;
 
+use Blue\Core\Application\Session\Session;
 use Blue\Core\Database\ObjectStorage;
 use Blue\Core\Database\Serializer\StorableSerializer;
 use Blue\Core\Http\Status;
@@ -47,6 +48,14 @@ class UserRepository
                 yield $user;
             }
         }
+    }
+
+    public function findBySession(Session $session): ?User
+    {
+        if ($session->getUserId()) {
+            return $this->findById($session->getUserId());
+        }
+        return null;
     }
 
     public function findById(string $id): User

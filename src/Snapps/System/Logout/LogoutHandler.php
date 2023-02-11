@@ -14,7 +14,7 @@ class LogoutHandler extends TemplateHandler
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $session = $this->getSession($request);
-        $session->setUser(null);
+        $session->setUserId(null);
         $session->renewToken();
         $session->save();
         $params = $request->getQueryParams();

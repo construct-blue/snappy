@@ -15,7 +15,7 @@ class SessionContainerTest extends TestCase
         $container = new SessionContainer();
         $session = $container->get(null);
         $this->assertNotEmpty($session->getId());
-        $session->setUser(new User());
+        $session->setUserId('user-id');
         $this->assertTrue($session->isLoggedIn());
         $id = $session->getId();
         unset($container);

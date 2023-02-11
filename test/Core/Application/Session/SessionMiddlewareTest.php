@@ -7,7 +7,6 @@ namespace BlueTest\Core\Application\Session;
 use Blue\Core\Application\Session\Session;
 use Blue\Core\Application\Session\SessionContainer;
 use Blue\Core\Application\Session\SessionMiddleware;
-use Blue\Models\User\User;
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ServerRequest;
 use PHPUnit\Framework\TestCase;
@@ -39,7 +38,7 @@ class SessionMiddlewareTest extends TestCase
                 {
                     /** @var Session $session */
                     $session = $request->getAttribute(Session::class);
-                    $session->setUser(new User());
+                    $session->setUserId('test');
                     return new Response();
                 }
             }
@@ -49,8 +48,9 @@ class SessionMiddlewareTest extends TestCase
 
     public function testShouldLoadSessionWhenCookieIsSet()
     {
-        $session = new Session(__FUNCTION__);
-        $session->setUser(new User());
+        $session = new Session();
+        $id = $session->getId();
+        $session->setUserId('test');
         unset($session);
 
         $sessionContainer = new SessionContainer();
@@ -64,7 +64,7 @@ class SessionMiddlewareTest extends TestCase
                 return new Response();
             }
         };
-        $request = (new ServerRequest())->withCookieParams([Session::COOKIE_NAME => __FUNCTION__]);
+        $request = (new ServerRequest())->withCookieParams([Session::COOKIE_NAME => $id]);
         $response = $middleware->process($request, $handler);
         $this->assertEmpty($response->getHeader('Set-Cookie'));
         $this->assertTrue($handler->session->isLoggedIn());

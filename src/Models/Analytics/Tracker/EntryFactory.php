@@ -30,9 +30,7 @@ class EntryFactory
         if ($session) {
             $entry->setSessionId($session->getId());
             $entry->setSessionLanguage($session->getLanguage()->value);
-            if ($session->getUser()?->isEditable()) {
-                $entry->setUserId($session->getUser()->getId());
-            }
+            $entry->setUserId($session->getUserId() ?? '');
         }
         $locale = Locale::acceptFromHttp(Header::ACCEPT_LANGUAGE->getFrom($request));
         if ($locale) {

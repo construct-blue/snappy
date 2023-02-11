@@ -59,8 +59,7 @@ class LoginAction extends ActionHandler
             return new Response();
         }
 
-        $session->setUser($user);
-
+        $session->setUserId($user->getId());
         return new Response();
     }
 }

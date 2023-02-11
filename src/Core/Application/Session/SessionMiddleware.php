@@ -19,14 +19,12 @@ class SessionMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $cookies = $request->getCookieParams();
-        $session = $this->sessionContainer->get($cookies[Session::COOKIE_NAME] ?? null);
+        $id = $cookies[Session::COOKIE_NAME] ?? null;
+        $session = $this->sessionContainer->get($id);
 
         $response = $handler->handle($request->withAttribute(Session::class, $session));
-        if ($session->isModified() && !isset($cookies[Session::COOKIE_NAME])) {
-            return $response->withAddedHeader(
-                'Set-Cookie',
-                Session::COOKIE_NAME . '=' . $session->getId() . '; Path=/'
-            );
+        if ($session->getId() !== $id && $session->isModified()) {
+            return $response->withAddedHeader('Set-Cookie', $session->getCookie());
         }
         return $response;
     }
