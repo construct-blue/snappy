@@ -6,6 +6,7 @@ namespace Blue\Core\Application\Server;
 
 use Blue\Core\Application\SnappInterface;
 use Blue\Core\Environment\Environment;
+use Blue\Core\View\ClientResources;
 use Laminas\Diactoros\ServerRequest;
 use Mezzio\Router\Middleware\ImplicitHeadMiddleware;
 use Mezzio\Router\Middleware\ImplicitOptionsMiddleware;
@@ -54,6 +55,9 @@ class SnappyServer extends AbstractSnapp
 
     public function build(): void
     {
+        // builds resource cache
+        new ClientResources(Environment::instance());
+
         /** @var RouterInterface $router */
         $router = $this->getContainer()->get(RouterInterface::class);
         $router->match(new ServerRequest());

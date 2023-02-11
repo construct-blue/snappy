@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Blue\Core\View;
 
 use Blue\Core\Environment\Environment;
+use Blue\Core\Util\ArrayFile;
 use Blue\Core\Util\AttributeReflector;
 use Blue\Core\Util\Exception\FileNotFoundException;
 use Blue\Core\Util\Exception\FileReadException;
@@ -14,6 +15,7 @@ use JsonException;
 
 class ClientResources
 {
+    public const DEFAULT_CACHE_FILE = 'cache/resources.cache';
     public const DEFAULT_RESOURCE_FILE = '/public/static/entrypoints.json';
     public const DEFAULT_ENTRYPOINTS_FILE = '/entrypoints.json';
     public const CONFIG_KEY_RESOURCES = 'resources';
@@ -29,17 +31,31 @@ class ClientResources
     {
         $this->projectRoot = $env->getRootPath();
         $resourceFile = $env->getFilepath(self::CONFIG_KEY_RESOURCES, self::DEFAULT_RESOURCE_FILE, false);
-        try {
-            $staticFilesData = Json::decodeFileAssoc($resourceFile);
-        } catch (JsonException | FileNotFoundException | FileReadException $exception) {
-            throw InvalidStaticResourceFileException::from($exception);
+
+        $cache = @include self::DEFAULT_CACHE_FILE;
+        if (false === $cache) {
+            error_clear_last();
+        } elseif (is_array($cache)) {
+            $this->filesMap = $cache;
         }
-        if (!isset($staticFilesData[self::ENTRYPOINTS]) || !is_array($staticFilesData[self::ENTRYPOINTS])) {
-            throw new InvalidStaticResourceFileException(
-                sprintf("Key '%s' must be array in: %s", self::ENTRYPOINTS, $resourceFile)
-            );
+
+        if (!isset($this->filesMap)) {
+            try {
+                $staticFilesData = Json::decodeFileAssoc($resourceFile);
+            } catch (JsonException | FileNotFoundException | FileReadException $exception) {
+                throw InvalidStaticResourceFileException::from($exception);
+            }
+            if (!isset($staticFilesData[self::ENTRYPOINTS]) || !is_array($staticFilesData[self::ENTRYPOINTS])) {
+                throw new InvalidStaticResourceFileException(
+                    sprintf("Key '%s' must be array in: %s", self::ENTRYPOINTS, $resourceFile)
+                );
+            }
+            $this->filesMap = $staticFilesData[self::ENTRYPOINTS];
+
+            if (!$env->isDevMode()) {
+                ArrayFile::write(self::DEFAULT_CACHE_FILE, $this->filesMap);
+            }
         }
-        $this->filesMap = $staticFilesData[self::ENTRYPOINTS];
     }
 
     public function importClientScript(ClientScript $clientScript): self

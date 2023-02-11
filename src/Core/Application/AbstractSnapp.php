@@ -17,6 +17,7 @@ use Mezzio\Router\Middleware\DispatchMiddleware;
 use Mezzio\Router\Middleware\RouteMiddleware;
 use Mezzio\Router\RouteCollectorInterface;
 use Blue\Core\Application\Debug\ConfigProvider as DebugConfigProvider;
+use Throwable;
 
 abstract class AbstractSnapp extends Application implements SnappInterface
 {
@@ -25,12 +26,20 @@ abstract class AbstractSnapp extends Application implements SnappInterface
 
     final private function __construct()
     {
-        parent::__construct(
-            $this->getContainer()->get(MiddlewareFactory::class),
-            $this->getContainer()->get(MiddlewarePipeInterface::class),
-            $this->getContainer()->get(RouteCollectorInterface::class),
-            $this->getContainer()->get(RequestHandlerRunnerInterface::class)
-        );
+        try {
+            parent::__construct(
+                $this->getContainer()->get(MiddlewareFactory::class),
+                $this->getContainer()->get(MiddlewarePipeInterface::class),
+                $this->getContainer()->get(RouteCollectorInterface::class),
+                $this->getContainer()->get(RequestHandlerRunnerInterface::class)
+            );
+        } catch (Throwable $exception) {
+            ob_start();
+            include 'public/error.html';
+            $html = ob_get_clean();
+            echo str_replace('<error/>', "<pre>{$exception->getMessage()}</pre>", $html);
+            exit;
+        }
     }
 
     /**

@@ -1,4 +1,5 @@
 .idea
+dist
 .phpunit.result.cache
 yarn-error.log
 env.php

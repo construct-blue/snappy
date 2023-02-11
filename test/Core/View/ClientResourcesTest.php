@@ -17,7 +17,8 @@ class ClientResourcesTest extends TestCase
         $env = clone Environment::instance();
         $env->setData([
             "resources" => "/Core/View/valid_resource_config/resources.json",
-            "entrypoints" => "/Core/View/valid_resource_config/entrypoints.json"
+            "entrypoints" => "/Core/View/valid_resource_config/entrypoints.json",
+            "dev_mode" => true
         ]);
         $resources = new ClientResources($env);
         $resources->importClientScript(new ClientScript(__DIR__ . '/script3.ts'));
@@ -40,7 +41,8 @@ class ClientResourcesTest extends TestCase
         $env = clone Environment::instance();
         $env->setData([
             "resources" => "/Core/View/valid_resource_config/resources.json",
-            "entrypoints" => "/Core/View/valid_resource_config/entrypoints.json"
+            "entrypoints" => "/Core/View/valid_resource_config/entrypoints.json",
+            "dev_mode" => true
         ]);
         $resources = new ClientResources($env);
         $resources->importComponent(new ClientResourceTestComponent());
@@ -59,7 +61,8 @@ class ClientResourcesTest extends TestCase
         $env = clone Environment::instance();
         $env->setData([
             "resources" => "/Core/View/invalid_resource_config/resources.json",
-            "entrypoints" => "/Core/View/invalid_resource_config/entrypoints.json"
+            "entrypoints" => "/Core/View/invalid_resource_config/entrypoints.json",
+            "dev_mode" => true
         ]);
         new ClientResources($env);
     }
@@ -70,7 +73,8 @@ class ClientResourcesTest extends TestCase
         $env = clone Environment::instance();
         $env->setData([
             "resources" => "/Core/View/missing_resource_config/resources.json",
-            "entrypoints" => "/Core/View/missing_resource_config/entrypoints.json"
+            "entrypoints" => "/Core/View/missing_resource_config/entrypoints.json",
+            "dev_mode" => true
         ]);
         new ClientResources($env);
     }

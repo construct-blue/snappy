@@ -22,6 +22,7 @@ $exampleEnv = highlight_string($exampleEnv, true);
     <title>Welcome to Snappy</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 <h1>Welcome to Snappy</h1>

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Blue\Core\Environment;
 
+use Blue\Core\Environment\Exception\InvalidEnvFileException;
 use Blue\Core\Environment\Exception\MissingRequiredValueException;
 use Blue\Core\Util\SingletonTrait;
-use Error;
 
 use function is_array;
 use function array_shift;
@@ -21,14 +21,22 @@ class Environment
 
     private string $root;
 
+    /**
+     * @return void
+     * @throws InvalidEnvFileException
+     */
     protected function onConstruct(): void
     {
         $this->root = getcwd();
-        try {
-            $this->data = include 'env.php';
-        } catch (Error $error) {
+        $env = @include 'env.php';
+        if (false === $env) {
+            error_clear_last();
             include 'src/setup.php';
             exit;
+        } elseif (is_array($env)) {
+            $this->data = $env;
+        } else {
+            throw new InvalidEnvFileException('env.php must return array, ' . get_debug_type($env) . ' returned');
         }
     }
 
