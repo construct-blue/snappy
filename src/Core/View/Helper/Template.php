@@ -14,6 +14,7 @@ class Template extends ViewComponent
 {
     private string $template;
     private array $params = [];
+
     public static function include(string $templateFile, array $params = []): static
     {
         $component = static::create($params);
@@ -31,14 +32,10 @@ class Template extends ViewComponent
         if (!isset($this->template)) {
             throw MissingPropertyException::forComponent('Missing template', $this);
         }
-        try {
-            extract($this->params);
-            ob_start();
-            include $this->template;
-        } finally {
-            $result = [ob_get_clean()];
-        }
-        return $result;
+        extract($this->params);
+        ob_start();
+        require $this->template;
+        return [ob_get_clean()];
     }
 
     public function __debugInfo(): array

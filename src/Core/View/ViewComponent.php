@@ -48,7 +48,7 @@ abstract class ViewComponent implements ViewComponentInterface
     public static function create(array $params = []): static
     {
         $component = new static();
-        $component->__data = array_replace_recursive($component->__data, $params);
+        $component->mergeParams($params);
         return $component;
     }
 
@@ -69,8 +69,20 @@ abstract class ViewComponent implements ViewComponentInterface
     public function __prepare(string $id, array $params): static
     {
         $this->__id = $id;
-        $this->__data = array_replace_recursive($this->__data, $params);
+        $this->mergeParams($params);
         return $this;
+    }
+
+    private function mergeParams(array $params): void
+    {
+        if ([] === $params) {
+            return;
+        }
+        if ([] === $this->__data) {
+            $this->__data = $params;
+        } else {
+            $this->__data = array_replace_recursive($this->__data, $params);
+        }
     }
 
     public function __bindParent(ViewComponentInterface $parent): static

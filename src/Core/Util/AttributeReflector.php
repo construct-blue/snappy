@@ -16,18 +16,21 @@ class AttributeReflector
      * @template T of object
      *
      * @param class-string $className
-     * @param class-string<T>|null $attributeClass
+     * @param class-string|null $attributeClass
      * @param int $flags
-     * @return T[]
+     * @param array $stopParents ['className' => true]
+     * @return T
      * @throws ReflectionException
-     *
      */
-    public static function getAttributes(string $className, ?string $attributeClass = null, int $flags = 0): array
+    public static function getAttributes(string $className, ?string $attributeClass = null, int $flags = 0, array $stopParents = []): array
     {
         $attributes = [];
         $reflection = new ReflectionClass($className);
         if ($reflection->getParentClass()) {
-            $attributes = self::getAttributes($reflection->getParentClass()->getName(), $attributeClass, $flags);
+            $parentName = $reflection->getParentClass()->getName();
+            if (!isset($stopParents[$parentName])) {
+                $attributes = self::getAttributes($reflection->getParentClass()->getName(), $attributeClass, $flags);
+            }
         }
         foreach ($reflection->getAttributes($attributeClass, $flags) as $attribute) {
             $attributes[] = $attribute->newInstance();

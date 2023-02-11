@@ -11,6 +11,7 @@ use Blue\Core\View\Exception\InvalidComponentContentException;
 use Blue\Core\View\Exception\InvalidComponentParameterException;
 use Blue\Core\View\Helper\PageWrapper;
 use Blue\Core\View\Helper\RenderFirst;
+use Blue\Core\View\Helper\Template;
 use Blue\Core\View\ViewAction;
 use Blue\Core\View\ViewComponent;
 use Blue\Core\View\ViewRenderer;
@@ -23,7 +24,7 @@ class ViewRendererTest extends TestCase
     {
         $this->expectException(InvalidComponentContentException::class);
         $component = ClosureView::from(fn() => new stdClass());
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
         $renderer->render($component);
     }
 
@@ -31,15 +32,15 @@ class ViewRendererTest extends TestCase
     {
         $this->expectException(InvalidComponentClassException::class);
         $component = ClosureView::from(fn() => [static::class => []]);
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
         $renderer->render($component);
     }
 
     public function testShouldThrowExceptionWhenCallbackReturnsInvalidType()
     {
         $this->expectException(InvalidComponentContentException::class);
-        $component = ClosureView::from(fn() => stdClass::class);
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $component = ClosureView::from(fn() => static::class);
+        $renderer = new ViewRenderer(null, true);
         $renderer->render($component);
     }
 
@@ -49,7 +50,7 @@ class ViewRendererTest extends TestCase
         $component = ClosureView::from(fn() => [
             TestComponent::class => ''
         ]);
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
         $renderer->render($component);
     }
 
@@ -65,7 +66,7 @@ class ViewRendererTest extends TestCase
                 'test 1'
             ])
         ]);
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
         $this->assertEquals(
             '<div id="c-1"><div id="c-1-1">test 2</div><div id="c-1-2">test 1</div></div>',
             $renderer->render($component)
@@ -77,7 +78,7 @@ class ViewRendererTest extends TestCase
         $component = new TestComponent();
         $component->heading = 'test';
 
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
         $this->assertEquals('<h1>test</h1>', $renderer->render($component));
     }
 
@@ -92,7 +93,7 @@ class ViewRendererTest extends TestCase
             }
         };
         $component->text = 'hello test';
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
         $this->assertEquals('hello test', $renderer->render($component));
     }
 
@@ -128,7 +129,7 @@ class ViewRendererTest extends TestCase
 
         $component->dataFromParent = 'hello child';
 
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
         $this->assertEquals('hello childhello childhello child', $renderer->render($component));
     }
 
@@ -138,7 +139,7 @@ class ViewRendererTest extends TestCase
         $expected = <<<EOF
 <html><head><title>meta title</title></head><body><div><h1>test</h1></div></body></html>
 EOF;
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
 
         $this->assertEquals($expected, $renderer->render($component));
     }
@@ -153,7 +154,7 @@ EOF;
                 ];
             }
         };
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
 
         $this->assertEquals('<div class="group">content</div>', $renderer->render($component));
     }
@@ -168,7 +169,7 @@ EOF;
                 ];
             }
         };
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
         $this->assertEquals('content', $renderer->render($component));
     }
 
@@ -183,7 +184,7 @@ EOF;
             }
         };
 
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
         $this->assertEquals('<h1>hello world</h1>', $renderer->render($component));
     }
 
@@ -200,7 +201,7 @@ EOF;
             }
         };
 
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
         $this->assertEquals('hello world', $renderer->render($component));
     }
 
@@ -212,14 +213,14 @@ EOF;
             ]
         ]);
 
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
         $this->assertEquals('<h1>test heading</h1>', $renderer->render($component));
     }
 
     public function testShouldRenderPriorityComponentFirst()
     {
         $check = '';
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
 
         $component = ClosureView::from(fn() => [
             'head' => function () use (&$check) {
@@ -241,7 +242,7 @@ EOF;
         $layout->title = '';
         $layout->body = [];
 
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
         $this->assertNotEmpty($renderer->render($layout));
     }
 
@@ -266,7 +267,7 @@ EOF;
             $component2,
         ]);
 
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
         $this->assertEquals('component 1 component 2', $renderer->render($component));
         $renderer->action($component, new ViewAction('click'));
         $this->assertEquals('component 1 hello component 2 clicked', $renderer->render($component));
@@ -276,13 +277,13 @@ EOF;
     {
         $this->expectException(InfiniteRecursionException::class);
         $component = new RecursiveTestComponent();
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
         $renderer->render($component);
     }
 
     public function testBenchmark()
     {
-        $renderer = new ViewRenderer(null, true, __DIR__);
+        $renderer = new ViewRenderer(null, true);
         $component = PageWrapper::for('title', 'description', [
             fn() => [
                 'h1' => 'test',
@@ -303,6 +304,59 @@ EOF;
         $renderer->render($component);
         $renderTime = microtime(true) - $time;
 
+        $this->assertLessThan(5, $renderTime);
+    }
+
+    public function testBenchmark2()
+    {
+        $renderer = new ViewRenderer(null, true);
+        $component = PageWrapper::for('title', 'description', [
+            fn() => [
+                'h1' => 'test',
+                fn() => [
+                    'p' => '{__id}',
+                    function () {
+                        $result = [];
+                        for ($i = 0; $i < 100000; $i++) {
+                            $result[] = Template::include(__DIR__ . '/TestTemplate.phtml');
+                        }
+
+                        return $result;
+                    },
+                ]
+            ],
+        ]);
+        $time = microtime(true);
+        $renderer->render($component);
+        $renderTime = microtime(true) - $time;
+
         $this->assertLessThan(10, $renderTime);
+    }
+
+
+    public function testBenchmark3()
+    {
+        $renderer = new ViewRenderer(null, true);
+        $component = PageWrapper::for('title', 'description', [
+            fn() => [
+                'h1' => 'test',
+                fn() => [
+                    'p' => '{__id}',
+                    function () {
+                        $result = [];
+                        for ($i = 0; $i < 100000; $i++) {
+                            $result[] = TestComponent::create([TestComponent::PARAM_HEADING => '']);
+                        }
+
+                        return $result;
+                    },
+                ]
+            ],
+        ]);
+        $time = microtime(true);
+        $renderer->render($component);
+        $renderTime = microtime(true) - $time;
+
+        $this->assertLessThan(5, $renderTime);
     }
 }

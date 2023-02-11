@@ -12,6 +12,7 @@ use Blue\Core\Util\Exception\FileReadException;
 use Blue\Core\Util\Json;
 use Blue\Core\View\Exception\InvalidStaticResourceFileException;
 use JsonException;
+use ReflectionException;
 
 class ClientResources
 {
@@ -61,18 +62,27 @@ class ClientResources
     public function importClientScript(ClientScript $clientScript): self
     {
         $key = $clientScript->getKey($this->projectRoot);
-        if (!in_array($key, $this->fileKeys)) {
-            $this->fileKeys[] = $key;
+        if (!isset($this->fileKeys[$key])) {
+            $this->fileKeys[$key] = true;
         }
         return $this;
     }
 
+    /**
+     *
+     * hot method: called for each rendered component
+     *
+     * @param ViewComponentInterface $component
+     * @return $this
+     * @throws ReflectionException
+     */
     public function importComponent(ViewComponentInterface $component): self
     {
         $class = get_class($component);
-        if (!in_array($class, $this->componentClasses)) {
+        if (!isset($this->componentClasses[$class])) {
+            $this->componentClasses[$class] = true;
             /** @var ClientScript $attribute */
-            foreach (AttributeReflector::getAttributes($class, ClientScript::class) as $attribute) {
+            foreach (AttributeReflector::getAttributes($class, ClientScript::class, 0, $this->componentClasses) as $attribute) {
                 $this->importClientScript($attribute);
             }
         }
@@ -82,17 +92,17 @@ class ClientResources
     public function getFiles(ResourceType $type): array
     {
         $result = [];
-        foreach ($this->fileKeys as $fileKey) {
+        foreach ($this->fileKeys as $fileKey => $v) {
             if (isset($this->filesMap[$fileKey][$type->name]) && is_array($this->filesMap[$fileKey][$type->name])) {
                 foreach ($this->filesMap[$fileKey][$type->name] as $file) {
-                    if (!in_array($file, $result)) {
-                        $result[] = $file;
+                    if (!isset($result[$file])) {
+                        $result[$file] = true;
                     }
                 }
             }
         }
 
-        return $result;
+        return array_keys($result);
     }
 
     public function getJSFiles(): array

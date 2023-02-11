@@ -99,18 +99,18 @@ class ViewRenderer
                 $component->resources = $this->resources;
             }
 
-            if ($parent) {
-                $id = $parent->__id() . '-' . $index;
-                $component->__bindParent($parent);
-            } else {
+            if (null === $parent) {
                 $id = 'c-' . $index;
+            } else {
+                $id = $parent->__id() . '-' . $index;
+                if (isset($id[1000])) {
+                    throw InfiniteRecursionException::forComponent('Maximum nesting reached', $parent);
+                }
+                $component->__bindParent($parent);
             }
 
             $component->__prepare($id, $params ?? []);
 
-            if ($parent && strlen($component->__id()) > 1000) {
-                throw InfiniteRecursionException::forComponent('Maximum nesting reached', $parent);
-            }
         } catch (ViewException $exception) {
             $this->logger?->error($exception);
             if ($this->debug) {
@@ -144,6 +144,7 @@ class ViewRenderer
         int $index = 1,
     ): array {
         $result = [];
+        $contentCount = count($content);
         foreach ($content as $key => $item) {
             if (is_string($key) && str_contains($key, '\\') && class_exists($key)) {
                 if (!is_array($item)) {
@@ -152,12 +153,20 @@ class ViewRenderer
                         $parent
                     );
                 }
-                $result[count($content) + $index] = $this->prepareComponent(
+                $result[$contentCount + $index] = $this->prepareComponent(
                     ViewComponent::fromClassName($key),
                     $item,
                     $parent,
                     $index
                 );
+            } elseif (is_string($item)) {
+                if (str_contains($item, '\\') && class_exists($item)) {
+                    throw InvalidComponentContentException::forComponent(
+                        'Classes must not be used as content',
+                        $parent
+                    );
+                }
+                $result[$key] = $item;
             } elseif (is_array($item)) {
                 try {
                     $result[$key] = $this->prepareContent($item, $parent, $render, $index);
@@ -167,14 +176,6 @@ class ViewRenderer
                         throw $exception;
                     }
                 }
-            } elseif (is_string($item)) {
-                if (class_exists($item)) {
-                    throw InvalidComponentContentException::forComponent(
-                        'Classes must not be used as content',
-                        $parent
-                    );
-                }
-                $result[$key] = $item;
             } elseif ($item instanceof Closure) {
                 $result[$key] = $this->prepareComponent(
                     ClosureView::from($item),
@@ -208,15 +209,16 @@ class ViewRenderer
      * @throws InvalidComponentClassException
      * @throws InvalidComponentContentException
      * @throws InvalidComponentParameterException
+     * @throws ViewException
      */
     private function renderContent(array $content): string
     {
         $result = '';
         foreach ($content as $key => $item) {
-            if (is_array($item)) {
-                $result .= $this->handleHtmlTag($this->renderContent($item), $key);
-            } elseif (is_string($item)) {
+            if (is_string($item)) {
                 $result .= $this->handleHtmlTag($item, $key);
+            } elseif (is_array($item)) {
+                $result .= $this->handleHtmlTag($this->renderContent($item), $key);
             } elseif ($item instanceof ViewComponentInterface) {
                 $result .= $this->handleHtmlTag($this->renderComponent($item), $key);
             }
@@ -226,7 +228,7 @@ class ViewRenderer
 
     private function handleHtmlTag(string $content, string|int $tagOrKey): string
     {
-        if (is_string($tagOrKey) && !empty($tagOrKey)) {
+        if (is_string($tagOrKey) && $tagOrKey !== '') {
             return $this->wrapInHtmlTag($content, $tagOrKey);
         }
         return $content;
