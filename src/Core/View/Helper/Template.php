@@ -33,9 +33,14 @@ class Template extends ViewComponent
             throw MissingPropertyException::forComponent('Missing template', $this);
         }
         extract($this->params);
-        ob_start();
-        require $this->template;
-        return [ob_get_clean()];
+        try {
+            ob_start();
+            require $this->template;
+        } finally {
+            // always close output buffer
+            $result = [ob_get_clean()];
+        }
+        return $result;
     }
 
     public function __debugInfo(): array
