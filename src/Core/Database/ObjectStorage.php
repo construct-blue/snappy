@@ -4,29 +4,29 @@ declare(strict_types=1);
 
 namespace Blue\Core\Database;
 
+use Blue\Core\Database\Serializer\SerializerInterface;
 use Closure;
 use Generator;
-use stdClass;
 
 /**
- * @template T of object
+ * @template T of Storable
  */
 class ObjectStorage
 {
     private Connection $connection;
 
-    private Closure $factory;
-
     private bool $setup = false;
 
     /**
-     * @param class-string<T> $class
+     * @template T of Storable
+     *
+     * @param SerializerInterface $serializer
      * @param string $type
      * @param string $table
      * @param Connection|null $connection
      */
     public function __construct(
-        private readonly string $class,
+        private readonly SerializerInterface $serializer,
         private readonly string $type,
         private readonly string $table = 'object',
         Connection $connection = null
@@ -35,12 +35,6 @@ class ObjectStorage
         if (!$this->connection->tableExistsCached($this->getTable())) {
             $this->setup();
             $this->setup = true;
-        }
-
-        if ($this->class === stdClass::class || !is_callable([$this->class, '__set_state'])) {
-            $this->factory = fn(string $object) => json_decode($object);
-        } else {
-            $this->factory = fn(string $object) => $this->class::__set_state(json_decode($object, true));
         }
     }
 
@@ -110,7 +104,7 @@ SQL
             throw new Exception\ObjectLoadingException('Unable to load object with id ' . $id);
         }
 
-        return ($this->factory)($data);
+        return $this->serializer->unserialize($data);
     }
 
     /**
@@ -135,7 +129,7 @@ SQL
         if (empty($data)) {
             throw new Exception\ObjectLoadingException('Unable to load object with code ' . $code);
         }
-        return ($this->factory)($data);
+        return $this->serializer->unserialize($data);
     }
 
     public function loadCodes(): Generator
@@ -172,7 +166,7 @@ SQL
         ]);
 
         while ($data = $stmt->fetchColumn()) {
-            yield ($this->factory)($data);
+            yield $this->serializer->unserialize($data);
         }
     }
 
@@ -198,7 +192,7 @@ SQL
         ]);
 
         while ($data = $stmt->fetchColumn()) {
-            yield ($this->factory)($data);
+            yield $this->serializer->unserialize($data);
         }
     }
 
@@ -207,7 +201,7 @@ SQL
         $pdo = $this->getConnection()->getPDO();
         $stmt = $closure($pdo, $this->getTable(), $this->getType());
         while ($data = $stmt->fetchColumn()) {
-            yield ($this->factory)($data);
+            yield $this->serializer->unserialize($data);
         }
     }
 
@@ -229,7 +223,7 @@ SQL
         ]);
 
         while ($object = $stmt->fetchColumn()) {
-            yield ($this->factory)($object);
+            yield $this->serializer->unserialize($object);
         }
     }
 
@@ -265,6 +259,14 @@ SQL
         return (bool)$stmt->fetchColumn();
     }
 
+    /**
+     * @param T $object
+     * @param string $id
+     * @param string|null $code
+     * @param array|null $meta
+     * @param int|null $created
+     * @return bool
+     */
     public function save(object $object, string $id, ?string $code, array $meta = null, int $created = null): bool
     {
         $pdo = $this->getConnection()->getPDO();
@@ -279,7 +281,7 @@ SQL
             'code' => $code,
             'created' => $created ? date('Y-m-d H:i:s', $created) : null,
             'type' => $this->getType(),
-            'object' => json_encode($object),
+            'object' => $this->serializer->serialize($object),
             'meta' => json_encode($meta)
         ]);
     }

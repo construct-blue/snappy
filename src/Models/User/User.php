@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Models\User;
 
-use JsonSerializable;
+use Blue\Core\Database\Storable;
 
 use function password_hash;
 use function password_verify;
@@ -12,7 +12,7 @@ use function strlen;
 
 use const PASSWORD_DEFAULT;
 
-final class User implements JsonSerializable
+final class User implements Storable
 {
     public const MIN_PASSWORD_LENGTH = 5;
 
@@ -246,7 +246,7 @@ final class User implements JsonSerializable
         return in_array($snappCode, $this->getSnapps());
     }
 
-    public function jsonSerialize(): array
+    public function toStorage(): array
     {
         return [
             'id' => $this->getId(),
@@ -260,17 +260,17 @@ final class User implements JsonSerializable
         ];
     }
 
-    public static function __set_state(array $an_array): User
+    public static function fromStorage(array $data): static
     {
         $user = new User();
-        $user->id = $an_array['id'];
-        $user->name = $an_array['name'];
-        $user->passwordHash = $an_array['pwHash'];
-        $user->type = UserType::from($an_array['type']);
-        $user->state = UserState::from($an_array['state']);
-        $user->roles = UserRole::map($an_array['roles']);
-        $user->options = UserOption::map($an_array['options']);
-        $user->snapps = $an_array['snapps'] ?? [];
+        $user->id = $data['id'];
+        $user->name = $data['name'];
+        $user->passwordHash = $data['pwHash'];
+        $user->type = UserType::from($data['type']);
+        $user->state = UserState::from($data['state']);
+        $user->roles = UserRole::map($data['roles']);
+        $user->options = UserOption::map($data['options']);
+        $user->snapps = $data['snapps'] ?? [];
         return $user;
     }
 }

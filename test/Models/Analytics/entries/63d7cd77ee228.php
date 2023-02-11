@@ -1,4 +1,4 @@
-<?php return \Blue\Models\Analytics\Tracker\Entry::__set_state([
+<?php return \Blue\Models\Analytics\Tracker\Entry::fromStorage([
     'id' => '63d7cd77ee228',
     'timestamp' => 1674388878,
     'requestId' => '63cd258e1d618',
@@ -21,7 +21,7 @@
     'statusCode' => 200,
     'reasonPhrase' => 'OK',
     'clickHref' => '',
-    'clientHints' => \Blue\Models\Analytics\Tracker\ClientHints::__set_state([
+    'clientHints' => \Blue\Models\Analytics\Tracker\ClientHints::fromStorage([
         'architecture' => '',
         'bitness' => '',
         'mobile' => false,

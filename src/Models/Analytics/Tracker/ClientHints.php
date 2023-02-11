@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Blue\Models\Analytics\Tracker;
 
-final class ClientHints extends \DeviceDetector\ClientHints implements \JsonSerializable
+use Blue\Core\Database\Storable;
+
+final class ClientHints extends \DeviceDetector\ClientHints implements Storable
 {
     public static function factory(array $headers): self
     {
-        $hints =  parent::factory($headers);
+        $hints = parent::factory($headers);
 
         return new self(
             $hints->model,
@@ -23,7 +25,7 @@ final class ClientHints extends \DeviceDetector\ClientHints implements \JsonSeri
         );
     }
 
-    public function jsonSerialize(): array
+    public function toStorage(): array
     {
         return [
             'model' => $this->model,
@@ -38,7 +40,7 @@ final class ClientHints extends \DeviceDetector\ClientHints implements \JsonSeri
         ];
     }
 
-    public static function __set_state(array $data)
+    public static function fromStorage(array $data): static
     {
         return new ClientHints(
             $data['model'],

@@ -6,8 +6,6 @@ namespace BlueTest\Core\Util;
 
 use Blue\Core\Util\ArrayFile;
 use Blue\Core\Util\Exception\ArrayFileWriteException;
-use Laminas\ConfigAggregator\ArrayProvider;
-use Laminas\ConfigAggregator\ConfigAggregator;
 use PHPUnit\Framework\TestCase;
 
 class ArrayFileWriterTest extends TestCase

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Blue\Models\Analytics\Tracker;
 
-use JsonSerializable;
+use Blue\Core\Database\Storable;
 
 /**
  * @internal
  */
-final class Entry implements JsonSerializable
+final class Entry implements Storable
 {
     private string $id;
     private int $timestamp;
@@ -413,7 +413,7 @@ final class Entry implements JsonSerializable
     }
 
 
-    public static function __set_state(array $data)
+    public static function fromStorage(array $data): static
     {
         $entry = new Entry();
 
@@ -450,7 +450,7 @@ final class Entry implements JsonSerializable
         return $entry;
     }
 
-    public function jsonSerialize(): array
+    public function toStorage(): array
     {
         $result = [
             'requestId' => $this->requestId,

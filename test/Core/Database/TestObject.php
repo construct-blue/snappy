@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace BlueTest\Core\Database;
 
-class TestObject implements \JsonSerializable
+use Blue\Core\Database\Storable;
+
+class TestObject implements Storable
 {
     private string $code;
 
@@ -19,15 +21,15 @@ class TestObject implements \JsonSerializable
         return $this;
     }
 
-    public static function __set_state(array $an_array): object
+    public static function fromStorage(array $data): static
     {
         return (new TestObject())
-            ->setCode($an_array['code']);
+            ->setCode($data['code']);
     }
 
 
 
-    public function jsonSerialize(): array
+    public function toStorage(): array
     {
         return [
             'code' => $this->getCode()

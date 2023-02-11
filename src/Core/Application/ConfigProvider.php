@@ -12,8 +12,6 @@ use Mezzio\Router\RouteCollector;
 use Mezzio\Router\RouteCollectorInterface;
 use Blue\Core\Application\Error\ErrorLoggerDelegator;
 use Blue\Core\Application\Error\ErrorResponseDelegator;
-use Mezzio\Template\TemplateRendererInterface;
-use Psr\Container\ContainerInterface;
 
 class ConfigProvider
 {

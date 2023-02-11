@@ -63,7 +63,7 @@ class Json
         return self::encode($data, $depth);
     }
 
-    public static function encode(JsonSerializable|array $data, int $depth = self::DEFAULT_DEPTH): string
+    public static function encode(array|object $data, int $depth = self::DEFAULT_DEPTH): string
     {
         return json_encode($data, JSON_THROW_ON_ERROR, $depth);
     }

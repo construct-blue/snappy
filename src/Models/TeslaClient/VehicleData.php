@@ -2,6 +2,8 @@
 
 namespace Blue\Models\TeslaClient;
 
+use Blue\Core\Database\Storable;
+
 use function cos;
 use function deg2rad;
 use function floor;
@@ -10,7 +12,7 @@ use function pi;
 use function pow;
 use function tan;
 
-final class VehicleData implements \JsonSerializable
+final class VehicleData implements Storable
 {
     private const MILES_TO_KM = 1.60934;
     private const BATTERY_LEVEL_MEDIUM = 40;
@@ -275,7 +277,7 @@ final class VehicleData implements \JsonSerializable
         return time() - $this->timestamp > 30;
     }
 
-    public function jsonSerialize(): mixed
+    public function toStorage(): array
     {
         return [
             'timestamp' => time(),
@@ -297,7 +299,7 @@ final class VehicleData implements \JsonSerializable
         ];
     }
 
-    public static function __set_state(array $data)
+    public static function fromStorage(array $data): static
     {
         $vehicle = new VehicleData([]);
         $vehicle->timestamp = $data['timestamp'];

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Blue\Models\Cms\Block;
 
-use JsonSerializable;
+use Blue\Core\Database\Storable;
 
-final class Block implements JsonSerializable
+final class Block implements Storable
 {
     private string $id;
     private ?string $code = null;
@@ -61,7 +61,7 @@ final class Block implements JsonSerializable
         return $this;
     }
 
-    public function jsonSerialize(): array
+    public function toStorage(): array
     {
         return [
             'id' => $this->id,
@@ -70,7 +70,7 @@ final class Block implements JsonSerializable
         ];
     }
 
-    public static function __set_state(array $data)
+    public static function fromStorage(array $data): static
     {
         $block = new Block();
         $block->id = $data['id'];

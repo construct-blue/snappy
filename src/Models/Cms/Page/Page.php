@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Blue\Models\Cms\Page;
 
-use JsonSerializable;
+use Blue\Core\Database\Storable;
 
-class Page implements JsonSerializable
+class Page implements Storable
 {
     private string $id;
     private ?string $code = null;
@@ -113,7 +113,7 @@ class Page implements JsonSerializable
         return $this;
     }
 
-    public static function __set_state(array $data): object
+    public static function fromStorage(array $data): static
     {
         $page = new Page();
         $page->id = $data['id'];
@@ -126,7 +126,7 @@ class Page implements JsonSerializable
         return $page;
     }
 
-    public function jsonSerialize(): array
+    public function toStorage(): array
     {
         return [
             'id' => $this->id,

@@ -1,12 +1,14 @@
 <?php
 
-namespace Blue\Core\View;
+namespace Blue\Core\View\Helper;
+
+use Blue\Core\View\ViewComponent;
 
 /**
  * @property string $tag
  * @property array $content
  */
-class IdViewComponent extends ViewComponent
+class IdWrapper extends ViewComponent
 {
     public function render(): array
     {

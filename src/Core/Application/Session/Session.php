@@ -7,15 +7,16 @@ namespace Blue\Core\Application\Session;
 use Blue\Core\Database\Connection;
 use Blue\Core\Database\Exception\DatabaseException;
 use Blue\Core\Database\ObjectStorage;
+use Blue\Core\Database\Serializer\StdClassSerializer;
+use Blue\Core\Database\Serializer\StorableSerializer;
 use Blue\Core\I18n\Language;
 use Blue\Core\Logger\Logger;
 use Blue\Models\User\User;
-use JsonSerializable;
 use Throwable;
 
 use function uniqid;
 
-class Session implements JsonSerializable
+class Session
 {
     public const COOKIE_NAME = 'sid';
     private const ATTR_TOKEN = 'tkn';
@@ -51,7 +52,7 @@ class Session implements JsonSerializable
         $this->saveWhenModified();
     }
 
-    public function jsonSerialize(): array
+    public function toStorage(): array
     {
         return [
             self::ATTR_TOKEN => $this->getToken(),
@@ -174,7 +175,7 @@ class Session implements JsonSerializable
     private function getRepo(): ObjectStorage
     {
         if (!isset($this->sessionRepo)) {
-            $this->sessionRepo = new ObjectStorage(Session::class, 'session', 'object', Connection::session());
+            $this->sessionRepo = new ObjectStorage(new StdClassSerializer(), 'session', 'object', Connection::session());
         }
         return $this->sessionRepo;
     }
@@ -182,7 +183,7 @@ class Session implements JsonSerializable
     private function getUserRepo(): ObjectStorage
     {
         if (!isset($this->userRepo)) {
-            $this->userRepo = new ObjectStorage(User::class, 'user', 'user', Connection::session());
+            $this->userRepo = new ObjectStorage(new StorableSerializer(User::class), 'user', 'user', Connection::session());
         }
         return $this->userRepo;
     }
@@ -224,7 +225,7 @@ class Session implements JsonSerializable
 
     public function save(): void
     {
-        $this->getRepo()->save($this, $this->getId(), null);
+        $this->getRepo()->save((object)$this->toStorage(), $this->getId(), null);
         if ($this->getUser()) {
             $this->getUserRepo()->save($this->getUser(), $this->getUser()->getId(), $this->getUser()->getName());
         }

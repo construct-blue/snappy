@@ -5,6 +5,7 @@ namespace Blue\Snapps\Nicemobil\Live;
 use Blue\Core\Application\Handler\TemplateHandler;
 use Blue\Core\Database\Connection;
 use Blue\Core\Database\ObjectStorage;
+use Blue\Core\Database\Serializer\StorableSerializer;
 use Blue\Core\Logger\Logger;
 use Blue\Core\Queue\Queue;
 use Blue\Models\TeslaClient\TeslaClientRepository;
@@ -21,7 +22,7 @@ class LiveHandler extends TemplateHandler
         $vehicle = new VehicleData([]);
 
         try {
-            $storage = new ObjectStorage(VehicleData::class, 'vehicle_data', 'nicemobil', Connection::temp());
+            $storage = new ObjectStorage(new StorableSerializer(VehicleData::class), 'vehicle_data', 'nicemobil', Connection::temp());
             if ($storage->existsById('vehicle')) {
                 /** @var VehicleData $vehicle */
                 $vehicle = $storage->loadById('vehicle');

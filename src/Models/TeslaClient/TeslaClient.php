@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Blue\Models\TeslaClient;
 
+use Blue\Core\Database\Storable;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
-use JsonSerializable;
 use Laminas\Diactoros\Uri;
 
 use function base64_encode;
@@ -22,7 +22,7 @@ use function substr;
 use function time;
 use function uniqid;
 
-final class TeslaClient implements JsonSerializable
+final class TeslaClient implements Storable
 {
     private ?string $id = null;
     private ?string $access_token;
@@ -75,7 +75,7 @@ final class TeslaClient implements JsonSerializable
     }
 
 
-    public function jsonSerialize(): array
+    public function toStorage(): array
     {
         return [
             'id' => $this->id,
@@ -91,7 +91,7 @@ final class TeslaClient implements JsonSerializable
         ];
     }
 
-    public static function __set_state(array $data)
+    public static function fromStorage(array $data): static
     {
         $client = new TeslaClient();
         $client->id = $data['id'];
