@@ -17,13 +17,13 @@ use Closure;
 use Throwable;
 
 use function class_exists;
-use function explode;
 use function get_debug_type;
 use function is_array;
 use function is_string;
 
 class ViewRenderer
 {
+    public const MAX_COMPONENT_LEVEL = 1000;
     private ClientResources $resources;
 
     final public function __construct(
@@ -64,7 +64,7 @@ class ViewRenderer
     {
         try {
             $content = $this->prepareContent($component->render(), $component, true);
-            return PlaceholderHelper::replacePlaceholder($this->renderContent($content), $component);
+            return PlaceholderHelper::replacePlaceholder($this->renderHtml($content), $component);
         } catch (ViewException $exception) {
             $this->logger?->error($exception);
             if ($this->debug) {
@@ -103,19 +103,10 @@ class ViewRenderer
                 $id = 'c-' . $index;
             } else {
                 $id = $parent->__id() . '-' . $index;
-                if (isset($id[1000])) {
-                    throw InfiniteRecursionException::forComponent('Maximum nesting reached', $parent);
-                }
                 $component->__bindParent($parent);
             }
 
             $component->__prepare($id, $params ?? []);
-
-        } catch (ViewException $exception) {
-            $this->logger?->error($exception);
-            if ($this->debug) {
-                throw $exception;
-            }
         } catch (Throwable $throwable) {
             $this->logger?->error($throwable);
             if ($this->debug) {
@@ -211,35 +202,52 @@ class ViewRenderer
      * @throws InvalidComponentParameterException
      * @throws ViewException
      */
-    private function renderContent(array $content): string
+    private function renderHtml(array $content): string
     {
-        $result = '';
+        ob_start();
+        try {
+            $this->echoHtml($content);
+        } finally {
+            $html = ob_get_clean();
+        }
+        return $html;
+    }
+
+    /**
+     * @param array $content
+     * @throws InvalidComponentClassException
+     * @throws InvalidComponentContentException
+     * @throws InvalidComponentParameterException
+     * @throws ViewException
+     */
+    private function echoHtml(array $content): void
+    {
         foreach ($content as $key => $item) {
+            $hasTag = !is_int($key);
+            if ($hasTag) {
+                echo '<';
+                echo $key;
+                echo '>';
+            }
             if (is_string($item)) {
-                $result .= $this->handleHtmlTag($item, $key);
+                echo $item;
             } elseif (is_array($item)) {
-                $result .= $this->handleHtmlTag($this->renderContent($item), $key);
+                $this->echoHtml($item);
             } elseif ($item instanceof ViewComponentInterface) {
-                $result .= $this->handleHtmlTag($this->renderComponent($item), $key);
+                if (ob_get_level() > self::MAX_COMPONENT_LEVEL) {
+                    throw InfiniteRecursionException::forComponent('Maximum nesting reached', $item);
+                }
+                echo $this->renderComponent($item);
+            }
+            if ($hasTag) {
+                $i = 0;
+                echo '</';
+                while (isset($key[$i]) && $key[$i] !== ' ') {
+                    echo $key[$i++];
+                }
+                echo '>';
             }
         }
-        return $result;
-    }
-
-    private function handleHtmlTag(string $content, string|int $tagOrKey): string
-    {
-        if (is_string($tagOrKey) && $tagOrKey !== '') {
-            return $this->wrapInHtmlTag($content, $tagOrKey);
-        }
-        return $content;
-    }
-
-    private function wrapInHtmlTag(string $content, string $tag): string
-    {
-        $openTag = "<$tag>";
-        [$closingTag] = explode(' ', $tag);
-        $closingTag = "</$closingTag>";
-        return $openTag . $content . $closingTag;
     }
 
     public function action(ViewComponentInterface $component, ViewAction $action, array $params = null): void

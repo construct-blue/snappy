@@ -58,7 +58,7 @@ chdir('dist');
 
 exec('yarn install');
 exec('yarn build');
-exec('composer install --no-dev --optimize-autoloader');
+exec('composer install --no-dev --classmap-authoritative');
 exec('mkdir cache');
 
 require "vendor/autoload.php";

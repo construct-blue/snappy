@@ -359,4 +359,32 @@ EOF;
 
         $this->assertLessThan(5, $renderTime);
     }
+
+    public function testBenchmark4()
+    {
+        $renderer = new ViewRenderer(null, true);
+        $component = PageWrapper::for('title', 'description', [
+            fn() => [
+                'h1' => 'test',
+                fn() => [
+                    'p' => '{__id}',
+                    function () {
+                        $result = [];
+                        for ($i = 0; $i < 100000; $i++) {
+                            $result[] = [
+                                'p' => 'paragraph {__id}'
+                            ];
+                        }
+
+                        return $result;
+                    },
+                ]
+            ],
+        ]);
+        $time = microtime(true);
+        $renderer->render($component);
+        $renderTime = microtime(true) - $time;
+
+        $this->assertLessThan(1, $renderTime);
+    }
 }

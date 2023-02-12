@@ -9,9 +9,11 @@ use Blue\Core\Application\Snapp\SnappRoute;
 use Blue\Core\Application\Session\Session;
 use Blue\Core\Http\RequestAttribute;
 use Blue\Core\Http\UriBuilder;
+use Laminas\Diactoros\CallbackStream;
 use Mezzio\Template\TemplateRendererInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -33,9 +35,9 @@ abstract class TemplateHandler implements RequestHandlerInterface, MiddlewareInt
         return $this->renderer;
     }
 
-    public function render(string $name, $params = []): string
+    public function render(string $name, $params = []): StreamInterface
     {
-        return $this->getRenderer()->render($name, $params);
+        return new CallbackStream(fn() => $this->getRenderer()->render($name, $params));
     }
 
     public function assign(string $name, $value)
