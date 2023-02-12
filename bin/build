@@ -86,3 +86,4 @@ foreach (TEMP_FILE_TYPES as $TEMP_FILE_TYPE) {
     exec("rm -rf */**/*$TEMP_FILE_TYPE");
 }
 
+file_put_contents('.build', date('d-m-Y-H-i-s'));

@@ -11,7 +11,7 @@ use Blue\Snapps\System\SystemFooter;
 use Blue\Snapps\System\SystemNavigation;
 
 /**
- * @property bool $userIsGuest
+ * @property bool $isLoggedIn
  * @property SnappRoute[] $siteSnapps
  */
 class StartpageView extends ViewComponent
@@ -26,7 +26,16 @@ class StartpageView extends ViewComponent
                         SystemNavigation::class => [],
                         'p' => [
                             'svg style="height: 7rem;"' => [
-                                '<title>Blue Snappy</title>',
+                                'title' => [
+                                    'Blue Snappy',
+                                    function() {
+                                        if ($this->isLoggedIn) {
+                                            echo ' - ';
+                                            include '.build';
+                                        }
+                                        return '';
+                                    },
+                                ],
                                 '<use href="/logo.svg#logo"/>'
                             ],
                         ],
