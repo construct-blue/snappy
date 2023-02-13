@@ -31,7 +31,11 @@ class ClientResources
     public function __construct(Environment $env)
     {
         $this->projectRoot = $env->getRootPath();
-        $resourceFile = $env->getFilepath(self::CONFIG_KEY_RESOURCES, self::DEFAULT_RESOURCE_FILE, false);
+        $resourceFile = $env->getFilepath(
+            self::CONFIG_KEY_RESOURCES,
+            self::DEFAULT_RESOURCE_FILE,
+            false
+        );
 
         $cache = @include self::DEFAULT_CACHE_FILE;
         if (false === $cache) {
@@ -82,7 +86,14 @@ class ClientResources
         if (!isset($this->componentClasses[$class])) {
             $this->componentClasses[$class] = true;
             /** @var ClientScript $attribute */
-            foreach (AttributeReflector::getAttributes($class, ClientScript::class, 0, $this->componentClasses) as $attribute) {
+            foreach (
+                AttributeReflector::getAttributes(
+                    $class,
+                    ClientScript::class,
+                    0,
+                    $this->componentClasses
+                ) as $attribute
+            ) {
                 $this->importClientScript($attribute);
             }
         }

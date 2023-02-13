@@ -148,6 +148,22 @@ SQL
         }
     }
 
+    public function loadIds(): Generator
+    {
+        $pdo = $this->getConnection()->getPDO();
+        $stmt = $pdo->prepare(
+            <<<SQL
+SELECT id
+FROM `{$this->getTable()}`
+WHERE deleted IS NULL
+SQL
+        );
+        $stmt->execute();
+        while ($id = $stmt->fetchColumn()) {
+            yield $id;
+        }
+    }
+
     /**
      * @return Generator&iterable<T>
      */

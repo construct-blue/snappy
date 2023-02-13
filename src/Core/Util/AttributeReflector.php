@@ -22,8 +22,12 @@ class AttributeReflector
      * @return T
      * @throws ReflectionException
      */
-    public static function getAttributes(string $className, ?string $attributeClass = null, int $flags = 0, array $stopParents = []): array
-    {
+    public static function getAttributes(
+        string $className,
+        ?string $attributeClass = null,
+        int $flags = 0,
+        array $stopParents = []
+    ): array {
         $attributes = [];
         $reflection = new ReflectionClass($className);
         if ($reflection->getParentClass()) {

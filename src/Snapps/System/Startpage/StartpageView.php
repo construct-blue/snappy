@@ -28,7 +28,7 @@ class StartpageView extends ViewComponent
                             'svg style="height: 7rem;"' => [
                                 'title' => [
                                     'Blue Snappy',
-                                    function() {
+                                    function () {
                                         if ($this->isLoggedIn) {
                                             echo ' - ';
                                             include '.build';

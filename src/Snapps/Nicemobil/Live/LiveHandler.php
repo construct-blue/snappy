@@ -3,6 +3,7 @@
 namespace Blue\Snapps\Nicemobil\Live;
 
 use Blue\Core\Application\Handler\TemplateHandler;
+use Blue\Core\Cache\ObjectCache;
 use Blue\Core\Database\Connection;
 use Blue\Core\Database\ObjectStorage;
 use Blue\Core\Database\Serializer\StorableSerializer;
@@ -19,33 +20,26 @@ class LiveHandler extends TemplateHandler
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $vehicle = new VehicleData([]);
+        $cache = new ObjectCache(new StorableSerializer(VehicleData::class), 'vehicle_data');
+        $vehicle = $cache->load(
+            'vehicle',
+            fn() => $this->fetchVehicle(),
+            fn(VehicleData $vehicle) => $vehicle->isOnline() || $vehicle->isExpired()
+        );
 
-        try {
-            $storage = new ObjectStorage(new StorableSerializer(VehicleData::class), 'vehicle_data', 'nicemobil', Connection::temp());
-            if ($storage->existsById('vehicle')) {
-                /** @var VehicleData $vehicle */
-                $vehicle = $storage->loadById('vehicle');
-                if ($vehicle->isExpired()) {
-                    $storage->delete('vehicle');
-                }
-            } else {
-                $vehicle = $this->fetchVehicle();
-            }
-
-            if (!$vehicle->isOnline() || $vehicle->isExpired()) {
-                Queue::instance()->deferTask(fn() => $storage->save($this->fetchVehicle(), 'vehicle', null));
-            }
-        } catch (Throwable $exception) {
-            (new Logger())->error($exception);
-        }
         return new HtmlResponse($this->render(Live::class, ['vehicle' => $vehicle]));
     }
 
     private function fetchVehicle(): VehicleData
     {
-        $client = TeslaClientRepository::instance()->find();
-        $vehicles = $client->getVehicles()['response'] ?? [];
-        return $client->getVehicleData($vehicles[0]['id'] ?? 0);
+        $vehicle = new VehicleData([]);
+        try {
+            $client = TeslaClientRepository::instance()->find();
+            $vehicles = $client->getVehicles()['response'] ?? [];
+            $vehicle = $client->getVehicleData($vehicles[0]['id'] ?? 0);
+        } catch (Throwable $exception) {
+            (new Logger())->error($exception);
+        }
+        return $vehicle;
     }
 }

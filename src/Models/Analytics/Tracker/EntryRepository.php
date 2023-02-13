@@ -18,7 +18,12 @@ class EntryRepository
 
     public function __construct(string $code)
     {
-        $this->storage = new ObjectStorage(new StorableSerializer(Entry::class), $code, 'analytics_entry', Connection::analytics());
+        $this->storage = new ObjectStorage(
+            new StorableSerializer(Entry::class),
+            $code,
+            'analytics_entry',
+            Connection::analytics()
+        );
     }
 
     public function save(Entry $entry)
