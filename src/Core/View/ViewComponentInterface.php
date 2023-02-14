@@ -17,4 +17,6 @@ interface ViewComponentInterface
     public function __action(ViewAction $action): static;
 
     public function __debugInfo(): array;
+
+    public static function new(array $params = []): static;
 }

@@ -1,44 +1,15 @@
-summary:hover {
-  backdrop-filter: brightness(0.97);
-  @media (prefers-color-scheme: dark) {
-    backdrop-filter: brightness(1.2);
-  }
-}
-
-summary button {
-  font-size: .8rem;
-  padding: .25rem;
-}
-
-details:not([open]) > summary {
-  border-radius: 5px;
-}
-
-details[open] > summary {
-  border-bottom: 1px solid var(--border);
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-}
-
-form button + button,
-form button + select,
-form input + button {
-  margin-left: .25rem;
+@font-face {
+  font-family: Markdown;
+  src: url("LiberationMono.woff2") format("woff2")
 }
 
 footer > a + a, {
   margin-left: .5rem;
 }
 
-@font-face {
-  font-family: Markdown;
-  src: url("LiberationMono.woff2") format("woff2")
-}
-
 body > header {
   padding-bottom: 0;
 }
-
 
 header > nav {
   a.active {
@@ -93,13 +64,6 @@ input[type=text] {
 
 input:not(:placeholder-shown):invalid {
   border: 1px solid var(--marked);
-}
-
-summary aside {
-  margin: 0;
-  border: none;
-  text-align: right;
-  background: none;
 }
 
 info {

@@ -19,7 +19,7 @@ class NotFound extends ViewComponent
                     SystemNavigation::class => [],
                 ],
                 'footer' => [
-                    new SystemFooter()
+                    SystemFooter::new()
                 ]
             ]
         ];

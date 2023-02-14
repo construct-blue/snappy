@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace BlueTest\Core\View;
 
 use Blue\Core\Environment\Environment;
-use Blue\Core\View\ClientScript;
+use Blue\Core\View\Import;
 use Blue\Core\View\ClientResources;
 use Blue\Core\View\Exception\InvalidStaticResourceFileException;
 use PHPUnit\Framework\TestCase;
@@ -21,9 +21,9 @@ class ClientResourcesTest extends TestCase
             "dev_mode" => true
         ]);
         $resources = new ClientResources($env);
-        $resources->importClientScript(new ClientScript(__DIR__ . '/script3.ts'));
-        $resources->importClientScript(new ClientScript(__DIR__ . '/script1.ts'));
-        $resources->importClientScript(new ClientScript(__DIR__ . '/script2.ts'));
+        $resources->import(new Import(__DIR__ . '/script3.ts'));
+        $resources->import(new Import(__DIR__ . '/script1.ts'));
+        $resources->import(new Import(__DIR__ . '/script2.ts'));
 
         $this->assertEquals(
             [
@@ -45,7 +45,7 @@ class ClientResourcesTest extends TestCase
             "dev_mode" => true
         ]);
         $resources = new ClientResources($env);
-        $resources->importComponent(new ClientResourceTestComponent());
+        $resources->importComponent(ClientResourceTestComponent::new());
         $this->assertEquals(
             [
                 '/static/runtime.js',

@@ -1,3 +1,4 @@
+import "./Details.scss";
 import AttributeStorage from "../../AttributeStorage";
 
 class ReactiveDetails extends HTMLDetailsElement {

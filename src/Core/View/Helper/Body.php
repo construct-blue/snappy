@@ -9,11 +9,11 @@ use Blue\Core\View\ViewComponent;
 /**
  * @property array $content
  */
-final class RenderFirst extends ViewComponent
+class Body extends ViewComponent
 {
-    public static function from(array $content): RenderFirst
+    public static function include(array $content): Body
     {
-        $component = new RenderFirst();
+        $component = static::new();
         $component->content = $content;
         return $component;
     }

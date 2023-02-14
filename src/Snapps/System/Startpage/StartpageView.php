@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Blue\Snapps\System\Startpage;
 
 use Blue\Core\Application\Snapp\SnappRoute;
-use Blue\Core\View\Helper\PageWrapper;
+use Blue\Core\View\Helper\Document;
 use Blue\Core\View\ViewComponent;
 use Blue\Snapps\System\SystemFooter;
 use Blue\Snapps\System\SystemNavigation;
@@ -19,7 +19,7 @@ class StartpageView extends ViewComponent
     public function render(): array
     {
         return [
-            PageWrapper::class => [
+            Document::class => [
                 'title' => 'System',
                 'body' => [
                     'header' => [

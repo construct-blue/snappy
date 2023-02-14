@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Blue\Core\View\Component\Button;
 
 use Blue\Core\View\Component\Icon\Icon;
+use Blue\Core\View\Import;
 use Blue\Core\View\ViewComponent;
 
 /**
@@ -14,6 +15,7 @@ use Blue\Core\View\ViewComponent;
  * @property string $formaction
  * @property string $icon
  */
+#[Import(__DIR__ . '/ConfirmButton.ts')]
 class ConfirmButton extends ViewComponent
 {
     public function render(): array

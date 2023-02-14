@@ -7,7 +7,7 @@ namespace Blue\Snapps\System\Cms\Page\View;
 use Blue\Core\View\Component\Details\Details;
 use Blue\Core\View\Component\Icon\Icon;
 use Blue\Core\View\Component\Link;
-use Blue\Core\View\Helper\PageWrapper;
+use Blue\Core\View\Helper\Document;
 use Blue\Core\View\ViewComponent;
 use Blue\Models\Cms\Page\Page;
 use Blue\Snapps\System\Cms\CmsHeader;
@@ -22,7 +22,7 @@ class PageView extends ViewComponent
     public function render(): array
     {
         return [
-            PageWrapper::class => [
+            Document::class => [
                 'title' => 'CMS',
                 'body' => [
                     CmsHeader::class => [],
@@ -57,7 +57,7 @@ class PageView extends ViewComponent
                             ],
                         ], $this->pages),
                     ],
-                    new SystemFooter()
+                    SystemFooter::new()
                 ],
             ],
         ];

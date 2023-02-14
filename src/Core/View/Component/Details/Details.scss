@@ -1,0 +1,28 @@
+summary:hover {
+  backdrop-filter: brightness(0.97);
+  @media (prefers-color-scheme: dark) {
+    backdrop-filter: brightness(1.2);
+  }
+}
+
+details:not([open]) > summary {
+  border-radius: 5px;
+}
+
+details[open] > summary {
+  border-bottom: 1px solid var(--border);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+summary button {
+  font-size: .8rem;
+  padding: .25rem;
+}
+
+summary aside {
+  margin: 0;
+  border: none;
+  text-align: right;
+  background: none;
+}

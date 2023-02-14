@@ -8,7 +8,7 @@ use Blue\Core\View\Component\Button\SubmitButton;
 use Blue\Core\View\Component\Form\Form;
 use Blue\Core\View\Component\Form\Textfield;
 use Blue\Core\View\Component\Link;
-use Blue\Core\View\Helper\PageWrapper;
+use Blue\Core\View\Helper\Document;
 use Blue\Core\View\ViewComponent;
 use Blue\Models\User\User;
 use Blue\Snapps\System\SystemFooter;
@@ -23,7 +23,7 @@ class MyAccountView extends ViewComponent
     public function render(): array
     {
         return [
-            PageWrapper::class => [
+            Document::class => [
                 'title' => 'My Account',
                 'body' => [
                     'header' => [
@@ -70,7 +70,7 @@ class MyAccountView extends ViewComponent
                                 'href' => $this->backUrl,
                             ],
                         ],
-                        new SystemFooter(),
+                        SystemFooter::new(),
                     ],
                 ],
             ]

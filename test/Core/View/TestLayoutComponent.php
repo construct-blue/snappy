@@ -13,7 +13,7 @@ class TestLayoutComponent extends ViewComponent
                 'head' => [
                     'title' => 'meta title'
                 ],
-                'body' => new NestedTestComponent(),
+                'body' => NestedTestComponent::new(),
             ]
         ];
     }

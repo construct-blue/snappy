@@ -23,7 +23,7 @@ class LinkButton extends ViewComponent
         }
         return [
             'a href={href}' . $attributes => [
-                new Button()
+                Button::new()
             ]
         ];
     }

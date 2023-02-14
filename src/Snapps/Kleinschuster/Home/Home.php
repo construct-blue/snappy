@@ -2,7 +2,7 @@
 
 namespace Blue\Snapps\Kleinschuster\Home;
 
-use Blue\Core\View\Helper\PageWrapper;
+use Blue\Core\View\Helper\Document;
 use Blue\Core\View\Helper\Template;
 use Blue\Core\View\ViewComponent;
 use Blue\Models\Analytics\Tracker\Client\Analytics;
@@ -17,14 +17,14 @@ class Home extends ViewComponent
     public function render(): array
     {
         return [
-            PageWrapper::class => [
+            Document::class => [
                 'title' => 'Robert Kleinschuster',
                 'body' => [
                     Template::include(__DIR__ . '/Home.phtml'),
                     'main' => $this->main ?? '',
                     'footer' => $this->footer ?? '',
                 ],
-                'after' => Analytics::create()
+                'after' => Analytics::new()
             ],
         ];
     }

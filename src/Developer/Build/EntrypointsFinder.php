@@ -6,7 +6,7 @@ namespace Blue\Developer\Build;
 
 use Blue\Core\Environment\Environment;
 use Blue\Core\View\ClientResources;
-use Blue\Core\View\ClientScript;
+use Blue\Core\View\Import;
 use ReflectionClass;
 use Throwable;
 
@@ -27,9 +27,9 @@ class EntrypointsFinder
             try {
                 if (@class_exists($class)) {
                     $reflector = new ReflectionClass($class);
-                    $attributes = $reflector->getAttributes(ClientScript::class);
+                    $attributes = $reflector->getAttributes(Import::class);
                     foreach ($attributes as $attribute) {
-                        /** @var ClientScript $entrypoint */
+                        /** @var Import $entrypoint */
                         $entrypoint = $attribute->newInstance();
                         $entrypoints[$entrypoint->getKey($root)] = $entrypoint->getProjectPath($root);
                     }

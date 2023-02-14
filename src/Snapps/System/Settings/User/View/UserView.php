@@ -6,7 +6,7 @@ namespace Blue\Snapps\System\Settings\User\View;
 
 use Blue\Core\Application\Snapp\SnappRoute;
 use Blue\Core\View\Component\Details\Details;
-use Blue\Core\View\Helper\PageWrapper;
+use Blue\Core\View\Helper\Document;
 use Blue\Core\View\ViewComponent;
 use Blue\Models\User\User;
 use Blue\Snapps\System\Settings\SettingsNavigation;
@@ -22,7 +22,7 @@ class UserView extends ViewComponent
     public function render(): array
     {
         return [
-            PageWrapper::class => [
+            Document::class => [
                 'title' => 'Settings',
                 'body' => [
                     'header' => [
@@ -30,7 +30,7 @@ class UserView extends ViewComponent
                         SettingsNavigation::class => [],
                     ],
                     'main id="main"' => [
-                        new UserAdd(),
+                        UserAdd::new(),
                         array_map(
                             fn(User $user) => [
                                 Details::class => [
@@ -60,7 +60,7 @@ class UserView extends ViewComponent
                             $this->users
                         )
                     ],
-                    new SystemFooter()
+                    SystemFooter::new()
                 ],
             ]
         ];

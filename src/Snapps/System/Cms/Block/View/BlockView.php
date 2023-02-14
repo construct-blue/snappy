@@ -7,7 +7,7 @@ namespace Blue\Snapps\System\Cms\Block\View;
 use Blue\Core\View\Component\Details\Details;
 use Blue\Core\View\Component\Icon\Icon;
 use Blue\Core\View\Component\Link;
-use Blue\Core\View\Helper\PageWrapper;
+use Blue\Core\View\Helper\Document;
 use Blue\Core\View\ViewComponent;
 use Blue\Models\Cms\Block\Block;
 use Blue\Snapps\System\Cms\CmsHeader;
@@ -22,7 +22,7 @@ class BlockView extends ViewComponent
     public function render(): array
     {
         return [
-            PageWrapper::class => [
+            Document::class => [
                 'title' => 'CMS',
                 'body' => [
                     CmsHeader::class => [],
@@ -36,7 +36,7 @@ class BlockView extends ViewComponent
                                 ' Manage pages',
                             ]
                         ],
-                        new BlockAddView(),
+                        BlockAddView::new(),
                         array_map(fn(Block $block) => [
                             Details::class => [
                                 'id' => $block->getId(),
@@ -55,7 +55,7 @@ class BlockView extends ViewComponent
                             ],
                         ], $this->blocks),
                     ],
-                    new SystemFooter()
+                    SystemFooter::new()
                 ]
             ],
         ];

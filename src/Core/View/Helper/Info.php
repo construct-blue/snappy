@@ -8,7 +8,7 @@ use Blue\Core\Environment\Environment;
 use Blue\Core\View\Component\Icon\Icon;
 use Blue\Core\View\ViewComponent;
 
-class Development extends ViewComponent
+class Info extends ViewComponent
 {
     public function render(): array
     {
@@ -17,7 +17,7 @@ class Development extends ViewComponent
         if ($env->isDevMode()) {
             $result[] = [
                 'info' => [
-                    Icon::create(['icon' => 'alert-circle']),
+                    Icon::include('alert-circle'),
                     ' Development Mode',
                 ],
             ];
@@ -25,7 +25,7 @@ class Development extends ViewComponent
         if ($env->getDevDomain()) {
             $result[] = [
                 'info' => [
-                    Icon::create(['icon' => 'alert-circle']),
+                    Icon::include('alert-circle'),
                     ' Staging Domain: ' . $env->getDevDomain(),
                 ],
             ];

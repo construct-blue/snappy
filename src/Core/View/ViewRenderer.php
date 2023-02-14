@@ -11,8 +11,9 @@ use Blue\Core\View\Exception\InvalidComponentClassException;
 use Blue\Core\View\Exception\InvalidComponentContentException;
 use Blue\Core\View\Exception\InvalidComponentParameterException;
 use Blue\Core\View\Exception\ViewException;
-use Blue\Core\View\Helper\PageWrapper;
-use Blue\Core\View\Helper\RenderFirst;
+use Blue\Core\View\Helper\Functional;
+use Blue\Core\View\Helper\Document;
+use Blue\Core\View\Helper\Body;
 use Closure;
 use Throwable;
 
@@ -95,7 +96,7 @@ class ViewRenderer
     ): ViewComponentInterface {
         try {
             $this->resources->importComponent($component);
-            if ($component instanceof PageWrapper) {
+            if ($component instanceof Document) {
                 $component->resources = $this->resources;
             }
 
@@ -115,6 +116,21 @@ class ViewRenderer
         }
 
         return $component;
+    }
+
+    /**
+     * @param class-string<ViewComponentInterface> $className
+     * @return ViewComponentInterface
+     * @throws InvalidComponentClassException
+     */
+    public static function instantiateComponent(string $className): ViewComponentInterface
+    {
+        if (!in_array(ViewComponentInterface::class, class_implements($className))) {
+            throw new InvalidComponentClassException(
+                "Component class $className must implement " . ViewComponentInterface::class
+            );
+        }
+        return $className::new();
     }
 
     /**
@@ -145,7 +161,7 @@ class ViewRenderer
                     );
                 }
                 $result[$contentCount + $index] = $this->prepareComponent(
-                    ViewComponent::fromClassName($key),
+                    self::instantiateComponent($key),
                     $item,
                     $parent,
                     $index
@@ -169,12 +185,12 @@ class ViewRenderer
                 }
             } elseif ($item instanceof Closure) {
                 $result[$key] = $this->prepareComponent(
-                    ClosureView::from($item),
+                    Functional::include($item),
                     null,
                     $parent,
                     $index
                 );
-            } elseif ($render && $item instanceof RenderFirst) {
+            } elseif ($render && $item instanceof Body) {
                 $result[$key] = $this->render($item, null, $parent);
             } elseif ($item instanceof ViewComponentInterface) {
                 $result[$key] = $this->prepareComponent(

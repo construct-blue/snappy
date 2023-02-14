@@ -1,4 +1,6 @@
-
+import './Form.scss'
+import ScriptLoader from "../../Helper/ScriptLoader";
+import StyleLoader from "../../Helper/StyleLoader";
 class ReactiveForm extends HTMLFormElement {
     public context: null|string;
 
@@ -35,6 +37,9 @@ class ReactiveForm extends HTMLFormElement {
         const document = parser.parseFromString(await response.text(), 'text/html');
         const messages = document.querySelector('[is=toast-messages]');
         const validations = document.querySelector('[is=toast-validations]');
+
+        ScriptLoader.loadFrom(document)
+        StyleLoader.loadFrom(document)
 
         if (messages) {
             window.document.body.append(messages)

@@ -17,7 +17,7 @@ class Template extends ViewComponent
 
     public static function include(string $templateFile, array $params = []): static
     {
-        $component = static::create($params);
+        $component = static::new();
         $component->params = $params;
         $component->template = $templateFile;
         return $component;

@@ -2,21 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Blue\Core\View;
+namespace Blue\Core\View\Helper;
 
-use Closure;
 use Blue\Core\View\Exception\InvalidComponentContentException;
 use Blue\Core\View\Exception\MissingPropertyException;
+use Blue\Core\View\ViewComponent;
+use Closure;
 
 use function is_array;
 
-class ClosureView extends ViewComponent
+class Functional extends ViewComponent
 {
     private Closure $closure;
 
-    public static function from(Closure $closure): static
+    public static function include(Closure $closure): static
     {
-        $component = new static();
+        $component = static::new();
         $component->closure = $closure;
         return $component;
     }

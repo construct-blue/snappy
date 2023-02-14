@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace BlueTest\Core\View;
 
-use Blue\Core\View\ClosureView;
 use Blue\Core\View\Exception\InfiniteRecursionException;
 use Blue\Core\View\Exception\InvalidComponentClassException;
 use Blue\Core\View\Exception\InvalidComponentContentException;
 use Blue\Core\View\Exception\InvalidComponentParameterException;
-use Blue\Core\View\Helper\PageWrapper;
-use Blue\Core\View\Helper\RenderFirst;
+use Blue\Core\View\Helper\Functional;
+use Blue\Core\View\Helper\Document;
+use Blue\Core\View\Helper\Body;
 use Blue\Core\View\Helper\Template;
 use Blue\Core\View\ViewAction;
-use Blue\Core\View\ViewComponent;
 use Blue\Core\View\ViewRenderer;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -23,7 +22,7 @@ class ViewRendererTest extends TestCase
     public function testShouldThrowExceptionOnInvalidComponentObject()
     {
         $this->expectException(InvalidComponentContentException::class);
-        $component = ClosureView::from(fn() => new stdClass());
+        $component = Functional::include(fn() => new stdClass());
         $renderer = new ViewRenderer(null, true);
         $renderer->render($component);
     }
@@ -31,7 +30,7 @@ class ViewRendererTest extends TestCase
     public function testShouldThrowExceptionOnInvalidComponentClass()
     {
         $this->expectException(InvalidComponentClassException::class);
-        $component = ClosureView::from(fn() => [static::class => []]);
+        $component = Functional::include(fn() => [static::class => []]);
         $renderer = new ViewRenderer(null, true);
         $renderer->render($component);
     }
@@ -39,7 +38,7 @@ class ViewRendererTest extends TestCase
     public function testShouldThrowExceptionWhenCallbackReturnsInvalidType()
     {
         $this->expectException(InvalidComponentContentException::class);
-        $component = ClosureView::from(fn() => static::class);
+        $component = Functional::include(fn() => static::class);
         $renderer = new ViewRenderer(null, true);
         $renderer->render($component);
     }
@@ -47,7 +46,7 @@ class ViewRendererTest extends TestCase
     public function testShouldThrowExceptionWhenComponentParamsIsInvalidType()
     {
         $this->expectException(InvalidComponentParameterException::class);
-        $component = ClosureView::from(fn() => [
+        $component = Functional::include(fn() => [
             TestComponent::class => ''
         ]);
         $renderer = new ViewRenderer(null, true);
@@ -75,7 +74,7 @@ class ViewRendererTest extends TestCase
 
     public function testShouldRenderComponentToHtml()
     {
-        $component = new TestComponent();
+        $component = TestComponent::new();
         $component->heading = 'test';
 
         $renderer = new ViewRenderer(null, true);
@@ -84,14 +83,7 @@ class ViewRendererTest extends TestCase
 
     public function testShouldReplacePlaceholder()
     {
-        $component = new class extends ViewComponent {
-            public function render(): array
-            {
-                return [
-                    '{text}'
-                ];
-            }
-        };
+        $component = Functional::include(fn() => '{text}');
         $component->text = 'hello test';
         $renderer = new ViewRenderer(null, true);
         $this->assertEquals('hello test', $renderer->render($component));
@@ -99,35 +91,15 @@ class ViewRendererTest extends TestCase
 
     public function testShouldBindChildrenToParent()
     {
-        $component = new class extends ViewComponent {
-            public function render(): array
-            {
-                return [
-                    new class extends ViewComponent {
-                        public function render(): array
-                        {
-                            return [$this->dataFromParent];
-                        }
-                    },
-                    new class extends ViewComponent {
-                        public function render(): array
-                        {
-                            return [
-                                $this->dataFromParent,
-                                new class extends ViewComponent {
-                                    public function render(): array
-                                    {
-                                        return [$this->dataFromParent];
-                                    }
-                                },
-                            ];
-                        }
-                    }
-                ];
-            }
-        };
+        $component = Functional::include(fn() => [
+            Functional::include(fn($that) => [$that->text]),
+            Functional::include(fn($that) => [
+                $that->text,
+                Functional::include(fn($that) => [$that->text])
+            ])
+        ]);
 
-        $component->dataFromParent = 'hello child';
+        $component->text = 'hello child';
 
         $renderer = new ViewRenderer(null, true);
         $this->assertEquals('hello childhello childhello child', $renderer->render($component));
@@ -135,7 +107,7 @@ class ViewRendererTest extends TestCase
 
     public function testShouldRenderNestedComponents()
     {
-        $component = new TestLayoutComponent();
+        $component = TestLayoutComponent::new();
         $expected = <<<EOF
 <html><head><title>meta title</title></head><body><div><h1>test</h1></div></body></html>
 EOF;
@@ -146,14 +118,9 @@ EOF;
 
     public function testShouldRemoveAttributesFromClosingTag()
     {
-        $component = new class extends ViewComponent {
-            public function render(): array
-            {
-                return [
-                    'div class="group"' => 'content',
-                ];
-            }
-        };
+        $component = Functional::include(fn() => [
+            'div class="group"' => 'content',
+        ]);
         $renderer = new ViewRenderer(null, true);
 
         $this->assertEquals('<div class="group">content</div>', $renderer->render($component));
@@ -161,28 +128,14 @@ EOF;
 
     public function testShouldRenderContentWithoutTag()
     {
-        $component = new class extends ViewComponent {
-            public function render(): array
-            {
-                return [
-                    'content',
-                ];
-            }
-        };
+        $component = Functional::include(fn() => ['content']);
         $renderer = new ViewRenderer(null, true);
         $this->assertEquals('content', $renderer->render($component));
     }
 
     public function testShouldRenderClosureComponent()
     {
-        $component = new class extends ViewComponent {
-            public function render(): array
-            {
-                return [
-                    fn() => ['h1' => 'hello world']
-                ];
-            }
-        };
+        $component = Functional::include(fn() => [fn() => ['h1' => 'hello world']]);
 
         $renderer = new ViewRenderer(null, true);
         $this->assertEquals('<h1>hello world</h1>', $renderer->render($component));
@@ -190,16 +143,7 @@ EOF;
 
     public function testShouldAllowStringReturnFromClosureComponent()
     {
-        $component = new class extends ViewComponent {
-            public function render(): array
-            {
-                return [
-                    function () {
-                        return 'hello world';
-                    }
-                ];
-            }
-        };
+        $component = Functional::include(fn() => 'hello world');
 
         $renderer = new ViewRenderer(null, true);
         $this->assertEquals('hello world', $renderer->render($component));
@@ -207,7 +151,7 @@ EOF;
 
     public function testShouldInstantiateComponentClassesInKeysAndSetParams()
     {
-        $component = ClosureView::from(fn() => [
+        $component = Functional::include(fn() => [
             TestComponent::class => [
                 TestComponent::PARAM_HEADING => 'test heading'
             ]
@@ -222,11 +166,11 @@ EOF;
         $check = '';
         $renderer = new ViewRenderer(null, true);
 
-        $component = ClosureView::from(fn() => [
+        $component = Functional::include(fn() => [
             'head' => function () use (&$check) {
                 return $check;
             },
-            'body' => RenderFirst::from([
+            'body' => Body::include([
                 function () use (&$check) {
                     $check = 'hello from body';
                     return '';
@@ -238,7 +182,7 @@ EOF;
 
     public function testShouldOutputStylesAndScriptsToLayout()
     {
-        $layout = new PageWrapper();
+        $layout = Document::new();
         $layout->title = '';
         $layout->body = [];
 
@@ -248,11 +192,11 @@ EOF;
 
     public function testShouldExecuteAction()
     {
-        $component1 = ClosureView::from(
-            fn(ClosureView $c) => "component 1" . ($c->suffix ?? '')
+        $component1 = Functional::include(
+            fn(Functional $c) => "component 1" . ($c->suffix ?? '')
         );
-        $component2 = ClosureView::from(
-            function (ClosureView $c) use ($component1) {
+        $component2 = Functional::include(
+            function (Functional $c) use ($component1) {
                 if ($c->action()->is('click')) {
                     $component1->suffix = ' hello';
                     return 'component 2 clicked';
@@ -261,7 +205,7 @@ EOF;
             }
         );
 
-        $component = ClosureView::from(fn() => [
+        $component = Functional::include(fn() => [
             $component1,
             ' ',
             $component2,
@@ -276,7 +220,7 @@ EOF;
     public function testShouldThrowExceptionWhenRecursiveNesting()
     {
         $this->expectException(InfiniteRecursionException::class);
-        $component = new RecursiveTestComponent();
+        $component = RecursiveTestComponent::new();
         $renderer = new ViewRenderer(null, true);
         $renderer->render($component);
     }
@@ -284,7 +228,7 @@ EOF;
     public function testBenchmark()
     {
         $renderer = new ViewRenderer(null, true);
-        $component = PageWrapper::for('title', 'description', [
+        $component = Document::for('title', 'description', [
             fn() => [
                 'h1' => 'test',
                 fn() => [
@@ -310,7 +254,7 @@ EOF;
     public function testBenchmark2()
     {
         $renderer = new ViewRenderer(null, true);
-        $component = PageWrapper::for('title', 'description', [
+        $component = Document::for('title', 'description', [
             fn() => [
                 'h1' => 'test',
                 fn() => [
@@ -337,7 +281,7 @@ EOF;
     public function testBenchmark3()
     {
         $renderer = new ViewRenderer(null, true);
-        $component = PageWrapper::for('title', 'description', [
+        $component = Document::for('title', 'description', [
             fn() => [
                 'h1' => 'test',
                 fn() => [
@@ -345,7 +289,7 @@ EOF;
                     function () {
                         $result = [];
                         for ($i = 0; $i < 100000; $i++) {
-                            $result[] = TestComponent::create([TestComponent::PARAM_HEADING => '']);
+                            $result[] = TestComponent::new([TestComponent::PARAM_HEADING => '']);
                         }
 
                         return $result;
@@ -363,7 +307,7 @@ EOF;
     public function testBenchmark4()
     {
         $renderer = new ViewRenderer(null, true);
-        $component = PageWrapper::for('title', 'description', [
+        $component = Document::for('title', 'description', [
             fn() => [
                 'h1' => 'test',
                 fn() => [

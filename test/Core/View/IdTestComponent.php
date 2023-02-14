@@ -11,7 +11,7 @@ class IdTestComponent extends ViewComponent
 {
     public static function for(array $content): static
     {
-        $component = new static();
+        $component = static::new();
         $component->content = $content;
         return $component;
     }

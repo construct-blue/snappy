@@ -7,7 +7,7 @@ namespace Blue\Core\View;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
-class ClientScript
+class Import
 {
     public function __construct(public string $file)
     {

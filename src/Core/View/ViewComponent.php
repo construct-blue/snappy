@@ -12,7 +12,7 @@ use Closure;
 
 use function array_replace_recursive;
 
-#[ClientScript(__DIR__ . '/ViewComponent.ts')]
+#[Import(__DIR__ . '/ViewComponent.ts')]
 abstract class ViewComponent implements ViewComponentInterface
 {
     // phpcs:ignore
@@ -24,28 +24,13 @@ abstract class ViewComponent implements ViewComponentInterface
     // phpcs:ignore
     private ?ViewComponentInterface $__parent = null;
 
-    final public function __construct()
+    final private function __construct()
     {
         $this->__action = new ViewAction('');
         $this->__init();
     }
 
-    /**
-     * @param class-string<ViewComponentInterface> $className
-     * @return ViewComponentInterface
-     * @throws InvalidComponentClassException
-     */
-    public static function fromClassName(string $className): ViewComponentInterface
-    {
-        if (!in_array(ViewComponentInterface::class, class_implements($className, false))) {
-            throw new InvalidComponentClassException(
-                "Component class $className must implement " . ViewComponentInterface::class
-            );
-        }
-        return new $className();
-    }
-
-    public static function create(array $params = []): static
+    public static function new(array $params = []): static
     {
         $component = new static();
         $component->mergeParams($params);
@@ -104,7 +89,7 @@ abstract class ViewComponent implements ViewComponentInterface
      */
     public function __get(string $name): mixed
     {
-        if (!$this->__isset($name)) {
+        if (!isset($this->__data[$name]) && !isset($this->__parent?->$name)) {
             throw UndefinedPropertyException::forComponent("Access to undefined property '$name'", $this);
         }
         return $this->__data[$name] ?? $this->__parent?->$name ?? null;

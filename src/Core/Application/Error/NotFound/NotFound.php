@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Blue\Core\Application\Error\NotFound;
 
 use Blue\Core\View\Component\Icon\Icon;
-use Blue\Core\View\Helper\PageWrapper;
+use Blue\Core\View\Helper\Document;
 use Blue\Core\View\Helper\Template;
 use Blue\Core\View\ViewComponent;
 
@@ -19,7 +19,7 @@ class NotFound extends ViewComponent
     public function render(): array
     {
         return [
-            PageWrapper::class => [
+            Document::class => [
                 'title' => 'Oops!',
                 'body' => [
                     'header' => [
@@ -29,7 +29,7 @@ class NotFound extends ViewComponent
                     'footer' => [
                         'p' => [
                             'a href="#" onclick="window.location = document.referrer"' => [
-                                Icon::for('arrow-left'),
+                                Icon::include('arrow-left'),
                                 'span' => 'Back'
                             ],
                             ' ',

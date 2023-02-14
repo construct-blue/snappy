@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Core\View\Component\Form;
 
+use Blue\Core\View\Import;
 use Blue\Core\View\ViewComponent;
 
 /**
@@ -12,6 +13,7 @@ use Blue\Core\View\ViewComponent;
  * @property string $id
  * @property array $content
  */
+#[Import(__DIR__ . '/ReactiveForm.ts')]
 class Form extends ViewComponent
 {
     public function render(): array

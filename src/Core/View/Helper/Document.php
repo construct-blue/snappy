@@ -6,6 +6,7 @@ namespace Blue\Core\View\Helper;
 
 use Blue\Core\Application\Session\Session;
 use Blue\Core\View\ClientResources;
+use Blue\Core\View\Import;
 use Blue\Core\View\ViewComponent;
 
 /**
@@ -19,11 +20,12 @@ use Blue\Core\View\ViewComponent;
  * @property null|array $head
  * @property null|Session $session
  */
-class PageWrapper extends ViewComponent
+#[Import(__DIR__ . '/Document.ts')]
+class Document extends ViewComponent
 {
     public static function for(string $title, string $description, array $body): static
     {
-        $component = new static();
+        $component = static::new();
         $component->title = $title;
         $component->description = $description;
         $component->body = $body;
@@ -50,15 +52,18 @@ class PageWrapper extends ViewComponent
                     '<link rel="manifest" href="/manifest.webmanifest">',
                     $this->buildMetaDescriptionTag(),
                     $this->head ?? '',
-                    Stylesheets::create(),
+                    fn() => Stylesheets::include($this->resources->getCSSFiles()),
+                    fn() => Scripts::include($this->resources->getJSFiles()),
                 ],
-                'body' => RenderFirst::from([
-                    Development::create(),
+                'body' => Body::include([
+                    Info::new(),
                     $this->body ?? [],
                     $this->content ?? [],
                     $this->after ?? [],
-                    Scripts::create(),
-                    Messages::create(),
+                    Conditional::include(
+                        isset($this->session),
+                        fn() => Messages::include($this->session->popMessages(), $this->session->popValidations()),
+                    ),
                 ])
             ]
         ];

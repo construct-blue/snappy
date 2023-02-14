@@ -2,32 +2,32 @@
 
 declare(strict_types=1);
 
-namespace BlueTest\Core\View;
+namespace BlueTest\Core\View\Helper;
 
-use Blue\Core\View\ClosureView;
 use Blue\Core\View\Exception\MissingPropertyException;
+use Blue\Core\View\Helper\Functional;
 use PHPUnit\Framework\TestCase;
 
-class CallbackViewComponentTest extends TestCase
+class FunctionalTest extends TestCase
 {
     public function testShouldThrowExceptionWhenRenderedWithoutClosure()
     {
         $this->expectException(MissingPropertyException::class);
         $this->expectExceptionMessage('Missing closure');
-        $component = new ClosureView();
+        $component = Functional::new();
         $component->render();
     }
 
     public function testShouldExecuteClosureOnRender()
     {
         $data = ['test'];
-        $component = ClosureView::from(fn() => $data);
+        $component = Functional::include(fn() => $data);
         $this->assertEquals($data, $component->render());
     }
 
     public function testShouldConvertScalarClosureResultToArray()
     {
-        $component = ClosureView::from(fn() => 'test');
+        $component = Functional::include(fn() => 'test');
         $this->assertEquals(['test'], $component->render());
     }
 }

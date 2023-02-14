@@ -15,7 +15,7 @@ class ViewComponentTest extends TestCase
     {
         $this->expectException(UndefinedMethodException::class);
         $this->expectExceptionMessage("Call to undefined method 'test' in " . TestComponent::class);
-        $component = new TestComponent();
+        $component = TestComponent::new();
         /** @phpstan-ignore-next-line */
         $component->test();
     }
@@ -24,14 +24,14 @@ class ViewComponentTest extends TestCase
     {
         $this->expectException(UndefinedPropertyException::class);
         $this->expectExceptionMessage("Access to undefined property 'heading' in " . TestComponent::class);
-        $component = new TestComponent();
+        $component = TestComponent::new();
         /** @phpstan-ignore-next-line */
         $x = $component->heading;
     }
 
     public function testShouldMergePrepareDataIntoData()
     {
-        $component = new TestComponent();
+        $component = TestComponent::new();
         $component->heading = 'heading before prepare';
         $component->text = 'text before prepare';
         $component->array = [
@@ -57,9 +57,9 @@ class ViewComponentTest extends TestCase
 
     public function testShouldBindDataFromParentToChild()
     {
-        $component1 = new TestComponent();
+        $component1 = TestComponent::new();
         $component1->heading = 'heading';
-        $component2 = new TestComponent();
+        $component2 = TestComponent::new();
         $this->assertFalse(isset($component2->heading));
         $component2->__bindParent($component1);
         $this->assertTrue(isset($component2->heading));
@@ -71,7 +71,7 @@ class ViewComponentTest extends TestCase
 
     public function testShouldHaveAccurateLineInfoInUndefinedPropertyException()
     {
-        $component = new TemplateExceptionComponent();
+        $component = TemplateExceptionComponent::new();
         $renderer = new ViewRenderer(null, false);
         $this->assertEquals('', $renderer->render($component));
 

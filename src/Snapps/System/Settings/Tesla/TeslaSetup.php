@@ -3,8 +3,8 @@
 namespace Blue\Snapps\System\Settings\Tesla;
 
 use Blue\Core\Application\Snapp\SnappRoute;
-use Blue\Core\View\ClientScript;
-use Blue\Core\View\Helper\PageWrapper;
+use Blue\Core\View\Import;
+use Blue\Core\View\Helper\Document;
 use Blue\Core\View\Helper\Template;
 use Blue\Core\View\ViewComponent;
 use Blue\Snapps\System\Settings\SettingsNavigation;
@@ -14,13 +14,13 @@ use Blue\Snapps\System\SystemNavigation;
 /**
  * @property SnappRoute $activeSnapp
  */
-#[ClientScript(__DIR__ . '/TeslaSetup.ts')]
+#[Import(__DIR__ . '/TeslaSetup.ts')]
 class TeslaSetup extends ViewComponent
 {
     public function render(): array
     {
         return [
-            PageWrapper::class => [
+            Document::class => [
                 'title' => 'NICEmobil',
                 'body' => [
                     'header' => [
@@ -28,7 +28,7 @@ class TeslaSetup extends ViewComponent
                         SettingsNavigation::class => [],
                     ],
                     'main' => Template::include(__DIR__ . '/TeslaSetup.phtml'),
-                    new SystemFooter()
+                    SystemFooter::new()
                 ]
             ],
         ];

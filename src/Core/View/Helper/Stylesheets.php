@@ -8,16 +8,24 @@ use Blue\Core\View\ClientResources;
 use Blue\Core\View\ViewComponent;
 
 /**
- * @property ClientResources $resources
+ * @property array $files
  */
 class Stylesheets extends ViewComponent
 {
+    public static function include(array $files): static
+    {
+        $component = static::new();
+        $component->files = $files;
+        return $component;
+    }
+
+
     public function render(): array
     {
         return [
             fn() => array_map(
                 fn(string $file) => "<link rel='stylesheet' href='$file'>",
-                $this->resources->getCSSFiles()
+                $this->files
             )
         ];
     }

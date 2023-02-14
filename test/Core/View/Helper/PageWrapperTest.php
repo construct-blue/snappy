@@ -1,16 +1,16 @@
 <?php
 
-namespace BlueTest\Core\View;
+namespace BlueTest\Core\View\Helper;
 
-use Blue\Core\View\Helper\PageWrapper;
+use Blue\Core\View\Helper\Document;
 use Blue\Core\View\ViewRenderer;
 use PHPUnit\Framework\TestCase;
 
-class PageViewComponentTest extends TestCase
+class PageWrapperTest extends TestCase
 {
     public function testRender()
     {
-        $component = new PageWrapper();
+        $component = Document::new();
         $component->body = [];
         $component->title = '';
         $renderer = new ViewRenderer(null, true);

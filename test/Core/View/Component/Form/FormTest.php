@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace BlueTest\Core\View\Component\Form;
 
-use Blue\Core\View\ClosureView;
 use Blue\Core\View\Component\Form\Form;
+use Blue\Core\View\Helper\Functional;
 use Blue\Core\View\ViewRenderer;
 use PHPUnit\Framework\TestCase;
 
@@ -13,7 +13,7 @@ class FormTest extends TestCase
 {
     public function testShouldOutputIdWhenSet()
     {
-        $component = ClosureView::from(fn() => [
+        $component = Functional::include(fn() => [
             Form::class => [
                 'id' => 'id',
                 'content' => ''
@@ -25,7 +25,7 @@ class FormTest extends TestCase
 
     public function testShouldNotOutputIdWhenNotSet()
     {
-        $component = ClosureView::from(fn() => [
+        $component = Functional::include(fn() => [
             Form::class => [
                 'content' => ''
             ],
@@ -36,7 +36,7 @@ class FormTest extends TestCase
 
     public function testShouldAllowRemoveId()
     {
-        $component = ClosureView::from(fn() => [
+        $component = Functional::include(fn() => [
             Form::class => [
                 'id' => '',
                 'content' => ''
@@ -48,7 +48,7 @@ class FormTest extends TestCase
 
     public function testShouldInheritId()
     {
-        $component = ClosureView::from(fn() => [
+        $component = Functional::include(fn() => [
             Form::class => [
                 'content' => ''
             ],

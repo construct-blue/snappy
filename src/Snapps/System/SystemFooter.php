@@ -23,7 +23,7 @@ class SystemFooter extends ViewComponent
             'footer' => fn() => $this->isLoggedIn ?
                 [
                     'div' => [
-                        Icon::for('user'),
+                        Icon::include('user'),
                         ' ',
                         $this->activeUserName
                     ],

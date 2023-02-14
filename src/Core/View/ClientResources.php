@@ -63,9 +63,9 @@ class ClientResources
         }
     }
 
-    public function importClientScript(ClientScript $clientScript): self
+    public function import(Import $file): self
     {
-        $key = $clientScript->getKey($this->projectRoot);
+        $key = $file->getKey($this->projectRoot);
         if (!isset($this->fileKeys[$key])) {
             $this->fileKeys[$key] = true;
         }
@@ -85,16 +85,16 @@ class ClientResources
         $class = get_class($component);
         if (!isset($this->componentClasses[$class])) {
             $this->componentClasses[$class] = true;
-            /** @var ClientScript $attribute */
+            /** @var Import $attribute */
             foreach (
                 AttributeReflector::getAttributes(
                     $class,
-                    ClientScript::class,
+                    Import::class,
                     0,
                     $this->componentClasses
                 ) as $attribute
             ) {
-                $this->importClientScript($attribute);
+                $this->import($attribute);
             }
         }
         return $this;
