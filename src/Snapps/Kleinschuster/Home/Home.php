@@ -8,6 +8,8 @@ use Blue\Core\View\ViewComponent;
 use Blue\Models\Analytics\Tracker\Client\Analytics;
 
 /**
+ * @property string $title
+ * @property string $description
  * @property string $header
  * @property string $main
  * @property string $footer
@@ -18,8 +20,8 @@ class Home extends ViewComponent
     {
         return [
             Document::class => [
-                'title' => 'robs.social',
-                'description' => 'Links zu meinen Social Media-Profilen.',
+                'title' => $this->title ?? 'robs.social',
+                'description' => $this->description ?? 'Links zu meinen Social Media-Profilen.',
                 'body' => [
                     Template::include(__DIR__ . '/Home.phtml'),
                     'main' => $this->main ?? '',

@@ -8,6 +8,7 @@ use Blue\Models\Cms\Block\BlockPlaceholder;
 use Blue\Models\Cms\Block\BlockRepository;
 use Blue\Models\Cms\Page\PageRepository;
 use Laminas\Diactoros\Response\HtmlResponse;
+use ParsedownExtra;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -21,7 +22,9 @@ class HomeHandler extends TemplateHandler
         $code = $request->getUri()->getPath();
         if ($repo->existsByCode($code)) {
             $page = $repo->findByCode($code);
-            $parsedown = new \ParsedownExtra();
+            $parsedown = new ParsedownExtra();
+            $this->assign('title', $page->getTitle());
+            $this->assign('description', $page->getDescription());
             $this->assign('header', $parsedown->text($page->getHeader()));
             $this->assign('main', $parsedown->text($page->getMain()));
             $this->assign('footer', $parsedown->text($page->getFooter()));
