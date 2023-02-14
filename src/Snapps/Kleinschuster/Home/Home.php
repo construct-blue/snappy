@@ -18,7 +18,7 @@ class Home extends ViewComponent
     {
         return [
             Document::class => [
-                'title' => 'Robert Kleinschuster',
+                'title' => 'robs.social',
                 'description' => 'Links zu meinen Social Media-Profilen.',
                 'body' => [
                     Template::include(__DIR__ . '/Home.phtml'),
