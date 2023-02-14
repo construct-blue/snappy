@@ -16,7 +16,7 @@ class Page implements Storable
     private string $header = '{block:header}';
     private string $footer = '{block:footer}';
 
-    public function __construct()
+    final public function __construct()
     {
         $this->id = uniqid();
     }
@@ -115,7 +115,7 @@ class Page implements Storable
 
     public static function fromStorage(array $data): static
     {
-        $page = new Page();
+        $page = new static();
         $page->id = $data['id'];
         $page->code = $data['code'] ?? null;
         $page->title = $data['title'] ?? '';

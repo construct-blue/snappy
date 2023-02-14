@@ -9,7 +9,7 @@ use Closure;
 use Generator;
 
 /**
- * @template T of Storable
+ * @template T of object
  */
 class ObjectStorage
 {
@@ -18,7 +18,6 @@ class ObjectStorage
     private bool $setup = false;
 
     /**
-     * @template T of Storable
      *
      * @param SerializerInterface $serializer
      * @param string $type

@@ -7,6 +7,7 @@ namespace Blue\Models\User;
 use Blue\Core\Application\Session\Session;
 use Blue\Core\Database\ObjectStorage;
 use Blue\Core\Database\Serializer\StorableSerializer;
+use Blue\Core\Database\StorableObjectStorage;
 use Blue\Core\Http\Status;
 use Blue\Core\Util\SingletonTrait;
 use Generator;
@@ -15,11 +16,11 @@ class UserRepository
 {
     use SingletonTrait;
 
-    protected ObjectStorage $storage;
+    protected StorableObjectStorage $storage;
 
     protected function onConstruct(): void
     {
-        $this->storage = new ObjectStorage(new StorableSerializer(User::class), 'default', 'user');
+        $this->storage = new StorableObjectStorage(User::class, 'default', 'user');
         if ($this->storage->isSetup()) {
             $systemUser = new User();
             $systemUser->setName(User::DEFAULT_NAME_SYSTEM);

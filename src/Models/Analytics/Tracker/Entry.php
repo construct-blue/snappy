@@ -441,7 +441,7 @@ final class Entry implements Storable
 
         if (isset($data['clientHints'])) {
             if (is_array($data['clientHints'])) {
-                $entry->clientHints = ClientHints::__set_state($data['clientHints']);
+                $entry->clientHints = ClientHints::fromStorage($data['clientHints']);
             } else {
                 $entry->clientHints = $data['clientHints'];
             }

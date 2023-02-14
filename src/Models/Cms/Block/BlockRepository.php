@@ -7,15 +7,16 @@ namespace Blue\Models\Cms\Block;
 use Blue\Core\Database\Exception\ObjectLoadingException;
 use Blue\Core\Database\ObjectStorage;
 use Blue\Core\Database\Serializer\StorableSerializer;
+use Blue\Core\Database\StorableObjectStorage;
 use Generator;
 
 class BlockRepository
 {
-    private ObjectStorage $storage;
+    private StorableObjectStorage $storage;
 
     public function __construct(private ?string $snapp)
     {
-        $this->storage = new ObjectStorage(new StorableSerializer(Block::class), $snapp ?? '', 'block');
+        $this->storage = new StorableObjectStorage(Block::class, $snapp ?? '', 'block');
     }
 
     /**

@@ -6,15 +6,16 @@ namespace Blue\Models\Cms\Page;
 
 use Blue\Core\Database\ObjectStorage;
 use Blue\Core\Database\Serializer\StorableSerializer;
+use Blue\Core\Database\StorableObjectStorage;
 use Generator;
 
 class PageRepository
 {
-    private ObjectStorage $storage;
+    private StorableObjectStorage $storage;
 
     public function __construct(private ?string $snapp)
     {
-        $this->storage = new ObjectStorage(new StorableSerializer(Page::class), $snapp ?? '', 'page');
+        $this->storage = new StorableObjectStorage(Page::class, $snapp ?? '', 'page');
     }
 
     /**

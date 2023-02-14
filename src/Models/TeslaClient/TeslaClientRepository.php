@@ -2,19 +2,18 @@
 
 namespace Blue\Models\TeslaClient;
 
-use Blue\Core\Database\ObjectStorage;
-use Blue\Core\Database\Serializer\StorableSerializer;
+use Blue\Core\Database\StorableObjectStorage;
 use Blue\Core\Util\SingletonTrait;
 
 class TeslaClientRepository
 {
     use SingletonTrait;
 
-    private ObjectStorage $storage;
+    private StorableObjectStorage $storage;
 
     protected function onConstruct(): void
     {
-        $this->storage = new ObjectStorage(new StorableSerializer(TeslaClient::class), 'teslaClient');
+        $this->storage = new StorableObjectStorage(TeslaClient::class, 'teslaClient');
         if (!$this->storage->existsByCode('nicemobil')) {
             $this->save(new TeslaClient());
         }

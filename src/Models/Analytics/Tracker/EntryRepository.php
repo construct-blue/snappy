@@ -5,21 +5,20 @@ declare(strict_types=1);
 namespace Blue\Models\Analytics\Tracker;
 
 use Blue\Core\Database\Connection;
-use Blue\Core\Database\ObjectStorage;
-use Blue\Core\Database\Serializer\StorableSerializer;
+use Blue\Core\Database\StorableObjectStorage;
 use DateTime;
 use Generator;
 use PDO;
 
 class EntryRepository
 {
-    private ObjectStorage $storage;
+    private StorableObjectStorage $storage;
 
 
     public function __construct(string $code)
     {
-        $this->storage = new ObjectStorage(
-            new StorableSerializer(Entry::class),
+        $this->storage = new StorableObjectStorage(
+            Entry::class,
             $code,
             'analytics_entry',
             Connection::analytics()

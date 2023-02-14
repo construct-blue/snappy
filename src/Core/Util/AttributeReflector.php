@@ -16,10 +16,10 @@ class AttributeReflector
      * @template T of object
      *
      * @param class-string $className
-     * @param class-string|null $attributeClass
+     * @param class-string<T>|null $attributeClass
      * @param int $flags
      * @param array $stopParents ['className' => true]
-     * @return T
+     * @return T[]
      * @throws ReflectionException
      */
     public static function getAttributes(
