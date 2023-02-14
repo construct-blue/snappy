@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Blue\Core\Application;
 
 use Blue\Core\Environment\Environment;
+use Blue\Core\Http\NoIndexMiddleware;
 use Laminas\HttpHandlerRunner\RequestHandlerRunnerInterface;
 use Laminas\Stratigility\Middleware\ErrorHandler;
 use Laminas\Stratigility\MiddlewarePipeInterface;
@@ -54,6 +55,9 @@ abstract class AbstractSnapp extends Application implements SnappInterface
 
     final public function init(): static
     {
+        if (Environment::instance()->getDevDomain()) {
+            $this->pipe(NoIndexMiddleware::class);
+        }
         $this->initRoutes();
         $this->pipe(ErrorHandler::class);
         $this->pipe(RouteMiddleware::class);
