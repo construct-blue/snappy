@@ -20,14 +20,15 @@ class StartpageView extends ViewComponent
     {
         return [
             Document::class => [
-                'title' => 'System',
+                'title' => 'Snappy Blue',
+                'description' => 'Snappy Startpage',
                 'body' => [
                     'header' => [
                         SystemNavigation::class => [],
                         'p' => [
                             'svg style="height: 7rem;"' => [
                                 'title' => [
-                                    'Blue Snappy',
+                                    'Snappy Blue',
                                     function () {
                                         if ($this->isLoggedIn) {
                                             echo ' - ';

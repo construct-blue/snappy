@@ -16,7 +16,7 @@ $server->addSnapp(NicemobilSnapp::default(), '/', 'live.sonice.at')
     ->addAlias('live.nicemobil.blog');
 
 $server->addSnapp(KleinschusterSnapp::default(), '/', 'www.robs.social')
-    ->setName('Kleinschuster.de')
+    ->setName('robs.social')
     ->addAlias('www.kleinschuster.de');
 
 return $server;
