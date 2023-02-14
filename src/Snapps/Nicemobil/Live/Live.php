@@ -34,6 +34,7 @@ class Live extends ViewComponent
         return [
             Document::class => [
                 'title' => 'Live - NICEmobil',
+                'description' => 'Das NICEmobil von Franz Liebmann online verfolgen.',
                 'body' => Template::include(__DIR__ . '/Live.phtml'),
                 'after' => Analytics::new()
             ]
