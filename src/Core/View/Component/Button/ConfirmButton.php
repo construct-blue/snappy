@@ -20,7 +20,7 @@ class ConfirmButton extends ViewComponent
 {
     public function render(): array
     {
-        $attributes = '';
+        $attributes = " message=\"$this->message\"";
         if (isset($this->formaction)) {
             $attributes .= " formaction=\"{$this->formaction}\"";
         }
@@ -28,7 +28,7 @@ class ConfirmButton extends ViewComponent
             $attributes .= " type=\"{$this->type}\"";
         }
         return [
-            'button is="confirm-button" message="{message}"' . $attributes => [
+            'button is="confirm-button"' . $attributes => [
                 fn() => isset($this->icon) ? [
                     Icon::class => [
                         'icon' => $this->icon

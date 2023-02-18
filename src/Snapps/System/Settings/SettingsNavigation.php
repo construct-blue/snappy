@@ -10,7 +10,7 @@ use Blue\Core\View\ViewComponent;
 /**
  * @property string $settingsPath
  * @property string $teslaPath
- * @property string $activePath
+ * @property string $currentPath
  * @property bool $userIsGuest
  */
 class SettingsNavigation extends ViewComponent
@@ -23,13 +23,13 @@ class SettingsNavigation extends ViewComponent
                     Link::class => [
                         'href' => $this->settingsPath,
                         'text' => 'Users',
-                        'active' => $this->settingsPath === $this->activePath
+                        'active' => $this->settingsPath === $this->currentPath
                     ],
                 ],
                 [
                     Link::class => [
                         'href' => $this->teslaPath,
-                        'active' => $this->teslaPath === $this->activePath,
+                        'active' => $this->teslaPath === $this->currentPath,
                         'text' => 'NICEmobil',
                     ],
                 ],

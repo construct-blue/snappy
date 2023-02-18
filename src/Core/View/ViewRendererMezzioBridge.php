@@ -27,9 +27,6 @@ class ViewRendererMezzioBridge implements TemplateRendererInterface
     public function render(string $name, $params = []): string
     {
         $component = ViewRenderer::instantiateComponent($name);
-        if (isset($params['action'])) {
-            $this->renderer->action($component, $params['action'], $params);
-        }
         $params = array_replace_recursive($this->getDefaultParams($name), $params);
         return $this->renderer->render($component, $params);
     }

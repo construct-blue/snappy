@@ -25,7 +25,7 @@ class LoginView extends ViewComponent
                 'title' => 'Login',
                 'body' => [
                     'header' => [
-                        SystemNavigation::class => [],
+                        SystemNavigation::new($this->getModel()),
                         'p' => [
                             'svg style="height: 7rem;"' => [
                                 '<title>Blue Snappy</title>',
@@ -33,7 +33,9 @@ class LoginView extends ViewComponent
                             ],
                         ],
                     ],
-                    Template::include(__DIR__ . '/Login.phtml'),
+                    Template::include(__DIR__ . '/Login.phtml', [
+                        'token' => $this->token
+                    ]),
                     'footer' => [
                         Link::class => [
                             'href' => $this->backPath,

@@ -1,3 +1,10 @@
+<?php
+
+$status = $status ?? '';
+$reason = $reason ?? '';
+$basePath = $basePath ?? '/';
+
+?>
 <header>
     <h1>Oops!</h1>
 </header>
@@ -15,9 +22,9 @@
     </svg>
     <h2>Something went wrong! :(</h2>
     <p>Unfortunately this page can't be displayed.</p>
-    <code>Error: <?= $this->status ?> <?= $this->reason ?></code>
+    <code>Error: <?= $status ?> <?= $reason ?></code>
 </main>
 <footer>
-    <a href="{basePath}/">Home</a>
+    <a href="<?= $basePath ?>">Home</a>
 </footer>
 

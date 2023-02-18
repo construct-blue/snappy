@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Blue\Core\Application\Error\NotFound;
 
 use Blue\Core\View\Component\Icon\Icon;
+use Blue\Core\View\Component\Link;
 use Blue\Core\View\Helper\Document;
 use Blue\Core\View\Helper\Template;
 use Blue\Core\View\ViewComponent;
@@ -33,7 +34,10 @@ class NotFound extends ViewComponent
                                 'span' => 'Back'
                             ],
                             ' ',
-                            'a href="{basePath}/"' => 'Home',
+                            Link::new([
+                                'href' => $this->basePath ?? '/',
+                                'text' => 'Home',
+                            ])
                         ],
                         $this->footer ?? [],
                     ]

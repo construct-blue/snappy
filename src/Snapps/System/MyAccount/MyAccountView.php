@@ -25,9 +25,11 @@ class MyAccountView extends ViewComponent
         return [
             Document::class => [
                 'title' => 'My Account',
+                'messages' => $this->messages,
+                'validations' => $this->validations,
                 'body' => [
                     'header' => [
-                        SystemNavigation::class => [],
+                        SystemNavigation::new($this->getModel()),
                     ],
                     'main' => [
                         Form::class => [
@@ -70,7 +72,7 @@ class MyAccountView extends ViewComponent
                                 'href' => $this->backUrl,
                             ],
                         ],
-                        SystemFooter::new(),
+                        SystemFooter::new($this->getModel()),
                     ],
                 ],
             ]

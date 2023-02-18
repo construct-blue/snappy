@@ -32,7 +32,7 @@ abstract class TemplateHandler extends \Blue\Snapps\System\TemplateHandler imple
 
         $this->assign('siteSnapps', $siteSnapps);
 
-        $this->assign('basePath', (string)$uriBuilder->withMatchedRoutePath(['snapp' => null]));
+        $this->assign('cmsBasePath', (string)$uriBuilder->withMatchedRoutePath(['snapp' => null]));
         $this->assign('blocksPath', (string)$uriBuilder->withRoute('blocks', ['snapp' => $snappCode]));
         $this->assign('pagesPath', (string)$uriBuilder->withRoute('pages', ['snapp' => $snappCode]));
 

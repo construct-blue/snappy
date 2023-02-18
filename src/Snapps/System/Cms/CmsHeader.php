@@ -13,8 +13,8 @@ class CmsHeader extends ViewComponent
     {
         return [
             'header' => [
-                SystemNavigation::class => [],
-                SnappNavigation::class => [],
+                SystemNavigation::new($this->getModel()),
+                SnappNavigation::new($this->getModel()),
             ]
         ];
     }

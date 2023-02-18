@@ -12,10 +12,10 @@ use Blue\Core\View\ViewComponent;
  */
 class Radio extends ViewComponent
 {
-    protected function __init()
+    protected function init()
     {
-        parent::__init();
-        $this->checked = false;
+        parent::init();
+        $this->getModel()->setDefault('checked', false);
     }
 
 
@@ -23,7 +23,9 @@ class Radio extends ViewComponent
     {
         return [
             'label' => [
-                sprintf('<input type="radio" name="{name}" value="{value}"%s/>', $this->getChecked()),
+                <<<HTML
+<input type="radio" name="{$this->name}" value="{$this->value}"{$this->getChecked()}/>
+HTML,
                 $this->label
             ]
         ];

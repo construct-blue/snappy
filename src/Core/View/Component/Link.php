@@ -10,6 +10,7 @@ use Blue\Core\View\ViewComponent;
 /**
  * @property string $href
  * @property string $text
+ * @property array $content
  * @property string $icon
  * @property string $target
  * @property bool $active
@@ -31,8 +32,10 @@ class Link extends ViewComponent
                     'icon' => $this->icon
                 ],
                 fn() => empty($this->text) ?: ['span' => $this->text],
+                fn() => empty($this->content) ?: $this->content,
             ] : [
-                $this->text
+                $this->text ?? '',
+                fn() => empty($this->content) ?: $this->content,
             ],
         ];
     }

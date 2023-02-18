@@ -4,126 +4,75 @@ declare(strict_types=1);
 
 namespace Blue\Core\View;
 
-use Blue\Core\View\Exception\InvalidComponentClassException;
-use Blue\Core\View\Exception\UndefinedMethodException;
 use Blue\Core\View\Exception\UndefinedPropertyException;
-use Blue\Core\View\Exception\ViewException;
-use Closure;
-
-use function array_replace_recursive;
 
 #[Import(__DIR__ . '/ViewComponent.ts')]
 abstract class ViewComponent implements ViewComponentInterface
 {
-    // phpcs:ignore
-    private string $__id;
-    // phpcs:ignore
-    private array $__data = [];
-    // phpcs:ignore
-    private ViewAction $__action;
-    // phpcs:ignore
-    private ?ViewComponentInterface $__parent = null;
+    private string $id;
 
-    final private function __construct()
+    final private function __construct(private readonly ViewModelInterface $model)
     {
-        $this->__action = new ViewAction('');
-        $this->__init();
+        $this->init();
     }
 
-    public static function new(array $params = []): static
-    {
-        $component = new static();
-        $component->mergeParams($params);
-        return $component;
-    }
-
-    public function __id(): string
-    {
-        return $this->__id;
-    }
-
-    public function action(): ViewAction
-    {
-        return $this->__action;
-    }
-
-    protected function __init()
+    protected function init()
     {
     }
 
-    public function __prepare(string $id, array $params): static
+    public static function new(ViewModelInterface|array $model = []): static
     {
-        $this->__id = $id;
-        $this->mergeParams($params);
-        return $this;
-    }
-
-    private function mergeParams(array $params): void
-    {
-        if ([] === $params) {
-            return;
+        if (is_array($model)) {
+            $model = new ViewModel($model);
         }
-        if ([] === $this->__data) {
-            $this->__data = $params;
-        } else {
-            $this->__data = array_replace_recursive($this->__data, $params);
-        }
+        return new static($model);
     }
 
-    public function __bindParent(ViewComponentInterface $parent): static
+    public function getId(): string
     {
-        $this->__parent = $parent;
-        return $this;
+        return $this->id;
     }
 
-    public function __action(ViewAction $action): static
+    public function getModel(): ViewModelInterface
     {
-        $this->__action = $action;
-        return $this;
+        return $this->model;
+    }
+
+    public function prepare(string $id, array $params): void
+    {
+        $this->id = $id;
+        $this->getModel()->replaceValues($params);
     }
 
     /**
      * @param string $name
      * @return mixed|null
-     * @throws ViewException
+     * @throws UndefinedPropertyException
      */
     public function __get(string $name): mixed
     {
-        if (!isset($this->__data[$name]) && !isset($this->__parent?->$name)) {
+        $result = $this->getModel()->get($name);
+        if (null === $result) {
             throw UndefinedPropertyException::forComponent("Access to undefined property '$name'", $this);
         }
-        return $this->__data[$name] ?? $this->__parent?->$name ?? null;
+        return $result;
     }
 
     public function __isset(string $name): bool
     {
-        return isset($this->__data[$name]) || isset($this->__parent?->$name);
+        return null !== $this->getModel()->get($name);
     }
 
     public function __set(string $name, $value): void
     {
-        $this->__data[$name] = $value;
-    }
-
-    /**
-     * @param string $name
-     * @param array $arguments
-     * @return mixed
-     * @throws ViewException
-     */
-    public function __call(string $name, array $arguments): mixed
-    {
-        if ($this->__isset($name) && $this->$name instanceof Closure) {
-            return ($this->$name)(...$arguments);
-        }
-
-        throw UndefinedMethodException::forComponent("Call to undefined method '$name'", $this);
+        $this->getModel()->set($name, $value);
     }
 
     public function __debugInfo(): array
     {
         return [
             'name' => static::class,
+            'model' => $this->model,
         ];
     }
 }

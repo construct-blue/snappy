@@ -11,6 +11,7 @@ use Blue\Core\View\Component\Form\Textfield;
 use Blue\Core\View\ViewComponent;
 
 /**
+ * @property string $cmsBasePath
  * @property SnappRoute $snapp
  */
 class BlockAddView extends ViewComponent
@@ -20,7 +21,7 @@ class BlockAddView extends ViewComponent
         return [
             Form::class => [
                 'method' => 'post',
-                'action' => '{basePath}/add/' . $this->snapp->getCode(),
+                'action' => $this->cmsBasePath . '/add/' . $this->snapp->getCode(),
                 'content' => [
                     Textfield::class => [
                         'name' => 'code',

@@ -14,7 +14,7 @@ class UserAdd extends ViewComponent
         return [
             Form::class => [
                 'method' => 'post',
-                'action' => '{activePath}/add',
+                'action' => $this->currentPath . '/add',
                 'content' =>  [
                     Textfield::class => [
                         'name' => 'name',

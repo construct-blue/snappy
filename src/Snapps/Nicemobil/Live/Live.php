@@ -15,29 +15,43 @@ use function number_format;
 
 /**
  * @property VehicleData $vehicle
- * @property callable $formatNumber
- * @method string formatNumber(float|int $number, string $unit, int $decimals = 0)
  */
 #[Import(__DIR__ . '/Live.ts')]
 class Live extends ViewComponent
 {
-    protected function __init()
-    {
-        parent::__init();
-        $this->formatNumber = function (float|int $number, string $unit, int $decimals = 0): string {
-            return number_format($number, $decimals, ',', ' ') . ' ' . $unit;
-        };
-    }
-
     public function render(): array
     {
         return [
             Document::class => [
                 'title' => 'Live - NICEmobil',
                 'description' => 'Das NICEmobil von Franz Liebmann online verfolgen.',
-                'body' => Template::include(__DIR__ . '/Live.phtml'),
+                'body' => Template::include(
+                    __DIR__ . '/Live.phtml',
+                    [
+                        'online' => $this->vehicle->isOnline(),
+                        'odometer' => $this->formatNumber($this->vehicle->getOdometerKM(), 'km'),
+                        'speed' => $this->formatNumber($this->vehicle->getSpeedKMh(), 'km/h'),
+                        'power' => $this->formatNumber($this->vehicle->getPower(), 'kW'),
+                        'latitude' => $this->vehicle->getLatitude(),
+                        'longitude' => $this->vehicle->getLongitude(),
+                        'batteryState' => $this->vehicle->getChargeLevelCategory(),
+                        'batteryRange' => $this->formatNumber($this->vehicle->getIdealBatteryRangeKM(), 'km'),
+                        'batteryLevel' => $this->vehicle->getUsableBatteryLevel(),
+                        'outsideTemp' =>  $this->formatNumber($this->vehicle->getOutsideTemp(), '°C', 1),
+                        'insideTemp' =>  $this->formatNumber($this->vehicle->getInsideTemp(), '°C', 1),
+                        'charging' => $this->vehicle->isCharging(),
+                        'fastCharger' => $this->vehicle->isFastChargerPresent(),
+                        'fastChargerType' => $this->vehicle->getFastChargerType(),
+                        'chargeRate' => $this->formatNumber($this->vehicle->getChargeRateKMh(), 'km/h'),
+                    ]
+                ),
                 'after' => Analytics::new()
             ]
         ];
+    }
+
+    private function formatNumber(float|int $number, string $unit, int $decimals = 0): string
+    {
+        return number_format($number, $decimals, ',', ' ') . ' ' . $unit;
     }
 }

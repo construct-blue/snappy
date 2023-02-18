@@ -15,11 +15,12 @@ class NotFound extends ViewComponent
     {
         return [
             \Blue\Core\Application\Error\NotFound\NotFound::class => [
+                'basePath' => $this->basePath ?? '/',
                 'header' => [
-                    SystemNavigation::class => [],
+                    SystemNavigation::new($this->getModel()),
                 ],
                 'footer' => [
-                    SystemFooter::new()
+                    SystemFooter::new($this->getModel())
                 ]
             ]
         ];

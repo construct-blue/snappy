@@ -12,18 +12,19 @@ use Blue\Core\View\ViewComponent;
  */
 class Checkbox extends ViewComponent
 {
-    protected function __init()
+    protected function init()
     {
-        parent::__init();
-        $this->checked = false;
+        parent::init();
+        $this->getModel()->setDefault('checked', false);
     }
-
 
     public function render(): array
     {
         return [
             'label' => [
-                sprintf('<input type="checkbox" name="{name}" value="{value}"%s/>', $this->getChecked()),
+                <<<HTML
+<input type="checkbox" name="{$this->value}" value="{$this->value}"{$this->getChecked()}/>
+HTML,
                 $this->label
             ]
         ];

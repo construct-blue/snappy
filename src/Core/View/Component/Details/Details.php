@@ -16,7 +16,7 @@ class Details extends ViewComponent
     public function render(): array
     {
         return [
-            'details is="reactive-details" id="{id}"' => [
+            'details is="reactive-details" id="' . $this->id . '"' => [
                 'summary' => $this->summary,
                 $this->content
             ],

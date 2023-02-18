@@ -12,7 +12,7 @@ use Blue\Core\View\ViewComponent;
  * @property string $cmsPath
  * @property string $settingsPath
  * @property string $analyticsPath
- * @property string $activePath
+ * @property string $currentPath
  * @property bool $isLoggedIn
  */
 class SystemNavigation extends ViewComponent
@@ -24,7 +24,7 @@ class SystemNavigation extends ViewComponent
                 [
                     Link::class => [
                         'href' => $this->startPath,
-                        'active' => $this->startPath === $this->activePath,
+                        'active' => $this->startPath === $this->currentPath,
                         'text' => 'Home',
                     ],
                 ],
@@ -32,14 +32,14 @@ class SystemNavigation extends ViewComponent
                     fn() => !isset($this->cmsPath) ?: [
                         Link::class => [
                             'href' => $this->cmsPath,
-                            'active' => $this->cmsPath === $this->activePath,
+                            'active' => $this->cmsPath === $this->currentPath,
                             'text' => 'CMS',
                         ],
                     ],
                     fn() => !isset($this->settingsPath) ?: [
                         Link::class => [
                             'href' => $this->settingsPath,
-                            'active' => $this->settingsPath === $this->activePath,
+                            'active' => $this->settingsPath === $this->currentPath,
                             'text' => 'Settings',
                         ],
                     ],

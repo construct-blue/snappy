@@ -36,10 +36,10 @@ class Textfield extends ViewComponent
         }
         return [
             fn() => isset($this->label) ? [
-                "label for=\"{$this->__id()}\"" => $this->label,
-                "<input id=\"{$this->__id()}\" name=\"{$this->name}\"$attributes>",
+                "label for=\"{$this->getId()}\"" => $this->label,
+                "<input id=\"{$this->getId()}\" name=\"{$this->name}\"$attributes>",
             ] : [
-                "<input id=\"{$this->__id()}\" name=\"{$this->name}\"$attributes>",
+                "<input id=\"{$this->getId()}\" name=\"{$this->name}\"$attributes>",
             ],
         ];
     }

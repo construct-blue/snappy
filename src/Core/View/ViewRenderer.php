@@ -65,7 +65,7 @@ class ViewRenderer
     {
         try {
             $content = $this->prepareContent($component->render(), $component, true);
-            return PlaceholderHelper::replacePlaceholder($this->renderHtml($content), $component);
+            return $this->renderHtml($content);
         } catch (ViewException $exception) {
             $this->logger?->error($exception);
             if ($this->debug) {
@@ -96,18 +96,18 @@ class ViewRenderer
     ): ViewComponentInterface {
         try {
             $this->resources->importComponent($component);
+
             if ($component instanceof Document) {
-                $component->resources = $this->resources;
+                $component->setResources($this->resources);
             }
 
             if (null === $parent) {
                 $id = 'c-' . $index;
             } else {
-                $id = $parent->__id() . '-' . $index;
-                $component->__bindParent($parent);
+                $id = $parent->getId() . '-' . $index;
             }
 
-            $component->__prepare($id, $params ?? []);
+            $component->prepare($id, $params ?? [], $parent);
         } catch (Throwable $throwable) {
             $this->logger?->error($throwable);
             if ($this->debug) {
@@ -262,29 +262,6 @@ class ViewRenderer
                     echo $key[$i++];
                 }
                 echo '>';
-            }
-        }
-    }
-
-    public function action(ViewComponentInterface $component, ViewAction $action, array $params = null): void
-    {
-        $component = $this->prepareComponent($component, $params);
-        $this->actionComponent($component, $action);
-    }
-
-    private function actionComponent(ViewComponentInterface $component, ViewAction $action): void
-    {
-        $content = $this->prepareContent($component->__action($action)->render(), $component, false);
-        $this->actionContent($content, $action);
-    }
-
-    private function actionContent(array $content, ViewAction $action): void
-    {
-        foreach ($content as $item) {
-            if (is_array($item)) {
-                $this->actionContent($item, $action);
-            } elseif ($item instanceof ViewComponentInterface) {
-                $this->actionComponent($item, $action);
             }
         }
     }

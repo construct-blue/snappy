@@ -15,6 +15,7 @@ use Blue\Core\View\ViewComponent;
 
 /**
  * @property SnappRoute $snapp
+ * @property string $cmsBasePath
  * @property string $id
  * @property string $code
  * @property string $title
@@ -30,7 +31,7 @@ class PageEditView extends ViewComponent
         return [
             Form::class => [
                 'method' => 'post',
-                'action' => '{basePath}/save/' . $this->snapp->getCode(),
+                'action' => $this->cmsBasePath . '/save/' . $this->snapp->getCode(),
                 'id' => '',
                 'content' => [
                     Hidden::class => [
@@ -96,7 +97,7 @@ class PageEditView extends ViewComponent
                         'icon' => 'trash-2',
                         'text' => 'Delete',
                         'message' => 'Sure?',
-                        'formaction' => '{basePath}/delete/' . $this->snapp->getCode()
+                        'formaction' => $this->cmsBasePath . '/delete/' . $this->snapp->getCode()
                     ],
                 ],
             ]

@@ -35,13 +35,13 @@ class Markdown extends ViewComponent
         }
         return [
             fn() => isset($this->label) ? [
-                "label for=\"{$this->__id()}\"" => [
+                "label for=\"{$this->getId()}\"" => [
                     $this->label,
                 ],
-                "textarea id=\"{$this->__id()}\" type=\"markdown\" name=\"{$this->name}\"$attributes" =>
+                "textarea id=\"{$this->getId()}\" type=\"markdown\" name=\"{$this->name}\"$attributes" =>
                     $this->value ?? '',
             ] : [
-                "textarea id=\"{$this->__id()}\" type=\"markdown\" name=\"{$this->name}\"$attributes" =>
+                "textarea id=\"{$this->getId()}\" type=\"markdown\" name=\"{$this->name}\"$attributes" =>
                     $this->value ?? '',
             ],
         ];

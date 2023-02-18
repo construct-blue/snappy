@@ -24,7 +24,7 @@ class StartpageView extends ViewComponent
                 'description' => 'Snappy Startpage',
                 'body' => [
                     'header' => [
-                        SystemNavigation::class => [],
+                        SystemNavigation::new($this->getModel()),
                         'p' => [
                             'svg style="height: 7rem;"' => [
                                 'title' => [
@@ -52,7 +52,7 @@ class StartpageView extends ViewComponent
                             $this->siteSnapps
                         ),
                     ],
-                    SystemFooter::class => []
+                    SystemFooter::new($this->getModel())
                 ],
             ],
         ];

@@ -45,15 +45,4 @@ class FormTest extends TestCase
         $renderer = new ViewRenderer(null, true, __DIR__);
         $this->assertEquals('<form is="reactive-form"></form>', $renderer->render($component, ['id' => 'id']));
     }
-
-    public function testShouldInheritId()
-    {
-        $component = Functional::include(fn() => [
-            Form::class => [
-                'content' => ''
-            ],
-        ]);
-        $renderer = new ViewRenderer(null, true, __DIR__);
-        $this->assertEquals('<form is="reactive-form" id="id"></form>', $renderer->render($component, ['id' => 'id']));
-    }
 }

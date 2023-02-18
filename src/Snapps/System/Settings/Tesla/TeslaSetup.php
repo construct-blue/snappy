@@ -12,7 +12,8 @@ use Blue\Snapps\System\SystemFooter;
 use Blue\Snapps\System\SystemNavigation;
 
 /**
- * @property SnappRoute $activeSnapp
+ * @property string $current
+ * @property string $url
  */
 #[Import(__DIR__ . '/TeslaSetup.ts')]
 class TeslaSetup extends ViewComponent
@@ -22,13 +23,19 @@ class TeslaSetup extends ViewComponent
         return [
             Document::class => [
                 'title' => 'NICEmobil',
+                'messages' => $this->messages,
+                'validations' => $this->validations,
                 'body' => [
                     'header' => [
-                        SystemNavigation::class => [],
-                        SettingsNavigation::class => [],
+                        SystemNavigation::new($this->getModel()),
+                        SettingsNavigation::new($this->getModel()),
                     ],
-                    'main' => Template::include(__DIR__ . '/TeslaSetup.phtml'),
-                    SystemFooter::new()
+                    'main' => Template::include(__DIR__ . '/TeslaSetup.phtml',
+                    [
+                        'current' => $this->current,
+                        'url' => $this->url,
+                    ]),
+                    SystemFooter::new($this->getModel())
                 ]
             ],
         ];

@@ -22,7 +22,7 @@ abstract class TemplateHandler extends \Blue\Core\Application\Handler\TemplateHa
 
         $this->assign('session', $this->getSession($request));
 
-        $this->assign('activePath', (string)$uriBuilder->withMatchedRoutePath());
+        $this->assign('currentPath', (string)$uriBuilder->withMatchedRoutePath());
         $this->assign('isLoggedIn', (string)$session->isLoggedIn());
         $this->assign('activeUserName', (string)$user?->getName());
         $this->assign('startPath', (string)$uriBuilder->withRoute('start'));

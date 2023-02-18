@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Core\View\Component\Button;
 
+use Blue\Core\View\Component\Link;
 use Blue\Core\View\ViewComponent;
 
 /**
@@ -17,14 +18,12 @@ class LinkButton extends ViewComponent
 {
     public function render(): array
     {
-        $attributes = '';
-        if (!empty($this->target)) {
-            $attributes .= ' target="' . $this->target . '"';
-        }
         return [
-            'a href={href}' . $attributes => [
-                Button::new()
-            ]
+            Link::new([
+                'href' => $this->href,
+                'target' => $this->target ?? null,
+                'content' => Button::new()
+            ]),
         ];
     }
 }

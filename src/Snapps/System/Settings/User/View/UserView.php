@@ -14,7 +14,8 @@ use Blue\Snapps\System\SystemFooter;
 use Blue\Snapps\System\SystemNavigation;
 
 /**
- * @property SnappRoute $activeSnapp
+ * @property string $currentPath
+ * @property array $snappOptions
  * @property User[] $users
  */
 class UserView extends ViewComponent
@@ -24,13 +25,15 @@ class UserView extends ViewComponent
         return [
             Document::class => [
                 'title' => 'Settings',
+                'messages' => $this->messages,
+                'validations' => $this->validations,
                 'body' => [
                     'header' => [
-                        SystemNavigation::class => [],
-                        SettingsNavigation::class => [],
+                        SystemNavigation::new($this->getModel()),
+                        SettingsNavigation::new($this->getModel()),
                     ],
                     'main id="main"' => [
-                        UserAdd::new(),
+                        UserAdd::new($this->getModel()),
                         array_map(
                             fn(User $user) => [
                                 Details::class => [
@@ -44,15 +47,18 @@ class UserView extends ViewComponent
                                     ],
                                     'content' => fn() => $user->isAdmin() ? [
                                         AdminUserEdit::class => [
+                                            'currentPath' => $this->currentPath,
                                             'id' => $user->getId(),
                                         ]
                                     ] : [
                                         UserEdit::class => [
+                                            'currentPath' => $this->currentPath,
                                             'id' => $user->getId(),
                                             'name' => $user->getName(),
                                             'state' => $user->getState(),
                                             'roles' => $user->getRoles(),
                                             'snapps' => $user->getSnapps(),
+                                            'snappOptions' => $this->snappOptions
                                         ]
                                     ]
                                 ]
@@ -60,7 +66,7 @@ class UserView extends ViewComponent
                             $this->users
                         )
                     ],
-                    SystemFooter::new()
+                    SystemFooter::new($this->getModel())
                 ],
             ]
         ];

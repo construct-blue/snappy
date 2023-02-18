@@ -26,6 +26,11 @@ abstract class TemplateHandler implements RequestHandlerInterface, MiddlewareInt
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $this->assign('requestId', RequestAttribute::REQUEST_ID->getFrom($request));
+        $uriBuilder = $this->getUriBuilder($request);
+        $this->assign('basePath', $uriBuilder->withPath(''));
+        $session = $this->getSession($request);
+        $this->assign('messages', $session->popMessages());
+        $this->assign('validations', $session->popValidations());
 
         return $this->handle($request);
     }

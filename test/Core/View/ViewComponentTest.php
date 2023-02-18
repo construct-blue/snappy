@@ -4,22 +4,14 @@ declare(strict_types=1);
 
 namespace BlueTest\Core\View;
 
-use Blue\Core\View\Exception\UndefinedMethodException;
 use Blue\Core\View\Exception\UndefinedPropertyException;
+use Blue\Core\View\Helper\Functional;
+use Blue\Core\View\ViewModel;
 use Blue\Core\View\ViewRenderer;
 use PHPUnit\Framework\TestCase;
 
 class ViewComponentTest extends TestCase
 {
-    public function testShouldThrowExceptionWhenCallingUndefinedMethod()
-    {
-        $this->expectException(UndefinedMethodException::class);
-        $this->expectExceptionMessage("Call to undefined method 'test' in " . TestComponent::class);
-        $component = TestComponent::new();
-        /** @phpstan-ignore-next-line */
-        $component->test();
-    }
-
     public function testShouldThrowExceptionWhenAccessingUndefinedProperty()
     {
         $this->expectException(UndefinedPropertyException::class);
@@ -38,7 +30,7 @@ class ViewComponentTest extends TestCase
             'first' => 'value 1',
             'third' => 'value 3'
         ];
-        $component->__prepare('', [
+        $component->prepare('', [
             'heading' => 'prepared heading',
             'array' => [
                 'second' => '2',
@@ -55,20 +47,6 @@ class ViewComponentTest extends TestCase
         $this->assertEquals($expectedArray, $component->array);
     }
 
-    public function testShouldBindDataFromParentToChild()
-    {
-        $component1 = TestComponent::new();
-        $component1->heading = 'heading';
-        $component2 = TestComponent::new();
-        $this->assertFalse(isset($component2->heading));
-        $component2->__bindParent($component1);
-        $this->assertTrue(isset($component2->heading));
-        $this->assertEquals($component1->heading, $component2->heading);
-        $component2->heading = 'second heading';
-        $this->assertEquals('heading', $component1->heading);
-        $this->assertEquals('second heading', $component2->heading);
-    }
-
     public function testShouldHaveAccurateLineInfoInUndefinedPropertyException()
     {
         $component = TemplateExceptionComponent::new();
@@ -78,5 +56,43 @@ class ViewComponentTest extends TestCase
         $this->expectException(UndefinedPropertyException::class);
         $renderer = new ViewRenderer(null, true);
         $renderer->render($component);
+    }
+
+
+    public function testShouldOverrideExistingParamsOnPrepare()
+    {
+        $component = Functional::include(fn($c) => [$c->value]);
+        $component->value = 'initial';
+
+        $component->prepare('', [
+            'value' => 'override'
+        ]);
+
+        $renderer = new ViewRenderer(null, true);
+        $result = $renderer->render($component);
+        $this->assertEquals('override', $result);
+    }
+
+    public function testShouldNotInheritDataFromParent()
+    {
+        $parent = Functional::include(fn() => [
+            Functional::include(fn($c) => $c->value ?? '')
+        ]);
+        $parent->value = 'parent';
+        $renderer = new ViewRenderer(null, true);
+        $result = $renderer->render($parent);
+        $this->assertEquals('', $result);
+    }
+
+    public function testShouldInitDefaultModel()
+    {
+        $component = Functional::include(fn() => []);
+        $this->assertInstanceOf(ViewModel::class, $component->getModel());
+    }
+
+    public function testShouldBeAbleToInitWithCustomModel()
+    {
+        $component = TestComponent::new(new StubModel());
+        $this->assertInstanceOf(StubModel::class, $component->getModel());
     }
 }

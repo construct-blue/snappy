@@ -12,6 +12,7 @@ use Blue\Core\View\ViewComponent;
 
 /**
  * @property SnappRoute $snapp
+ * @property string $cmsBasePath
  */
 class PageAddView extends ViewComponent
 {
@@ -20,7 +21,7 @@ class PageAddView extends ViewComponent
         return [
             Form::class => [
                 'method' => 'post',
-                'action' => '{basePath}/add/' . $this->snapp->getCode(),
+                'action' => $this->cmsBasePath . '/add/' . $this->snapp->getCode(),
                 'content' => [
                     Textfield::class => [
                         'name' => 'code',

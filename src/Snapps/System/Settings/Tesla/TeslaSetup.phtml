@@ -1,19 +1,19 @@
+<?php
+
+$current = $current ?? null;
+$url = $url ?? null;
+
+?>
+
 <main>
-    <?php
-    if (isset($this->current)): ?>
+    <?php if (isset($current)): ?>
 
         <fieldset>
             <legend>Registered</legend>
-            <?= $this->current ?>
+            <?= $current ?>
         </fieldset>
-    <?php
-    endif; ?>
-    <form method="post">
-        <label for="proxy">Proxy</label>
-        <input id="proxy" type="text" name="proxy" value="<?= $this->proxy ?? '' ?>">
-        <button type="submit">Save</button>
-    </form>
-    <form is="tesla-setup" method="post" data-popup-url="<?= $this->url ?>">
+    <?php endif; ?>
+    <form is="tesla-setup" method="post" data-popup-url="<?= $url ?>">
         <label for="url">URL</label>
         <input id="url" type="text" name="url">
         <button type="submit">Login</button>

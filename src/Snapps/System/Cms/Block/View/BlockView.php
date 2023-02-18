@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\System\Cms\Block\View;
 
+use Blue\Core\Application\Snapp\SnappRoute;
 use Blue\Core\View\Component\Details\Details;
 use Blue\Core\View\Component\Icon\Icon;
 use Blue\Core\View\Component\Link;
@@ -14,7 +15,9 @@ use Blue\Snapps\System\Cms\CmsHeader;
 use Blue\Snapps\System\SystemFooter;
 
 /**
+ * @property SnappRoute $snapp
  * @property string $pagesPath
+ * @property string $cmsBasePath
  * @property Block[] $blocks
  */
 class BlockView extends ViewComponent
@@ -24,8 +27,10 @@ class BlockView extends ViewComponent
         return [
             Document::class => [
                 'title' => 'CMS',
+                'messages' => $this->messages,
+                'validations' => $this->validations,
                 'body' => [
-                    CmsHeader::class => [],
+                    CmsHeader::new($this->getModel()),
                     'main id="main"' => [
                         Link::class => [
                             'href' => $this->pagesPath,
@@ -36,7 +41,7 @@ class BlockView extends ViewComponent
                                 ' Manage pages',
                             ]
                         ],
-                        BlockAddView::new(),
+                        BlockAddView::new($this->getModel()),
                         array_map(fn(Block $block) => [
                             Details::class => [
                                 'id' => $block->getId(),
@@ -47,6 +52,8 @@ class BlockView extends ViewComponent
                                 ],
                                 'content' => [
                                     BlockEditView::class => [
+                                        'cmsBasePath' => $this->cmsBasePath,
+                                        'snapp' => $this->snapp,
                                         'id' => $block->getId(),
                                         'code' => $block->getCode(),
                                         'content' => $block->getContent()
@@ -55,7 +62,7 @@ class BlockView extends ViewComponent
                             ],
                         ], $this->blocks),
                     ],
-                    SystemFooter::new()
+                    SystemFooter::new($this->getModel())
                 ]
             ],
         ];

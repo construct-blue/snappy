@@ -15,7 +15,9 @@ class Hidden extends ViewComponent
     public function render(): array
     {
         return [
-            '<input type="hidden" name="{name}" value="{value}"/>'
+            <<<HTML
+<input type="hidden" name="{$this->name}" value="{$this->value}"/>
+HTML
         ];
     }
 }

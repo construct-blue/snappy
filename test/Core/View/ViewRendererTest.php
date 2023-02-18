@@ -12,7 +12,7 @@ use Blue\Core\View\Helper\Functional;
 use Blue\Core\View\Helper\Document;
 use Blue\Core\View\Helper\Body;
 use Blue\Core\View\Helper\Template;
-use Blue\Core\View\ViewAction;
+use Blue\Core\View\ViewComponentInterface;
 use Blue\Core\View\ViewRenderer;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -79,30 +79,6 @@ class ViewRendererTest extends TestCase
 
         $renderer = new ViewRenderer(null, true);
         $this->assertEquals('<h1>test</h1>', $renderer->render($component));
-    }
-
-    public function testShouldReplacePlaceholder()
-    {
-        $component = Functional::include(fn() => '{text}');
-        $component->text = 'hello test';
-        $renderer = new ViewRenderer(null, true);
-        $this->assertEquals('hello test', $renderer->render($component));
-    }
-
-    public function testShouldBindChildrenToParent()
-    {
-        $component = Functional::include(fn() => [
-            Functional::include(fn($that) => [$that->text]),
-            Functional::include(fn($that) => [
-                $that->text,
-                Functional::include(fn($that) => [$that->text])
-            ])
-        ]);
-
-        $component->text = 'hello child';
-
-        $renderer = new ViewRenderer(null, true);
-        $this->assertEquals('hello childhello childhello child', $renderer->render($component));
     }
 
     public function testShouldRenderNestedComponents()
@@ -190,33 +166,6 @@ EOF;
         $this->assertNotEmpty($renderer->render($layout));
     }
 
-    public function testShouldExecuteAction()
-    {
-        $component1 = Functional::include(
-            fn(Functional $c) => "component 1" . ($c->suffix ?? '')
-        );
-        $component2 = Functional::include(
-            function (Functional $c) use ($component1) {
-                if ($c->action()->is('click')) {
-                    $component1->suffix = ' hello';
-                    return 'component 2 clicked';
-                }
-                return "component 2";
-            }
-        );
-
-        $component = Functional::include(fn() => [
-            $component1,
-            ' ',
-            $component2,
-        ]);
-
-        $renderer = new ViewRenderer(null, true);
-        $this->assertEquals('component 1 component 2', $renderer->render($component));
-        $renderer->action($component, new ViewAction('click'));
-        $this->assertEquals('component 1 hello component 2 clicked', $renderer->render($component));
-    }
-
     public function testShouldThrowExceptionWhenRecursiveNesting()
     {
         $this->expectException(InfiniteRecursionException::class);
@@ -231,12 +180,12 @@ EOF;
         $component = Document::for('title', 'description', [
             fn() => [
                 'h1' => 'test',
-                fn() => [
-                    'p' => '{__id}',
-                    function () {
+                fn(ViewComponentInterface $component) => [
+                    'p' => $component->getId(),
+                    function (ViewComponentInterface $component) {
                         $result = [];
                         for ($i = 0; $i < 100000; $i++) {
-                            $result[] = fn() => ['p' => '{__id}'];
+                            $result[] = fn() => ['p' => $component->getId()];
                         }
 
                         return $result;
@@ -257,8 +206,8 @@ EOF;
         $component = Document::for('title', 'description', [
             fn() => [
                 'h1' => 'test',
-                fn() => [
-                    'p' => '{__id}',
+                fn(ViewComponentInterface $component) => [
+                    'p' => $component->getId(),
                     function () {
                         $result = [];
                         for ($i = 0; $i < 100000; $i++) {
@@ -284,8 +233,8 @@ EOF;
         $component = Document::for('title', 'description', [
             fn() => [
                 'h1' => 'test',
-                fn() => [
-                    'p' => '{__id}',
+                fn(ViewComponentInterface $component) => [
+                    'p' => $component->getId(),
                     function () {
                         $result = [];
                         for ($i = 0; $i < 100000; $i++) {
@@ -310,13 +259,13 @@ EOF;
         $component = Document::for('title', 'description', [
             fn() => [
                 'h1' => 'test',
-                fn() => [
-                    'p' => '{__id}',
-                    function () {
+                fn(ViewComponentInterface $component) => [
+                    'p' => $component->getId(),
+                    function (ViewComponentInterface $component) {
                         $result = [];
                         for ($i = 0; $i < 100000; $i++) {
                             $result[] = [
-                                'p' => 'paragraph {__id}'
+                                'p' => 'paragraph ' . $component->getId()
                             ];
                         }
 

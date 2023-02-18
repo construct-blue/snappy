@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Snapps\System\Cms\Page\View;
 
+use Blue\Core\Application\Snapp\SnappRoute;
 use Blue\Core\View\Component\Details\Details;
 use Blue\Core\View\Component\Icon\Icon;
 use Blue\Core\View\Component\Link;
@@ -15,6 +16,8 @@ use Blue\Snapps\System\SystemFooter;
 
 /**
  * @property string $blocksPath
+ * @property string $cmsBasePath
+ * @property SnappRoute $snapp
  * @property Page[] $pages
  */
 class PageView extends ViewComponent
@@ -24,8 +27,10 @@ class PageView extends ViewComponent
         return [
             Document::class => [
                 'title' => 'CMS',
+                'messages' => $this->messages,
+                'validations' => $this->validations,
                 'body' => [
-                    CmsHeader::class => [],
+                    CmsHeader::new($this->getModel()),
                     'main id="main"' => [
                         Link::class => [
                             'href' => $this->blocksPath,
@@ -36,7 +41,7 @@ class PageView extends ViewComponent
                                 ' Configure reusable blocks',
                             ]
                         ],
-                        PageAddView::class => [],
+                        PageAddView::new($this->getModel()),
                         array_map(fn(Page $page) => [
                             Details::class => [
                                 'id' => $page->getId(),
@@ -45,6 +50,8 @@ class PageView extends ViewComponent
                                 ],
                                 'content' => [
                                     PageEditView::class => [
+                                        'cmsBasePath' => $this->cmsBasePath,
+                                        'snapp' => $this->snapp,
                                         'id' => $page->getId(),
                                         'code' => $page->getCode() ?? '',
                                         'title' => $page->getTitle(),
@@ -57,7 +64,7 @@ class PageView extends ViewComponent
                             ],
                         ], $this->pages),
                     ],
-                    SystemFooter::new()
+                    SystemFooter::new($this->getModel())
                 ],
             ],
         ];

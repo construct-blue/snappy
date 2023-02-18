@@ -10,8 +10,8 @@ use Blue\Core\View\ViewComponent;
 
 /**
  * @property SnappRoute[] $siteSnapps
- * @property string $activePath
- * @property string $basePath
+ * @property string $currentPath
+ * @property string $cmsBasePath
  * @property SnappRoute $snapp
  */
 class SnappNavigation extends ViewComponent
@@ -21,9 +21,9 @@ class SnappNavigation extends ViewComponent
         return [
             'nav' => array_map(fn(SnappRoute $route) => [
                 Link::class => [
-                    'href' => $this->basePath . '/' . $route->getCode(),
+                    'href' => $this->cmsBasePath . '/' . $route->getCode(),
                     'text' => $route->getName(),
-                    'active' => ($this->basePath . '/' . $route->getCode()) === $this->activePath,
+                    'active' => ($this->cmsBasePath . '/' . $route->getCode()) === $this->currentPath,
                 ],
             ], $this->siteSnapps),
         ];

@@ -11,13 +11,12 @@ use Blue\Core\View\Component\Checkbox\CheckboxGroup;
 use Blue\Core\View\Component\Form\Form;
 use Blue\Core\View\Component\Form\Hidden;
 use Blue\Core\View\Component\Form\Textfield;
-use Blue\Core\View\Component\Icon\Icon;
-use Blue\Core\View\Component\Radio\RadioGroup;
 use Blue\Core\View\ViewComponent;
 use Blue\Models\User\UserRole;
 use Blue\Models\User\UserState;
 
 /**
+ * @property string $currentPath
  * @property string $id
  * @property string $name
  * @property UserState $state
@@ -32,7 +31,7 @@ class UserEdit extends ViewComponent
         return [
             Form::class => [
                 'method' => 'post',
-                'action' => '{activePath}/save',
+                'action' => $this->currentPath . '/save',
                 'content' => [
                     Hidden::class => [
                         'name' => 'id',
@@ -75,7 +74,7 @@ class UserEdit extends ViewComponent
                         'text' => 'Save',
                     ],
                     ConfirmButton::class => [
-                        'formaction' => '{activePath}/delete',
+                        'formaction' => $this->currentPath . '/delete',
                         'text' => 'Delete',
                         'message' => 'Sure?',
                         'type' => 'submit',

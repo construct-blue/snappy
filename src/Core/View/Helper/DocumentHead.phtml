@@ -1,0 +1,13 @@
+<?php
+$title = $title ?? '';
+$description = $description ?? null;
+?>
+<title><?= $title ?></title>
+<?php if (isset($description)): ?>
+    <meta name="description" content="<?= $description ?>>"/>
+<?php endif; ?>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta charset="UTF-8">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
