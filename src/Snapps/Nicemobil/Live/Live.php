@@ -22,9 +22,7 @@ class Live extends ViewComponent
     protected function init()
     {
         parent::init();
-        if (!$this->getModel() instanceof LiveModel) {
-            throw InvalidComponentParameterException::forComponent('invalid model instance', $this);
-        }
+        $this->assertModel(LiveModel::class);
     }
 
     public function render(): array
