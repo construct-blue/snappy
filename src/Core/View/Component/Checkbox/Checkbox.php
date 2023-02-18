@@ -23,7 +23,7 @@ class Checkbox extends ViewComponent
         return [
             'label' => [
                 <<<HTML
-<input type="checkbox" name="{$this->value}" value="{$this->value}"{$this->getChecked()}/>
+<input type="checkbox" name="{$this->name}" value="{$this->value}"{$this->getChecked()}/>
 HTML,
                 $this->label
             ]
