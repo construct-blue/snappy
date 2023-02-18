@@ -4,11 +4,8 @@ namespace Blue\Snapps\Nicemobil\Live;
 
 use Blue\Core\Application\Handler\TemplateHandler;
 use Blue\Core\Cache\ObjectCache;
-use Blue\Core\Database\Connection;
-use Blue\Core\Database\ObjectStorage;
 use Blue\Core\Database\Serializer\StorableSerializer;
 use Blue\Core\Logger\Logger;
-use Blue\Core\Queue\Queue;
 use Blue\Models\TeslaClient\TeslaClientRepository;
 use Blue\Models\TeslaClient\VehicleData;
 use Laminas\Diactoros\Response\HtmlResponse;
@@ -21,13 +18,14 @@ class LiveHandler extends TemplateHandler
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $cache = new ObjectCache(new StorableSerializer(VehicleData::class), 'vehicle_data');
+        /** @var VehicleData $vehicle */
         $vehicle = $cache->load(
             'vehicle',
             fn() => $this->fetchVehicle(),
             fn(VehicleData $vehicle) => $vehicle->isOnline() || $vehicle->isExpired()
         );
 
-        return new HtmlResponse($this->render(Live::class, ['vehicle' => $vehicle]));
+        return new HtmlResponse($this->render(Live::class, LiveModel::initFromVehicle($vehicle)));
     }
 
     private function fetchVehicle(): VehicleData

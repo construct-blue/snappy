@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BlueTest\Core\View;
 
+use Blue\Core\View\Exception\InvalidModelException;
 use Blue\Core\View\Exception\UndefinedPropertyException;
 use Blue\Core\View\Helper\Functional;
 use Blue\Core\View\ViewModel;
@@ -94,5 +95,11 @@ class ViewComponentTest extends TestCase
     {
         $component = TestComponent::new(new StubModel());
         $this->assertInstanceOf(StubModel::class, $component->getModel());
+    }
+
+    public function testShouldAssertModelType()
+    {
+        $this->expectException(InvalidModelException::class);
+        CustomModelTestComponent::new();
     }
 }

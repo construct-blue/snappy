@@ -7,18 +7,23 @@ namespace Blue\Core\View\Helper;
 use Blue\Core\View\Exception\MissingPropertyException;
 use Blue\Core\View\ViewComponent;
 
+use Blue\Core\View\ViewModelInterface;
 use function ob_get_clean;
 use function ob_start;
 
 class Template extends ViewComponent
 {
     private string $template;
-    private array $params = [];
+    private array $templateVars = [];
 
-    public static function include(string $templateFile, array $params = []): static
+    public static function include(
+        string                   $templateFile,
+        array                    $templateVars = [],
+        ViewModelInterface|array $model = []
+    ): static
     {
-        $component = static::new();
-        $component->params = $params;
+        $component = static::new($model);
+        $component->templateVars = $templateVars;
         $component->template = $templateFile;
         return $component;
     }
@@ -32,7 +37,8 @@ class Template extends ViewComponent
         if (!isset($this->template)) {
             throw MissingPropertyException::forComponent('Missing template', $this);
         }
-        extract($this->params);
+        extract($this->templateVars);
+        $model = $this->getModel();
         try {
             ob_start();
             require $this->template;

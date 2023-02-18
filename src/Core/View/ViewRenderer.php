@@ -123,14 +123,14 @@ class ViewRenderer
      * @return ViewComponentInterface
      * @throws InvalidComponentClassException
      */
-    public static function instantiateComponent(string $className): ViewComponentInterface
+    public static function instantiateComponent(string $className, ViewModelInterface|array $model = []): ViewComponentInterface
     {
         if (!in_array(ViewComponentInterface::class, class_implements($className))) {
             throw new InvalidComponentClassException(
                 "Component class $className must implement " . ViewComponentInterface::class
             );
         }
-        return $className::new();
+        return $className::new($model);
     }
 
     /**

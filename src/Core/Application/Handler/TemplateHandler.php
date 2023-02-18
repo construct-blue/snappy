@@ -40,9 +40,9 @@ abstract class TemplateHandler implements RequestHandlerInterface, MiddlewareInt
         return $this->renderer;
     }
 
-    public function render(string $name, $params = []): StreamInterface
+    public function render(string $name, $model = []): StreamInterface
     {
-        return new CallbackStream(fn() => $this->getRenderer()->render($name, $params));
+        return new CallbackStream(fn() => $this->getRenderer()->render($name, $model));
     }
 
     public function assign(string $name, $value)

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blue\Core\View;
 
+use Blue\Core\View\Exception\InvalidModelException;
 use Blue\Core\View\Exception\UndefinedPropertyException;
 
 #[Import(__DIR__ . '/ViewComponent.ts')]
@@ -14,6 +15,21 @@ abstract class ViewComponent implements ViewComponentInterface
     final private function __construct(private readonly ViewModelInterface $model)
     {
         $this->init();
+    }
+
+    protected function assertModel(string $class): void
+    {
+        if (!$this->getModel() instanceof $class) {
+            throw InvalidModelException::forComponent(
+                sprintf(
+                    'Component %s requires model instance of %s, %s given.',
+                    static::class,
+                    $class,
+                    get_class($this->getModel())
+                ),
+                $this
+            );
+        }
     }
 
     protected function init()
