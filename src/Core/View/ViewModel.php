@@ -6,7 +6,7 @@ namespace Blue\Core\View;
 class ViewModel implements ViewModelInterface
 {
     private array $defaults = [];
-    public function __construct(private array $data)
+    public function __construct(private array $data = [])
     {
     }
 

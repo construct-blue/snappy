@@ -13,19 +13,21 @@ use Blue\Core\View\Component\Form\Hidden;
 use Blue\Core\View\Component\Form\Textfield;
 use Blue\Core\View\ViewComponent;
 use Blue\Models\User\UserRole;
-use Blue\Models\User\UserState;
+use Blue\Snapps\System\Settings\User\UserModel;
 
 /**
+ * @extends ViewComponent<UserModel>
  * @property string $currentPath
- * @property string $id
- * @property string $name
- * @property UserState $state
- * @property UserRole[] $roles
- * @property array $snapps
  * @property array $snappOptions
  */
 class UserEdit extends ViewComponent
 {
+    protected function init()
+    {
+        parent::init();
+        $this->assertModel(UserModel::class);
+    }
+
     public function render(): array
     {
         return [
@@ -35,12 +37,12 @@ class UserEdit extends ViewComponent
                 'content' => [
                     Hidden::class => [
                         'name' => 'id',
-                        'value' => $this->id,
+                        'value' => $this->getModel()->getId(),
                     ],
                     Textfield::new([
                         'label' => 'Username',
                         'name' => 'name',
-                        'value' => $this->name,
+                        'value' => $this->getModel()->getName(),
                     ]),
                     Textfield::new([
                         'label' => 'Password',
@@ -51,23 +53,23 @@ class UserEdit extends ViewComponent
                         'name' => 'roles',
                         'legend' => 'Roles',
                         'options' => UserRole::list(),
-                        'values' => array_keys(UserRole::list($this->roles)),
+                        'values' => $this->getModel()->getRoles(),
                     ]),
                     CheckboxGroup::new([
                         'name' => 'snapps',
                         'legend' => 'Snapps',
                         'options' => $this->snappOptions,
-                        'values' => $this->snapps,
+                        'values' => $this->getModel()->getSnapps(),
                     ]),
                     Hidden::new([
-                        'name' => 'state',
-                        'value' => UserState::ACTIVE->value,
+                        'name' => 'locked',
+                        'value' => '0',
                     ]),
                     Checkbox::new([
                         'label' => 'Locked',
-                        'name' => 'state',
-                        'value' => UserState::LOCKED->value,
-                        'checked' => $this->state->is(UserState::LOCKED)
+                        'name' => 'locked',
+                        'value' => '1',
+                        'checked' => $this->getModel()->isLocked()
                     ]),
                     SubmitButton::class => [
                         'icon' => 'save',

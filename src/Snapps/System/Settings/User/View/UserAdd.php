@@ -7,6 +7,9 @@ use Blue\Core\View\Component\Form\Textfield;
 use Blue\Core\View\Component\Icon\Icon;
 use Blue\Core\View\ViewComponent;
 
+/**
+ * @property string $currentPath
+ */
 class UserAdd extends ViewComponent
 {
     public function render(): array

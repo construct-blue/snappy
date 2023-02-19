@@ -7,16 +7,27 @@ namespace Blue\Core\View;
 use Blue\Core\View\Exception\InvalidModelException;
 use Blue\Core\View\Exception\UndefinedPropertyException;
 
+/**
+ * @template T of ViewModelInterface
+ */
 #[Import(__DIR__ . '/ViewComponent.ts')]
 abstract class ViewComponent implements ViewComponentInterface
 {
     private string $id;
 
+    /**
+     * @param ViewModelInterface&T $model
+     */
     final private function __construct(private readonly ViewModelInterface $model)
     {
         $this->init();
     }
 
+    /**
+     * @param class-string<T> $class
+     * @return void
+     * @throws InvalidModelException
+     */
     protected function assertModel(string $class): void
     {
         if (!$this->getModel() instanceof $class) {
@@ -36,11 +47,12 @@ abstract class ViewComponent implements ViewComponentInterface
     {
     }
 
-    public static function new(ViewModelInterface|array $model = []): static
+    public static function new(ViewModelInterface|array $model = [], array $params = []): static
     {
         if (is_array($model)) {
             $model = new ViewModel($model);
         }
+        $model->replaceValues($params);
         return new static($model);
     }
 
@@ -49,6 +61,9 @@ abstract class ViewComponent implements ViewComponentInterface
         return $this->id;
     }
 
+    /**
+     * @return T
+     */
     public function getModel(): ViewModelInterface
     {
         return $this->model;

@@ -27,8 +27,12 @@ class UserSaveAction extends ActionHandler
             $user->setPasswordPlain($data['password']);
         }
 
-        if (isset($data['state'])) {
-            $user->setState(UserState::from($data['state']));
+        if (isset($data['locked'])) {
+            if ($data['locked'] === '1') {
+                $user->setState(UserState::LOCKED);
+            } elseif ($data['locked'] === '0') {
+                $user->setState(UserState::ACTIVE);
+            }
         }
 
         $data['roles'] = $data['roles'] ?? [];
