@@ -8,7 +8,9 @@ export default class ScriptLoader {
 
         document.querySelectorAll('script[src]').forEach((script: HTMLScriptElement) => {
             if (!scripts.includes(script.src)) {
-                window.document.head.append(script);
+                const newScript = document.createElement('script');
+                newScript.src = script.src;
+                window.document.head.append(newScript);
             }
         })
     }

@@ -9,7 +9,7 @@ export default class StyleLoader
 
         document.querySelectorAll('link[rel=stylesheet][href]').forEach((style: HTMLLinkElement) => {
             if (!styles.includes(style.href)) {
-                window.document.head.append(style.href);
+                window.document.head.append(style);
             }
         })
     }
