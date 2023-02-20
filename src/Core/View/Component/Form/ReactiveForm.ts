@@ -1,8 +1,9 @@
 import './Form.scss'
 import ScriptLoader from "../../Helper/ScriptLoader";
 import StyleLoader from "../../Helper/StyleLoader";
+
 class ReactiveForm extends HTMLFormElement {
-    public context: null|string;
+    public context: null | string = null;
 
     constructor() {
         super();
@@ -25,11 +26,10 @@ class ReactiveForm extends HTMLFormElement {
         const response = await fetch(this.findFormActionFromSubmitter(submitter), {
             method: this.method,
             body: formData,
-            redirect: this.context ? 'follow' : 'manual'
         })
 
         if (null === this.context) {
-            location.reload();
+            location.assign(response.url);
             return;
         }
 

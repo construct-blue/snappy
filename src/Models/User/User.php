@@ -24,6 +24,8 @@ final class User implements Storable
 
     private ?string $name = null;
     private ?string $passwordHash = null;
+    private ?string $passwordResetToken = null;
+    private ?int $passwordResetTimestamp = null;
 
     private UserState $state = UserState::LOCKED;
     private UserType $type = UserType::DEFAULT;
@@ -110,6 +112,32 @@ final class User implements Storable
             return false;
         }
         return password_verify($password, $this->getPasswordHash());
+    }
+
+    public function generatePasswordResetToken(): string
+    {
+        $this->passwordResetTimestamp = time();
+        $token = md5(random_bytes(32));
+        $this->passwordResetToken = password_hash($token, PASSWORD_DEFAULT);
+        return $token;
+    }
+
+    public function invalidatePasswordResetToken(): void
+    {
+        $this->passwordResetToken = null;
+        $this->passwordResetTimestamp = null;
+    }
+
+    public function verifyPasswordResetToken(string $token): bool
+    {
+        if (
+            isset($this->passwordResetToken)
+            && isset($this->passwordResetTimestamp)
+            && time() - $this->passwordResetTimestamp < 3600
+        ) {
+            return password_verify($token, $this->passwordResetToken);
+        }
+        return false;
     }
 
     public function setState(UserState $state): User
@@ -257,6 +285,8 @@ final class User implements Storable
             'roles' => $this->getRoles(),
             'options' => $this->getOptions(),
             'snapps' => $this->getSnapps(),
+            'passwordResetToken' => $this->passwordResetToken,
+            'passwordResetTimestamp' => $this->passwordResetTimestamp,
         ];
     }
 
@@ -266,6 +296,8 @@ final class User implements Storable
         $user->id = $data['id'];
         $user->name = $data['name'];
         $user->passwordHash = $data['pwHash'];
+        $user->passwordResetToken = $data['passwordResetToken'] ?? null;
+        $user->passwordResetTimestamp = $data['passwordResetTimestamp'] ?? null;
         $user->type = UserType::from($data['type']);
         $user->state = UserState::from($data['state']);
         $user->roles = UserRole::map($data['roles']);

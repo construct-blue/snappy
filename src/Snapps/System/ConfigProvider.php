@@ -12,6 +12,7 @@ use Blue\Snapps\System\Logout\LogoutHandler;
 use Blue\Snapps\System\MyAccount\MyAccountHandler;
 use Blue\Snapps\System\NotFound\NotFound;
 use Blue\Snapps\System\NotFound\NotFoundHandler;
+use Blue\Snapps\System\ResetPassword\ResetPasswordHandler;
 use Blue\Snapps\System\Settings\Tesla\TeslaSetupHandler;
 use Blue\Snapps\System\Settings\User\UserHandler;
 use Blue\Snapps\System\Startpage\StartpageHandler;
@@ -36,6 +37,7 @@ class ConfigProvider
                     LoginHandler::class => TemplateHandlerFactory::class,
                     LogoutHandler::class => TemplateHandlerFactory::class,
                     MyAccountHandler::class => TemplateHandlerFactory::class,
+                    ResetPasswordHandler::class => TemplateHandlerFactory::class,
                     BlockHandler::class => TemplateHandlerFactory::class,
                     PageHandler::class => TemplateHandlerFactory::class,
                     UserHandler::class => TemplateHandlerFactory::class,

@@ -31,9 +31,6 @@ class UserDetails extends ViewComponent
                     UserSummary::new($this->getModel()),
                 ],
                 'content' => fn() => $this->getModel()->isAdmin() ? [
-                    AdminUserEdit::new($this->getModel(),[
-                        'currentPath' => $this->currentPath,
-                    ])
                 ] : [
                     UserEdit::new($this->getModel(), [
                         'currentPath' => $this->currentPath,

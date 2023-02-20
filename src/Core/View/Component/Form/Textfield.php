@@ -12,7 +12,6 @@ use Blue\Core\View\ViewComponent;
  * @property string $name
  * @property string $value
  * @property string $placeholder
- * @property string $error
  * @property string $type
  */
 class Textfield extends ViewComponent

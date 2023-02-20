@@ -23,11 +23,14 @@ use Blue\Snapps\System\Login\LoginHandler;
 use Blue\Snapps\System\Logout\LogoutHandler;
 use Blue\Snapps\System\MyAccount\MyAccountAction;
 use Blue\Snapps\System\MyAccount\MyAccountHandler;
+use Blue\Snapps\System\ResetPassword\ResetPasswordAction;
+use Blue\Snapps\System\ResetPassword\ResetPasswordHandler;
 use Blue\Snapps\System\Settings\Tesla\TeslaSetupAction;
 use Blue\Snapps\System\Settings\Tesla\TeslaSetupHandler;
 use Blue\Snapps\System\Settings\User\UserAddAction;
 use Blue\Snapps\System\Settings\User\UserDeleteAction;
 use Blue\Snapps\System\Settings\User\UserHandler;
+use Blue\Snapps\System\Settings\User\UserResetPasswordAction;
 use Blue\Snapps\System\Settings\User\UserSaveAction;
 use Blue\Snapps\System\Startpage\StartpageHandler;
 
@@ -60,6 +63,8 @@ class SystemSnapp extends AbstractSnapp
             ->setOptions([UserPermission::class => UserPermission::ACCOUNT]);
         $this->post('/my-account', MyAccountAction::class)
             ->setOptions([UserPermission::class => UserPermission::ACCOUNT]);
+        $this->get('/reset-password/{token}', ResetPasswordHandler::class, 'reset_password');
+        $this->post('/reset-password/{token}', ResetPasswordAction::class);
 
         $this->get('/settings/users', UserHandler::class, 'settings')
             ->setOptions([UserPermission::class => UserPermission::SETTINGS]);
@@ -68,6 +73,8 @@ class SystemSnapp extends AbstractSnapp
         $this->post('/settings/users/save', UserSaveAction::class)
             ->setOptions([UserPermission::class => UserPermission::SETTINGS]);
         $this->post('/settings/users/delete', UserDeleteAction::class)
+            ->setOptions([UserPermission::class => UserPermission::SETTINGS]);
+        $this->post('/settings/users/reset-password', UserResetPasswordAction::class)
             ->setOptions([UserPermission::class => UserPermission::SETTINGS]);
 
         $this->get('/settings/setup/tesla', TeslaSetupHandler::class, 'tesla')

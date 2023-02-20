@@ -44,11 +44,6 @@ class UserEdit extends ViewComponent
                         'name' => 'name',
                         'value' => $this->getModel()->getName(),
                     ]),
-                    Textfield::new([
-                        'label' => 'Password',
-                        'name' => 'password',
-                        'type' => 'password',
-                    ]),
                     CheckboxGroup::new([
                         'name' => 'roles',
                         'legend' => 'Roles',
@@ -82,6 +77,12 @@ class UserEdit extends ViewComponent
                         'type' => 'submit',
                         'icon' => 'trash-2'
                     ],
+                    ConfirmButton::new([
+                        'formaction' => $this->currentPath . '/reset-password',
+                        'text' => 'Reset Password',
+                        'message' => 'Sure?',
+                        'type' => 'submit',
+                    ]),
                 ]
             ]
         ];

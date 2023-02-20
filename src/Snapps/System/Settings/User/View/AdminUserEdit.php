@@ -31,11 +31,6 @@ class AdminUserEdit extends ViewComponent
                         'name' => 'id',
                         'value' => $this->getModel()->getId(),
                     ]),
-                    Textfield::new([
-                        'type' => 'password',
-                        'name' => 'password',
-                        'label' => 'Password',
-                    ]),
                     SubmitButton::new([
                         'icon' => 'save',
                         'text' => 'Save'
