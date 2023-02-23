@@ -3,3 +3,5 @@ dist
 .phpunit.result.cache
 yarn-error.log
 env.php
+node_modules
+vendor

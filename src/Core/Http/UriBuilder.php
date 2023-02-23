@@ -149,6 +149,9 @@ class UriBuilder
         if ($append->getScheme()) {
             $result = $result->withScheme($append->getScheme());
         }
+        if ($append->getPort()) {
+            $result = $result->withPort($append->getPort());
+        }
         if ($append->getHost()) {
             $result = $result->withHost($append->getHost());
         }

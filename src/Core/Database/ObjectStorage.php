@@ -74,7 +74,7 @@ CREATE TABLE `{$this->getTable()}`
     meta JSON,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified TIMESTAMP DEFAULT NULL,
-    deleted TIMESTAMP DEFAULT NULL
+    deleted TIMESTAMP NULL DEFAULT NULL
 )
 SQL
         );
