@@ -32,7 +32,7 @@ class TeslaSetup extends ViewComponent
                     ],
                     'main' => Template::include(__DIR__ . '/TeslaSetup.phtml',
                     [
-                        'current' => $this->current,
+                        'current' => $this->current ?? '',
                         'url' => $this->url,
                     ]),
                     SystemFooter::new($this->getModel())
