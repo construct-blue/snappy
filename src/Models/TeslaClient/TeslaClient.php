@@ -193,7 +193,7 @@ final class TeslaClient implements Storable
                 $this->expires_in = $responseData['expires_in'];
                 $this->token_type = $responseData['token_type'];
                 $this->expires = time() + $this->expires_in;
-            #    TeslaClientRepository::instance()->save($this);
+                TeslaClientRepository::instance()->save($this);
                 return $responseData;
             }
         }
