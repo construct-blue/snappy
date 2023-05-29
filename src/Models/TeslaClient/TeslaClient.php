@@ -193,7 +193,7 @@ final class TeslaClient implements Storable
                 $this->expires_in = $responseData['expires_in'];
                 $this->token_type = $responseData['token_type'];
                 $this->expires = time() + $this->expires_in;
-                TeslaClientRepository::instance()->save($this);
+            #    TeslaClientRepository::instance()->save($this);
                 return $responseData;
             }
         }
@@ -202,7 +202,7 @@ final class TeslaClient implements Storable
 
     public function getLoginUri()
     {
-        $codeChallenge = rtrim(strtr(base64_encode(hash('sha256', $this->code)), '+/', '-_'), '=');
+        $codeChallenge = rtrim(strtr(base64_encode(hash('sha256', $this->code, true)), '+/', '-_'), '=');
         $uri = new Uri('https://auth.tesla.com/oauth2/v3/authorize');
         $uri = $uri->withQuery(
             http_build_query([
