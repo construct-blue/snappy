@@ -439,12 +439,8 @@ final class Entry implements Storable
         $entry->timestampUnload = $data['timestampUnload'];
         $entry->clickHref = $data['clickHref'] ?? '';
 
-        if (isset($data['clientHints'])) {
-            if (is_array($data['clientHints'])) {
-                $entry->clientHints = ClientHints::fromStorage($data['clientHints']);
-            } else {
-                $entry->clientHints = $data['clientHints'];
-            }
+        if (isset($data['clientHints']) && is_array($data['clientHints']) && count($data['clientHints'])) {
+            $entry->clientHints = ClientHints::fromStorage($data['clientHints']);
         }
 
         return $entry;
