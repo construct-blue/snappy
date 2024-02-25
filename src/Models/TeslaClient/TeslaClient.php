@@ -306,7 +306,7 @@ final class TeslaClient implements Storable
         }
 
         $client = $this->getClient();
-        $response = $client->get('https://owner-api.teslamotors.com/api/1/vehicles', [
+        $response = $client->get('https://owner-api.teslamotors.com/api/1/products', [
             RequestOptions::HEADERS => ['Authorization' => "Bearer {$this->getAccessToken()}"],
             RequestOptions::PROXY => $this->getProxy(),
         ]);
