@@ -477,7 +477,7 @@ final class Entry implements Storable
         ];
 
         if (isset($this->clientHints)) {
-            $result['clientHints'] = $this->clientHints;
+            $result['clientHints'] = $this->clientHints->toStorage();
         }
         return $result;
     }
